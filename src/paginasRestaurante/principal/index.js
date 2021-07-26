@@ -1,9 +1,7 @@
-function Principal() {
+export default function Principal() {
   return (
     <>
       Principal
     </>
   );
 }
-
-export default Principal;

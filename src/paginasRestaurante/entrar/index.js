@@ -1,9 +1,7 @@
-function Entrar() {
+export default function Entrar() {
   return (
     <>
       Entrar
     </>
   );
 }
-
-export default Entrar;
