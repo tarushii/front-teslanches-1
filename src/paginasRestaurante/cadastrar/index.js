@@ -86,7 +86,7 @@ export default function Cadastrar() {
 
           <div>
             <span className="mr06rem">Já tem uma conta?</span>
-            <Link to="/entrar">Login</Link>
+            <Link to="/login">Login</Link>
           </div>
         </div>
       </form>
