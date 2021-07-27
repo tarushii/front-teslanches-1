@@ -1,6 +1,7 @@
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
+import illustrationCenter from '../../assets/illustration-center.svg';
 
 export default function Cadastrar() {
   return (
@@ -47,6 +48,7 @@ export default function Cadastrar() {
         </div>
         <div className="rodape" />
       </form>
+      <img src={illustrationCenter} alt="vetor" />
     </div>
   );
 }
