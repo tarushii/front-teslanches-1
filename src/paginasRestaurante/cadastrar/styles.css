@@ -5,14 +5,16 @@
   height: 100vh;
 }
 
-.form{
+.formCadastro{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: white;
   border-radius:  88px 88px 88px 0px;
-  padding: 250px 180px 140px 250px;
+  width: 847.58px;
+  height: 1139.23px;
+  border: red 2px solid;
 }
 
 h1{

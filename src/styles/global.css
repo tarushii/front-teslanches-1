@@ -4,6 +4,7 @@
 @import './margins.css';
 @import './paddings.css';
 @import './forms.css';
+@import './colors.css';
 
 body {
   margin: 0;
