@@ -1,0 +1,23 @@
+@import './alignments.css';
+@import './buttons.css';
+@import './texts.css';
+@import './margins.css';
+@import './paddings.css';
+@import './forms.css';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+a{
+  text-decoration: none;
+}
+
+h1{
+  font-family: 'Baloo 2', cursive;
+}
