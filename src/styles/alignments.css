@@ -19,3 +19,18 @@
   align-items: center;
 }
 
+.contentStart{
+  justify-content: flex-start;
+}
+
+.contentEnd{
+  justify-content: flex-end;
+}
+
+.selfStart{
+  align-self: flex-start;
+}
+
+.selfEnd{
+  align-self: flex-end;
+}
