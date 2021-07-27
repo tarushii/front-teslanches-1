@@ -1,0 +1,15 @@
+input{
+  border: 1px solid #BEBEBE;
+  box-sizing: border-box;
+  border-radius: 7.14512px;
+  Height :47px;
+  Width:408px;
+  padding-left: 0.8rem;
+}
+
+label{
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  color: var(--cinzaEscuro);
+  font-weight: bold;
+}
