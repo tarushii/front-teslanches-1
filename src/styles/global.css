@@ -5,11 +5,12 @@
 @import './paddings.css';
 @import './forms.css';
 @import './colors.css';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap');
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Baloo 2','Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
@@ -20,5 +21,6 @@ a{
 }
 
 h1{
-  font-family: 'Baloo 2', cursive;
+  font-family: 'Baloo 2';
+  font-weight: bold;
 }
