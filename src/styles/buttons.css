@@ -1,0 +1,7 @@
+.btLaranja{
+  all: unset;
+  border-radius: 20px;
+  background-color: var(--laranjaEscuro);
+  padding: 8px 40px;
+  max-height: 40px;
+}
