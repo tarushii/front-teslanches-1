@@ -6,4 +6,12 @@
   max-height: 40px;
   font-size: 14px;
   color: var(--branco);
+  cursor: pointer;
+}
+
+.btAzul{
+  all: unset;
+  font-size: 14px;
+  color: var(--azulEscuro);
+  cursor: pointer;
 }
