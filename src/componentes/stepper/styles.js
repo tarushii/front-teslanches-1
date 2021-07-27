@@ -4,6 +4,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
+  // active: {
+  //   color: '#D13201',
+  //   background: '#D13201',
+  // },
+  // completed: {
+  //   color: '#006335',
+  //   background: '#0D8A4F',
+  // },
   backButton: {
     marginRight: theme.spacing(1),
   },
@@ -14,3 +22,4 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default useStyles;
+// TODO - preciso alterar cor do stepper

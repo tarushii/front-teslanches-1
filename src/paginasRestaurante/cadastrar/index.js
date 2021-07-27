@@ -63,7 +63,7 @@ function getStepContent(stepIndex) {
         </div>
       );
     default:
-      return 'Unknown stepIndex';
+      return 'stepper quebrou =/';
   }
 }
 
