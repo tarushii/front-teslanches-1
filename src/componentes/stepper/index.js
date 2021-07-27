@@ -43,23 +43,33 @@ export default function HorizontalStepper({ getStepContent, title }) {
       <div>
         {activeStep === steps.length ? (
           <div>
-            <Typography className={classes.instructions}>All steps completed</Typography>
+            <Typography className={classes.instructions}>
+              All steps completed
+            </Typography>
             <Button onClick={handleReset}>Reset</Button>
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-            <div>
-              <Button
+            <Typography className={classes.instructions}>
+              { getStepContent(activeStep) }
+            </Typography>
+            <div className="flexRow contentCenter ">
+              <button
                 disabled={activeStep === 0}
                 onClick={handleBack}
-                className={classes.backButton}
+                className="btAzul mb2rem"
+                type="button"
               >
                 Anterior
-              </Button>
-              <Button className="btLaranja" variant="contained" onClick={handleNext}>
+              </button>
+              <button
+                className="btLaranja ml1rem mb2rem"
+                type="button"
+                onClick={handleNext}
+              >
                 {activeStep === steps.length - 1 ? 'Criar conta' : 'Proximo'}
-              </Button>
+              </button>
+
             </div>
           </div>
         )}
