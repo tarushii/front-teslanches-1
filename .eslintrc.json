@@ -21,6 +21,7 @@
         "react/react-in-jsx-scope": "off",
         "react/jsx-filename-extension": "off",
         "linebreak-style":"off",
-        "comma-dangle":"off"
+        "comma-dangle":"off",
+        "jsx-a11y/label-has-associated-control":"off"
     }
 }
