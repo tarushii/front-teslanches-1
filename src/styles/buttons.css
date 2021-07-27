@@ -4,4 +4,6 @@
   background-color: var(--laranjaEscuro);
   padding: 8px 40px;
   max-height: 40px;
+  font-size: 14px;
+  color: var(--branco);
 }

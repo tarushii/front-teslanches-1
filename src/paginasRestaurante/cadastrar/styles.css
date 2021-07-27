@@ -20,29 +20,6 @@
   left: -80px;
 }
 
-h1{
-  font-size: 48px;
-  color: var(--laranjaEscuro);
-}
-
-input{
-  margin-bottom: 24px;
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--cinzaEscuro);
-}
-
-a{
-  font-size: 14px;
-  color: var(--azulEscuro);
-}
-
-button{
-  font-size: 14px;
-  color: var(--branco);
-  background-color: var(--laranjaEscuro);
-}
-
 span{
   font-size: 12px;
   color: var(--cinza);
