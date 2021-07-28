@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import illustrationCenter from '../../assets/illustration-center.svg';
-import HorizontalStepper from '../../componentes/stepper';
+import CustomStepper from '../../componentes/customStepper';
 
 function getStepContent(stepIndex) {
   switch (stepIndex) {
@@ -80,7 +80,7 @@ export default function Cadastrar() {
           <div />
 
           <div className="ml2rem" />
-          <HorizontalStepper
+          <CustomStepper
             title={(<h1>Cadastro</h1>)}
             getStepContent={getStepContent}
           />
