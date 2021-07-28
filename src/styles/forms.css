@@ -14,3 +14,13 @@ label{
   font-weight: bold;
 }
 
+.inputPassword{
+  position: relative;
+}
+
+.eyePassword{
+  position: absolute;
+  top: 45px;
+  right: 15px;
+  cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
   return (
@@ -13,9 +15,10 @@ export default function Login() {
           <label htmlFor="email">Email</label>
           <input id="email" type="text" />
         </div>
-        <div className="flexColunm mb1rem">
+        <div className="flexColunm mb1rem inputPassword">
           <label htmlFor="senha">Senha</label>
           <input id="senha" type="password" />
+          <FontAwesomeIcon className="eyePassword" icon={faEye} />
         </div>
         <div className="flexRow contentCenter mt1rem mb1rem">
           <button className="btLaranja" type="button"> Entrar </button>

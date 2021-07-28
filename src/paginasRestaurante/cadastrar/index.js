@@ -1,6 +1,8 @@
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import HorizontalStepper from '../../componentes/stepper';
 
@@ -17,13 +19,15 @@ function getStepContent(stepIndex) {
             <label htmlFor="email">Email</label>
             <input id="email" type="text" />
           </div>
-          <div className="flexColunm mb1rem">
+          <div className="flexColunm mb1rem inputPassword">
             <label htmlFor="senha">Senha</label>
             <input id="senha" type="password" />
+            <FontAwesomeIcon className="eyePassword" icon={faEye} />
           </div>
-          <div className="flexColunm mb1rem">
+          <div className="flexColunm mb1rem inputPassword">
             <label htmlFor="senhaConfere">Repita a senha</label>
             <input id="senhaConfere" type="password" />
+            <FontAwesomeIcon className="eyePassword" icon={faEye} />
           </div>
         </div>
       );
