@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
