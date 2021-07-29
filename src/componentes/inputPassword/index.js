@@ -3,19 +3,17 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import './styles.css';
 
-export default function InputPassword({
-  label, value, setValue, register, id
-}) {
+export default function InputPassword(props) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   return (
     <div className="flexColunm mb1rem inputPassword">
-      <label>{label}</label>
+      <label>{props.label}</label>
       <input
         type={mostrarSenha ? 'text' : 'password'}
-        value={value}
-        {... register(id)}
-        onChange={(e) => setValue(e.target.value)}
+        value={props.value}
+        {... props.register()}
+        onChange={(e) => props.setValue(e.target.value)}
       />
       <FontAwesomeIcon
         onClick={() => setMostrarSenha(!mostrarSenha)}
