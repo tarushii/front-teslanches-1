@@ -4,7 +4,7 @@ import { useState } from 'react';
 import './styles.css';
 
 export default function InputPassword({
-  label, value, setValue
+  label, value, setValue, register, id
 }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
@@ -14,6 +14,7 @@ export default function InputPassword({
       <input
         type={mostrarSenha ? 'text' : 'password'}
         value={value}
+        {... register(id)}
         onChange={(e) => setValue(e.target.value)}
       />
       <FontAwesomeIcon
