@@ -2,13 +2,16 @@ import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
+import { schemaLogin } from '../../validacoes/schema';
 
 export default function Login() {
-  const { register, handleSubmit, formState: { errors } } = useForm('');
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schemaLogin)
+  });
   const [password, setPassword] = useState('');
 
   function onSubmit(data) {
@@ -27,11 +30,8 @@ export default function Login() {
               <div className="flexColunm mb1rem">
                 <label htmlFor="email">Email</label>
                 <input id="email" type="text" {...register('email', { required: true })} />
-                { errors.email && (
-                <span style={{ color: 'red', position: 'absolute', top: '285px' }}>
-                  o campo email é obrigatorio
-                </span>
-                ) }
+                <p>{errors.email?.message}</p>
+
               </div>
 
               <InputPassword
@@ -41,16 +41,7 @@ export default function Login() {
                 value={password}
                 setValue={setPassword}
               />
-              { errors.senha?.type === 'required' && (
-                <span style={{ color: 'red', position: 'absolute', top: '405px' }}>
-                  O campo senha é obrigatorio
-                </span>
-              ) }
-              { errors.senha?.type === 'minLength' && (
-              <span style={{ color: 'red', position: 'absolute', top: '405px' }}>
-                A senha precisa ter no minimo 8 caracteres
-              </span>
-              ) }
+              <p>{errors.senha?.message}</p>
               <div className="flexRow contentCenter mt1rem mb1rem">
                 <button className="btLaranja" type="submit"> Entrar </button>
               </div>
