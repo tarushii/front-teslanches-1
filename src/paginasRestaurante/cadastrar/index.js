@@ -2,6 +2,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import CustomStepper from '../../componentes/customStepper';
 import InputPassword from '../../componentes/inputPassword';
@@ -9,59 +10,93 @@ import InputPassword from '../../componentes/inputPassword';
 function getStepContent(stepIndex) {
   const [password, setPassword] = useState('');
   const [conferePassword, setConferePassword] = useState('');
+  const { register, handleSubmit, formState: { errors } } = useForm('');
 
+  function onSubmit(data) {
+    console.log(data);
+  }
   switch (stepIndex) {
     case 0:
       return (
         <div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
-            <input id="nomeUsuarioRest" type="text" />
-          </div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="email">Email</label>
-            <input id="email" type="text" />
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
+              <input id="nomeUsuarioRest" type="text" {...register('nome', { required: true })} />
 
-          <InputPassword label="Senha" value={password} setValue={setPassword} />
+              { errors.email && (
+              <span style={{ color: 'red', position: 'absolute', top: '85px' }}>
+                o campo nome é obrigatorio
+              </span>
+              ) }
+            </div>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="email">Email</label>
+              <input id="email" type="text" {...register('email', { required: true })} />
 
-          <InputPassword label="Repita a senha" value={conferePassword} setValue={setConferePassword} />
+              { errors.email && (
+              <span style={{ color: 'red', position: 'absolute', top: '85px' }}>
+                o campo email é obrigatorio
+              </span>
+              ) }
+            </div>
 
+            <InputPassword
+              id="senha"
+              label="Senha"
+              register={() => register('senha', { required: true, minLength: 8 })}
+              value={password}
+              setValue={setPassword}
+            />
+
+            <InputPassword
+              id="senhaConfere"
+              label="Repita a senha"
+              register={() => register('senhaConfere', { required: true })}
+              value={conferePassword}
+              setValue={setConferePassword}
+            />
+
+          </form>
         </div>
       );
     case 1:
       return (
         <div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="nomeRestaurante">Nome do restaurante</label>
-            <input id="nomeRestaurante" type="text" />
-          </div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="categoria">Categoria do restaurante</label>
-            <input id="categoria" type="select" placeholder="Escolha uma categoria" />
-          </div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="descricao">Descrição</label>
-            <input id="descricao" type="text" />
-            <span className="mr06rem">Máx.: 50 caracteres</span>
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="nomeRestaurante">Nome do restaurante</label>
+              <input id="nomeRestaurante" type="text" />
+            </div>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="categoria">Categoria do restaurante</label>
+              <input id="categoria" type="select" placeholder="Escolha uma categoria" />
+            </div>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="descricao">Descrição</label>
+              <input id="descricao" type="text" />
+              <span className="mr06rem">Máx.: 50 caracteres</span>
+            </div>
+          </form>
         </div>
       );
     case 2:
       return (
         <div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="taxaEntrega">Taxa de entrega</label>
-            <input id="taxaEntrega" type="text" />
-          </div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="tempoEntrega">Tempo estimado de entrega</label>
-            <input id="tempoEntrega" type="time" />
-          </div>
-          <div className="flexColunm mb1rem">
-            <label htmlFor="valorPedido">Valor mínimo do pedido</label>
-            <input id="valorPedido" type="money" />
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="taxaEntrega">Taxa de entrega</label>
+              <input id="taxaEntrega" type="number" />
+            </div>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="tempoEntrega">Tempo estimado de entrega</label>
+              <input id="tempoEntrega" type="time" />
+            </div>
+            <div className="flexColunm mb1rem posRelative">
+              <label htmlFor="valorPedido">Valor mínimo do pedido</label>
+              <input id="valorPedido" type="money" />
+            </div>
+          </form>
         </div>
       );
     default:
