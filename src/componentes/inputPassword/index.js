@@ -10,9 +10,8 @@ export default function InputPassword({
 
   return (
     <div className="flexColunm mb1rem inputPassword">
-      <label htmlFor="senha">Senha</label>
+      <label>{label}</label>
       <input
-        id="senha"
         type={mostrarSenha ? 'text' : 'password'}
         value={value}
         onChange={(e) => setValue(e.target.value)}
