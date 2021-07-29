@@ -73,28 +73,31 @@ function getStepContent(stepIndex) {
 
 export default function Cadastrar() {
   return (
-    <div className="conteinerForm">
-      <form className="formCadastro ">
-        <div className="espacoTopo" />
-        <div className="flexRow">
-          <div />
+    <div className="bodyCadastrar">
 
-          <div className="ml2rem" />
-          <CustomStepper
-            title={(<h1>Cadastro</h1>)}
-            getStepContent={getStepContent}
-          />
-        </div>
+      <div className="conteinerFormCadastro">
+        <form className="formCadastro ">
+          <div className="espacoTopo" />
+          <div className="flexRow">
+            <div />
 
-        <div className=" flexColunm mb1rem mt2rem">
-
-          <div>
-            <span className="mr06rem">Já tem uma conta?</span>
-            <Link to="/login">Login</Link>
+            <div className="ml2rem" />
+            <CustomStepper
+              title={(<h1>Cadastro</h1>)}
+              getStepContent={getStepContent}
+            />
           </div>
-        </div>
-      </form>
-      <img src={illustrationCenter} alt="vetor" />
+
+          <div className=" flexColunm mb1rem mt2rem">
+
+            <div>
+              <span className="mr06rem">Já tem uma conta?</span>
+              <Link to="/login">Login</Link>
+            </div>
+          </div>
+        </form>
+        <img className="vetorCadastro" src={illustrationCenter} alt="vetor" />
+      </div>
     </div>
   );
 }
