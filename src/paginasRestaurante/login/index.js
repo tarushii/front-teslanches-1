@@ -2,6 +2,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 
@@ -23,7 +24,7 @@ export default function Login() {
             <InputPassword label="Senha" value={password} setValue={setPassword} />
 
             <div className="flexRow contentCenter mt1rem mb1rem">
-              <button className="btLaranja" type="button"> Entrar </button>
+              <button className="btLaranja" type="button" onClick={() => toast.error('1 2 3 testando!')}> Entrar </button>
             </div>
             <div className="flexRow contentCenter mt2rem">
               <span className="mr06rem">Ainda não tem uma conta?</span>
