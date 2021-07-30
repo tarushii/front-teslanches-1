@@ -1,22 +1,39 @@
+/* eslint-disable import/no-cycle */
 import './styles.css';
 import '../../styles/global.css';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
+// import { AuthContext } from '../../routes';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaLogin)
   });
   const [password, setPassword] = useState('');
+  // const { logar } = useContext(AuthContext);
+  const history = useHistory();
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
+    // const resposta = await fetch('www', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   }
+    // });
+
+    // const { token } = await resposta.json();
+
+    // logar(token);
+    history.push('/produtos');
     console.log(data);
   }
+
   return (
     <div className="bodyLogin">
       <div className="conteinerFormLogin">
