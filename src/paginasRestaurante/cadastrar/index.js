@@ -19,45 +19,24 @@ function getStepContent(stepIndex) {
     case 0:
       return (
         <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flexColunm mb1rem posRelative">
-              <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
-              <input id="nomeUsuarioRest" type="text" {...register('nome', { required: true })} />
-
-              { errors.email && (
-              <span style={{ color: 'red', position: 'absolute', top: '85px' }}>
-                o campo nome é obrigatorio
-              </span>
-              ) }
-            </div>
-            <div className="flexColunm mb1rem posRelative">
-              <label htmlFor="email">Email</label>
-              <input id="email" type="text" {...register('email', { required: true })} />
-
-              { errors.email && (
-              <span style={{ color: 'red', position: 'absolute', top: '85px' }}>
-                o campo email é obrigatorio
-              </span>
-              ) }
-            </div>
-
-            <InputPassword
-              id="senha"
-              label="Senha"
-              register={() => register('senha', { required: true, minLength: 8 })}
-              value={password}
-              setValue={setPassword}
-            />
-
-            <InputPassword
-              id="senhaConfere"
-              label="Repita a senha"
-              register={() => register('senhaConfere', { required: true })}
-              value={conferePassword}
-              setValue={setConferePassword}
-            />
-
-          </form>
+          <div className="flexColunm mb1rem posRelative">
+            <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
+            <input id="nomeUsuarioRest" type="text" />
+          </div>
+          <InputPassword
+            id="senha"
+            label="Senha"
+            register={() => register('senha', { required: true, minLength: 8 })}
+            value={password}
+            setValue={setPassword}
+          />
+          <InputPassword
+            id="senhaConfere"
+            label="Repita a senha"
+            register={() => register('senhaConfere', { required: true })}
+            value={conferePassword}
+            setValue={setConferePassword}
+          />
         </div>
       );
     case 1:
