@@ -1,0 +1,64 @@
+.bodyProdutos{
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  height: 100vh;
+  z-index: -1;
+}
+
+.conteinerTopo{
+  background-image: url('../../assets/bg-pizzaria.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 85,125rem;
+  height: 15.474rem;
+  border-radius: 0px 0px 14.509rem 0px;
+}
+.nomeRestaurante{
+  margin-left: 20rem;
+  margin-top: 9.188rem;
+  color: #ffffff;
+}
+
+.logout{
+  margin-top: 7.688rem;
+  margin-right: 13.5rem;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  font-size:1rem;
+  line-height: 170%;
+}
+
+.avatarRestaurante{
+  position: absolute;
+  top: 10.125rem;
+  left: 7.125rem;
+  background: url('../../assets/pizarria.png');
+  background-position: center;
+  background-size: contain;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: #ffffff .375rem solid;
+}
+
+span{
+  margin-top: 14.125rem;
+  font-size: 0.75rem;
+  color: var(--cinza);
+}
+
+.vetorProdutos{
+  position: absolute;
+  width: 72.278rem;
+  height: 33.116rem;
+  left: 0rem;
+  top: -5.529rem;
+}
+
+.conteudoProdutos{
+  width: 100wh;
+}
