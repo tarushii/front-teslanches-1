@@ -44,7 +44,7 @@ async function postEstadoProduto(point,token){
     return { dados, ok: resposta.ok };
 }
 
-}
+
 
 async function get(point, token) {
     const resposta = await fetch(BASE_URL + point, {
