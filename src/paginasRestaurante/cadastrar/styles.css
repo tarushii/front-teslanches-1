@@ -31,11 +31,8 @@ body{
   z-index: 2;
 }
 
-h1 {
-  font-size: 32px;
-}
-
 label {
+  padding: 0;
   font-size: 14px;
 }
 
