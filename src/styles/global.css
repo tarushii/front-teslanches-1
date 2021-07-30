@@ -1,0 +1,37 @@
+@import './alignments.css';
+@import './buttons.css';
+@import './texts.css';
+@import './margins.css';
+@import './paddings.css';
+@import './forms.css';
+@import './colors.css';
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Baloo 2','Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+a{
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--azulEscuro);
+}
+
+h1{
+  font-family: 'Baloo 2';
+  font-weight: bold;
+  font-size: 48px;
+  color: var(--laranjaEscuro);
+}
+
+input{
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--cinzaEscuro);
+}

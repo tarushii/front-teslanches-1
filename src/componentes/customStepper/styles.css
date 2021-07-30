@@ -1,0 +1,17 @@
+span .MuiStepConnector-line .MuiStepConnector-lineHorizontal {
+  width: 0px !important;
+}
+
+div.MuiStepConnector-root.MuiStepConnector-horizontal.MuiStepConnector-alternativeLabel.Mui-disabled {
+  width: 0px !important;
+  height: 0px !important;
+}
+
+div.MuiPaper-root.MuiStepper-root.MuiStepper-horizontal.MuiStepper-alternativeLabel.MuiPaper-elevation0 {
+  width: 0px !important;
+  height: 0px !important;
+}
+
+.MuiStepConnector-alternativeLabel{
+  top: 16px !important;
+}
