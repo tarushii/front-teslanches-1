@@ -1,12 +1,11 @@
 import './styles.css';
 import '../../styles/global.css';
-import { Link } from 'react-router-dom';
 import fotoProduto from '../../assets/foto-produto.svg';
 import CustomSwitch from '../../componentes/customSwitch';
 
-export default function produtosNovo() {
+export default function ProdutosNovo() {
   return (
-    <div className="bodyProdutosDialog pa2rem ">
+    <div className="flexColumn">
       <div className="formProdutos flexRow gap3rem ml2rem">
         <form autoComplete="off">
           <h1>Novo produto</h1>
@@ -42,11 +41,8 @@ export default function produtosNovo() {
 
         </div>
       </div>
-
-      <div className="acoesProdutos flexRow contentEnd contentCenter gap2rem itemsCenter">
-        <Link to="/protudos">Cancelar</Link>
-        <button className="btLaranja" type="submit">Adicionar produto novo</button>
-      </div>
+      <div className="acoesProdutos flexRow contentEnd contentCenter gap2rem itemsCenter" />
     </div>
+
   );
 }
