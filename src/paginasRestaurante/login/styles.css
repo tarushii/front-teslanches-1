@@ -5,7 +5,6 @@
   background-size: cover;
   overflow: hidden;
   height: 100vh;
-  z-index: -1;
 }
 
 .conteinerFormLogin{
@@ -22,10 +21,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 488px;
-  height: 612.7px;
-  left: 320px;
-  top: 169px;
+  padding: 0.5rem 3rem;
+  left: 18rem;
   background: #FFFFFF;
   border-radius: 16px;
   box-shadow: 0px 4px 16px rgba(50, 50, 50, 0.4);

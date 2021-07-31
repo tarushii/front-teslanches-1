@@ -1,8 +1,8 @@
 import {
   BrowserRouter as Router, Route, Switch, Redirect
 } from 'react-router-dom';
-import React, { createContext, useContext, useState } from 'react';
-
+import { AuthProvider } from './context/AuthContext';
+import useAuth from './hooks/useAuth';
 import Login from './paginasRestaurante/login';
 import Cadastrar from './paginasRestaurante/cadastrar';
 import produtos from './paginasRestaurante/produtos';
@@ -20,6 +20,15 @@ function RotasProtegidas(props) {
   );
 }
 
+function RotasProtegidas(props) {
+  const { token } = useAuth();
+
+  return (
+    <Route
+      render={() => (token ? props.children : <Redirect to="/" />)}
+    />
+  );
+}
 export default function Routes() {
   const [token, setToken] = useState('');
 
@@ -32,15 +41,16 @@ export default function Routes() {
   }
 
   return (
-    <AuthContext.Provider value={{ token, logar, deslogar }}>
+
+    <AuthProvider>
       <Router>
         <Switch>
+          <Route path="/" exact component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/cadastrar" component={Cadastrar} />
-          <Route path="/produtos" exact component={produtos} />
           <RotasProtegidas />
         </Switch>
       </Router>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }

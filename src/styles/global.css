@@ -25,13 +25,14 @@ a{
 h1{
   font-family: 'Baloo 2';
   font-weight: bold;
-  font-size: 48px;
+  font-size: 32px;
   color: var(--laranjaEscuro);
 }
 
-input{
+input, textarea{
   margin-bottom: 24px;
-  font-size: 20px;
+  font-family: 'Baloo 2';
+  font-size: 1rem;
   font-weight: bold;
   color: var(--cinzaEscuro);
 }

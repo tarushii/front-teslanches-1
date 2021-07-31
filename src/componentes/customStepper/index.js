@@ -41,6 +41,17 @@ export default function CustomizedSteppers({ getStepContent, title }) {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
+  if (activeStep === steps.length) {
+    // Adicionar toda a requisição aqui.
+    // Não é uma maneira efetiva de resolver o problema,
+    // Mas vai funcionar por agora.
+    // Em resumo, aqui faremos o envio para o DB e redirecionaremos
+    // para uma página de sucesso se der certo. Se não, retomamos 1
+    // step e o programa não vai quebrar.
+    window.location.href = 'http://localhost:3000/';
+  }
+
+  console.log(activeStep);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -78,7 +89,7 @@ export default function CustomizedSteppers({ getStepContent, title }) {
         ) : (
           <div>
             <Typography className={classes.instructions}>
-              { getStepContent(activeStep) }
+              {getStepContent(activeStep)}
             </Typography>
             <div className="flexRow contentCenter ">
               <button
