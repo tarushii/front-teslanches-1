@@ -60,5 +60,8 @@ span.conteudoProdutos{
 }
 
 .conteudoProdutos{
-  width: 100wh;
+ margin-top: 10rem;
+}
+button.conteudoProdutos{
+  cursor: pointer;
 }
