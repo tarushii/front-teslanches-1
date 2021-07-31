@@ -6,6 +6,7 @@ import React, { createContext, useContext, useState } from 'react';
 import Login from './paginasRestaurante/login';
 import Cadastrar from './paginasRestaurante/cadastrar';
 import produtos from './paginasRestaurante/produtos';
+import produtosNovo from './paginasRestaurante/produtosNovo';
 
 export const AuthContext = createContext();
 
@@ -37,6 +38,7 @@ export default function Routes() {
           <Route path="/login" component={Login} />
           <Route path="/cadastrar" component={Cadastrar} />
           <Route path="/produtos" exact component={produtos} />
+          <Route path="/produtos/novo" exact component={produtosNovo} />
           <RotasProtegidas />
         </Switch>
       </Router>
