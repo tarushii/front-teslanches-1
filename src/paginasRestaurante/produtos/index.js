@@ -1,19 +1,17 @@
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from '../../routes';
 import illustrationTop from '../../assets/illustration-top.svg';
+import CustomizedDialogs from '../../componentes/customDialog';
+import ProdutosNovo from '../produtosNovo';
 
 export default function produtos() {
-  const { deslogar } = useContext(AuthContext);
-
   return (
     <div className="bodyProdutos">
       <div className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
           <h1 className="nomeRestaurante">Pizza Pizzaria & Delivery</h1>
-          <Link className="logout" to="/login" onClick={deslogar}>Logout</Link>
+          <Link className="logout" to="/login">Logout</Link>
         </div>
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
@@ -27,7 +25,11 @@ export default function produtos() {
           <br />
           Gostaria de adicionar um novo produto?
         </span>
-        <button className="btLaranja mt2rem" type="submit">Adicionar produtos</button>
+        <CustomizedDialogs
+          btAbrirMensagem={<> Adicionar produtos</>}
+          btMensagem={<>Adicionar produto novo</>}
+          conteudo={<ProdutosNovo />}
+        />
       </div>
     </div>
   );

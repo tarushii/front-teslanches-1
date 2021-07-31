@@ -38,7 +38,6 @@ export default function Routes() {
           <Route path="/login" component={Login} />
           <Route path="/cadastrar" component={Cadastrar} />
           <Route path="/produtos" exact component={produtos} />
-          <Route path="/produtos/novo" exact component={produtosNovo} />
           <RotasProtegidas />
         </Switch>
       </Router>
