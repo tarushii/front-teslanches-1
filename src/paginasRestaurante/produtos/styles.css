@@ -2,7 +2,7 @@
   background-color: #ffffff;
   background-repeat: no-repeat;
   background-size: cover;
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100vh;
   z-index: -1;
 }
@@ -45,7 +45,7 @@
   border: #ffffff .375rem solid;
 }
 
-span.conteudoProdutos{
+span.addProdutos{
   margin-top: 14.125rem;
   font-size: 0.75rem;
   color: var(--cinza);
@@ -59,9 +59,27 @@ span.conteudoProdutos{
   top: -5.529rem;
 }
 
-.conteudoProdutos{
+.addProdutos{
  margin-top: 10rem;
 }
-button.conteudoProdutos{
+button.addProdutos{
   cursor: pointer;
+}
+
+.conteinerCardapio{
+  display: grid;
+  grid-template-columns: repeat(2, 37.5rem);
+  grid-auto-rows: 15rem ;
+  gap: 3rem;
+  max-width: 80rem;
+}
+
+.contemBotao{
+  width: 100vh;
+  justify-content: flex-end;
+  margin-bottom: 6.5625rem;
+}
+
+.none{
+  display: none;
 }
