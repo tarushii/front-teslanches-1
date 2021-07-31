@@ -19,6 +19,14 @@
   align-items: center;
 }
 
+.itemsStart{
+  align-items: flex-start;
+}
+
+.itemsEnd{
+  align-items: flex-end;
+}
+
 .contentStart{
   justify-content: flex-start;
 }
@@ -41,4 +49,24 @@
 
 .posRelative{
   position: relative;
+}
+
+.gap3rem{
+  gap: 3rem;
+}
+
+.gap2rem{
+  gap: 2rem;
+}
+
+.gap1rem{
+  gap: 1rem;
+}
+
+.gap06rem{
+  gap: 0.6rem;
+}
+
+.gap03rem{
+  gap: 0.3rem;
 }

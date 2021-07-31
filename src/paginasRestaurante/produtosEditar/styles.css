@@ -1,0 +1,39 @@
+.bodyProdutosDialog{
+width: 1008px;
+height: 798.6px;
+background: #FFFFFF;
+box-shadow: 0px 4px 16px rgba(50, 50, 50, 0.4);
+border-radius: 16px;
+border: solid .0625rem red;
+box-sizing: border-box;
+}
+
+.fotoProdutosEditar{
+  margin-top: 8.6rem;
+  width: 24rem;
+  height: 24rem;
+}
+
+.acoesProdutos{
+  margin-right: 6.5rem;
+  margin-top: 3.0625rem;
+}
+
+input#valor{
+  width: 11rem;
+}
+
+.inputFile{
+  position: absolute;
+  bottom: -1.61rem;
+  cursor: pointer;
+}
+
+input#file{
+  all: unset;
+  width: 5rem;
+  cursor: pointer;
+  height: 24rem;
+  width: 24rem;
+  border-radius: 16px;
+}

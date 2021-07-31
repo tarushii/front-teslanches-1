@@ -27,6 +27,8 @@
         "react/jsx-props-no-spreading": "off",
         "react/destructuring-assignment":"off",
         "no-console":"off",
-        "no-unused-vars":"warn"
+        "no-unused-vars":"warn",
+        "import/no-cycle":"off",
+        "no-restricted-globals":"warn"
     }
 }

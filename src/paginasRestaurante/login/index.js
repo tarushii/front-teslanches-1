@@ -1,6 +1,6 @@
 import './styles.css';
 import '../../styles/global.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,10 +13,13 @@ export default function Login() {
     resolver: yupResolver(schemaLogin)
   });
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
+    history.push('/produtos');
     console.log(data);
   }
+
   return (
     <div className="bodyLogin">
       <div className="conteinerFormLogin">
