@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import './styles.css';
@@ -22,25 +21,29 @@ export default function CustomCard({
   const classes = useStyles();
 
   return (
-    <Card className="card flexRow gap1rem pa06rem">
-      <div className={classes.details}>
+    <card className="card flexRow gap1rem contentBetween itemsCenter">
+      <div className="flexColumn gap2rem cardConteudo">
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {nome}
+            <h1>{nome}</h1>
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            {descricao}
+            <p>{descricao}</p>
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            {valor}
+            <div className="valorBox">
+              <span>
+                R$
+                {valor}
+              </span>
+            </div>
           </Typography>
         </CardContent>
-
       </div>
-      <div>
-        <img src={imagem} alt={`foto de ${nome}`} />
+      <div className="flexRow mr1rem">
+        <img className="imgCard" src={imagem} alt={`foto de ${nome}`} />
       </div>
 
-    </Card>
+    </card>
   );
 }
