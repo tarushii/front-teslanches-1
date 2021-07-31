@@ -45,7 +45,7 @@
   border: #ffffff .375rem solid;
 }
 
-span{
+span.conteudoProdutos{
   margin-top: 14.125rem;
   font-size: 0.75rem;
   color: var(--cinza);
