@@ -7,17 +7,41 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
+import { postNaoAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaLogin)
   });
   const [password, setPassword] = useState('');
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
   const history = useHistory();
+  const { logar } = useAuth();
 
   async function onSubmit(data) {
-    history.push('/produtos');
-    console.log(data);
+    setCarregando(true);
+    setErro('');
+
+    try {
+      const { dados, ok } = await postNaoAutenticado('/login', data);
+      setCarregando(false);
+
+      if (!ok) {
+        setErro(dados);
+        console.log(erro);
+        return;
+      }
+
+      logar(dados.usuario, dados.token);
+
+      // history.push('/produtos');
+      console.log('Logou', dados);
+    } catch (error) {
+      setErro(`Erro:${error.message}`);
+    }
+    setCarregando(false);
   }
 
   return (
