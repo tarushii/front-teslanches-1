@@ -19,6 +19,14 @@
   align-items: center;
 }
 
+.itemsStart{
+  align-items: flex-start;
+}
+
+.itemsEnd{
+  align-items: flex-end;
+}
+
 .contentStart{
   justify-content: flex-start;
 }
