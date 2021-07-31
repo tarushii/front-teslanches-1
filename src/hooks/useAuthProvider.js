@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import { useState } from 'react';
 import { useLocalStorage } from 'react-use';
 
