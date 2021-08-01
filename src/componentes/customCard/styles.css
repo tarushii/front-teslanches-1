@@ -57,3 +57,22 @@
   text-transform: uppercase;
 }
 
+.buttomModal{
+  all:unset;
+  width: 37rem;
+  height: 14.89875rem;
+  border-radius: 1.5rem;
+}
+
+.btTransparente{
+  all: unset;
+  font-style: normal;
+  font-weight: 600;
+  font-size: .875rem;
+  line-height: 100%;
+  text-align: center;
+  color: #F21B1B;
+  width: 13.5rem;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+}
