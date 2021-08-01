@@ -6,13 +6,45 @@ import illustrationCenter from '../../assets/illustration-center.svg';
 import CustomStepper from '../../componentes/customStepper';
 import InputPassword from '../../componentes/inputPassword';
 
+const data = {
+  nome: null,
+  email: null,
+  senha: null,
+  restaurante: {
+    nome: null,
+    descricao: null,
+    idCategoria: null,
+    taxaEntrega: null,
+    tempoEntregaEmMinutos: null,
+    valorMinimoPedido: null
+  }
+};
+
 function getStepContent(stepIndex) {
   const [nome, setNome] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [conferePassword, setConferePassword] = useState('');
   const [nomeRestaurante, setNomeRestaurante] = useState('');
   const [categoria, setCategoria] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [taxa, setTaxa] = useState('');
+  const [tempo, setTempo] = useState('');
+  const [valorMinimo, setValorMinimo] = useState('');
+
+  data.nome = nome;
+  data.senha = password;
+  data.email = email;
+  data.restaurante.nome = nomeRestaurante;
+  data.restaurante.descricao = descricao;
+  data.restaurante.idCategoria = categoria;
+  data.restaurante.taxaEntrega = taxa;
+  data.restaurante.tempoEntregaEmMinutos = tempo;
+  data.restaurante.valorMinimoPedido = valorMinimo;
+
+  // Sinto que se algum outro engenheiro ver essa "solução"
+  // eu nunca mais vou ter permissão para codificar na vida.
+  // TODO - Isso aqui tudo de novo.
 
   switch (stepIndex) {
     case 0:
@@ -21,6 +53,10 @@ function getStepContent(stepIndex) {
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
             <input id="nomeUsuarioRest" type="text" onChange={(e) => setNome(e.target.value)} />
+          </div>
+          <div className="flexColunm mb1rem posRelative">
+            <label htmlFor="emailRest">E-mail</label>
+            <input id="emailRest" type="email" onChange={(e) => setEmail(e.target.value)} />
           </div>
           <InputPassword
             id="senha"
@@ -59,15 +95,15 @@ function getStepContent(stepIndex) {
         <div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="taxaEntrega">Taxa de entrega</label>
-            <input id="taxaEntrega" type="number" />
+            <input id="taxaEntrega" type="number" onChange={(e) => setTaxa(e.target.value)} />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="tempoEntrega">Tempo estimado de entrega</label>
-            <input id="tempoEntrega" type="time" />
+            <input id="tempoEntrega" type="time" onChange={(e) => setTempo(e.target.value)} />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="valorPedido">Valor mínimo do pedido</label>
-            <input id="valorPedido" type="money" />
+            <input id="valorPedido" type="money" onChange={(e) => setValorMinimo(e.target.value)} />
           </div>
         </div>
       );
@@ -89,9 +125,10 @@ export default function Cadastrar() {
             <CustomStepper
               title={(<h1>Cadastro</h1>)}
               getStepContent={getStepContent}
+              data={data}
             />
           </div>
-          <div className=" flexColunm mb1rem mt2rem">
+          <div className=" flexColunm mb1rem">
             <div>
               <span className="mr06rem">Já tem uma conta?</span>
               <Link to="/login">Login</Link>

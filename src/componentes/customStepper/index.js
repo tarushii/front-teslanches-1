@@ -36,18 +36,15 @@ function getSteps() {
   return ['', '', ''];
 }
 
-export default function CustomizedSteppers({ getStepContent, title }) {
+export default function CustomStepper({ getStepContent, title, data }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
+  console.log(data);
+
   if (activeStep === steps.length) {
-    // Adicionar toda a requisição aqui.
-    // Não é uma maneira efetiva de resolver o problema,
-    // Mas vai funcionar por agora.
-    // Em resumo, aqui faremos o envio para o DB e redirecionaremos
-    // para uma página de sucesso se der certo. Se não, retomamos 1
-    // step e o programa não vai quebrar.
+    alert('Usuário registrado com sucesso!');
     window.location.href = 'http://localhost:3000/';
   }
 
