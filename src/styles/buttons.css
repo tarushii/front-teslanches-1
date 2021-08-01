@@ -1,17 +1,17 @@
 .btLaranja{
   all: unset;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background-color: var(--laranjaEscuro);
-  padding: 8px 40px;
-  max-height: 40px;
-  font-size: 14px;
+  padding: .5rem 2.5rem;
+  max-height: 2.5rem;
+  font-size: .875rem;
   color: var(--branco);
   cursor: pointer;
 }
 
 .btAzul{
   all: unset;
-  font-size: 14px;
+  font-size: .875rem;
   color: var(--azulEscuro);
   cursor: pointer;
 }

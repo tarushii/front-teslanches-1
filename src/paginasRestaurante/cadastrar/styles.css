@@ -33,23 +33,23 @@ body{
 
 label {
   padding: 0;
-  font-size: 14px;
+  font-size: .875rem;
 }
 
 span{
-  font-size: 12px;
+  font-size: .75rem;
   color: var(--cinza);
 }
 
 .espacoTopo{
-  height: 230px;
+  height: 14.375rem;
 }
 
 .vetorCadastro{
   position: absolute;
   z-index: 1;
-  width: 802.75px;
-  height: 787px;
-  left: 704px;
-  top: 466px;
+  width: 50.171875rem;
+  height: 49.1875rem;
+  left: 44rem;
+  top: 29.125rem;
 }

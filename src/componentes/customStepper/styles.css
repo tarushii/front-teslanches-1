@@ -13,5 +13,5 @@ div.MuiPaper-root.MuiStepper-root.MuiStepper-horizontal.MuiStepper-alternativeLa
 }
 
 .MuiStepConnector-alternativeLabel{
-  top: 16px !important;
+  top: 1rem !important;
 }
