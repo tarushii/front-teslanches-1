@@ -42,7 +42,7 @@ export default function CustomizedDialogs(props) {
 
         </DialogContent>
         <DialogActions>
-          <Link to="/protudos">Cancelar</Link>
+          <Link to="/produtos">Cancelar</Link>
           <button className="btLaranja mr2rem mb2rem mt2rem" type="submit" onClick={handleClose} color="primary">
             {props.btMensagem}
           </button>
