@@ -33,9 +33,23 @@ const testeProdutoLista = [
     valor: 1234,
     imagem: imgPizza
   },
+  {
+    nome: 'teste4',
+    descricao: 'blablabla',
+    valor: 1234,
+    imagem: imgPizza
+  },
+  {
+    nome: 'teste5',
+    descricao: 'blablabla',
+    valor: 1234,
+    imagem: imgPizza
+  },
 ];
+
 export default function produtos() {
   const [cardapio, setCardapio] = useState([]);
+
   useEffect(() => {
     // async function carregarCardapio() {
     //   const resposta = await fetch(testeProdutoLista);
@@ -58,7 +72,7 @@ export default function produtos() {
       </div>
 
       <div className={`${cardapio.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
-        <div className="contemBotao flexRow">
+        <div className="contemBotao flexRow itemsCenter">
           <CustomizedDialogs
             btAbrirMensagem={<> Adicionar produto ao cardápio</>}
             btMensagem={<>Adicionar produto novo</>}
@@ -68,7 +82,7 @@ export default function produtos() {
 
         <div className="conteinerCardapio flexRow gap2rem">
           { cardapio.map((produto) => (
-            <div className="cardProduto" item key={produto.id}>
+            <div style={{ cursor: 'pointer' }} item key={produto.id}>
               <CustomCard {...produto} />
             </div>
           ))}
@@ -87,6 +101,7 @@ export default function produtos() {
           conteudo={<ProdutosNovo />}
         />
       </div>
+
     </div>
   );
 }
