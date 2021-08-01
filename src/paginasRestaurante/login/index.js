@@ -36,13 +36,14 @@ export default function Login() {
 
       logar(dados.usuario, dados.token);
 
-      // history.push('/produtos');
+      history.push('/produtos');
       console.log('Logou', dados);
     } catch (error) {
       setErro(`Erro:${error.message}`);
     }
     setCarregando(false);
   }
+
   return (
     <div className="bodyLogin">
       <div className="conteinerFormLogin">
