@@ -5,6 +5,7 @@ import { useState } from 'react';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import CustomStepper from '../../componentes/customStepper';
 import InputPassword from '../../componentes/inputPassword';
+import InputSelect from '../../componentes/customCategoria';
 
 function getStepContent(stepIndex) {
   const [nome, setNome] = useState('');
@@ -43,10 +44,9 @@ function getStepContent(stepIndex) {
             <label htmlFor="nomeRestaurante">Nome do restaurante</label>
             <input id="nomeRestaurante" type="text" onChange={(e) => setNomeRestaurante(e.target.value)} />
           </div>
-          <div className="flexColunm mb1rem posRelative">
-            <label htmlFor="categoria">Categoria do restaurante</label>
-            <input id="categoria" type="select" placeholder="Escolha uma categoria" onChange={(e) => setCategoria(e.target.value)} />
-          </div>
+
+          <InputSelect setCategoria={setCategoria} />
+
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="descricao">Descrição</label>
             <textarea id="descricao" onChange={(e) => setDescricao(e.target.value)} />
