@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState } from 'react';
+
 import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -9,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { useStyles, useColorlibStepIconStyles } from './styles';
 import './styles.css';
 import '../../styles/global.css';
+import { postNaoAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
@@ -40,6 +43,25 @@ export default function CustomStepper({ getStepContent, title, data }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
+
+  async function onSubmit(data) {
+    try {
+      const { dados, ok } = await postNaoAutenticado('/usuarios', data);
+      setCarregando(false);
+
+      if (!ok) {
+        setErro(dados);
+        return;
+      }
+
+      history.push('/');
+    } catch (error) {
+      setErro(error.message);
+      setCarregando(false);
+    }
+  }
 
   console.log(data);
 
