@@ -7,9 +7,8 @@ import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
 import CustomCard from '../../componentes/customCard';
-import imgPizza from '../../assets/pizza.png';
 import useAuth from '../../hooks/useAuth';
-import { get } from '../../services/apiClient';
+import { get, del } from '../../services/apiClient';
 
 export default function produtos() {
   const [cardapio, setCardapio] = useState([]);
@@ -33,6 +32,17 @@ export default function produtos() {
       console.log(error.message);
     }
   }
+
+  async function removerProduto(id) {
+    try {
+      const dados = await del(`produtos/${id}`);
+
+      setProd(dados);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   console.log(prod);
   return (
     <div className="bodyProdutos">
@@ -59,7 +69,12 @@ export default function produtos() {
         <div className="conteinerCardapio flexRow gap2rem">
           { prod.map((produto) => (
             <div style={{ cursor: 'pointer' }} item key={produto.id}>
-              <CustomCard nome={produto.nome} valor={produto.preco} descricao={produto.descricao} />
+              <CustomCard
+                nome={produto.nome}
+                valor={produto.preco}
+                descricao={produto.descricao}
+                removerProduto={removerProduto}
+              />
             </div>
           ))}
         </div>
