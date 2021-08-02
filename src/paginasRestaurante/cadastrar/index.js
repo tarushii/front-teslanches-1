@@ -1,6 +1,7 @@
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import CustomStepper from '../../componentes/customStepper';
@@ -22,6 +23,7 @@ const data = {
 };
 
 function getStepContent(stepIndex) {
+  const { register } = useForm();
   const [nome, setNome] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -62,12 +64,14 @@ function getStepContent(stepIndex) {
           <InputPassword
             id="senha"
             label="Senha"
+            register={() => register('senha', { required: true, minLength: 8 })}
             value={password}
             setValue={setPassword}
           />
           <InputPassword
             id="senhaConfere"
             label="Repita a senha"
+            register={() => register('senha', { required: true, minLength: 8 })}
             value={conferePassword}
             setValue={setConferePassword}
           />
