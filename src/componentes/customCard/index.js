@@ -59,7 +59,7 @@ export default function CustomCard(props) {
         </div>
         {showModal ? (
           <CustomModal className="botoesModal flexColunm itemsCenter">
-            <button className="btTransparente" type="button">Excluir produto do catálogo</button>
+            <button className="btTransparente" type="button" onClick={props.removerProduto}>Excluir produto do catálogo</button>
             {' '}
             <CustomizedDialogs
               btAbrirMensagem={<> Editar produto </>}
