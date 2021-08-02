@@ -43,7 +43,7 @@ function getStepContent(stepIndex) {
   data.restaurante.valorMinimoPedido = valorMinimo;
 
   // Sinto que se algum outro engenheiro ver essa "solução"
-  // eu nunca mais vou ter permissão para codificar na vida.
+  // eu nunca mais terei permissão para codificar na vida.
   // TODO - Isso aqui tudo de novo.
 
   switch (stepIndex) {
@@ -52,11 +52,11 @@ function getStepContent(stepIndex) {
         <div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="nomeUsuarioRest">Nome de usuário</label>
-            <input id="nomeUsuarioRest" type="text" onChange={(e) => setNome(e.target.value)} />
+            <input id="nomeUsuarioRest" type="text" onChange={(e) => setNome(e.target.value)} required />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="emailRest">E-mail</label>
-            <input id="emailRest" type="email" onChange={(e) => setEmail(e.target.value)} />
+            <input id="emailRest" type="email" onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <InputPassword
             id="senha"
@@ -77,15 +77,15 @@ function getStepContent(stepIndex) {
         <div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="nomeRestaurante">Nome do restaurante</label>
-            <input id="nomeRestaurante" type="text" onChange={(e) => setNomeRestaurante(e.target.value)} />
+            <input id="nomeRestaurante" type="text" onChange={(e) => setNomeRestaurante(e.target.value)} required />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="categoria">Categoria do restaurante</label>
-            <input id="categoria" type="select" placeholder="Escolha uma categoria" onChange={(e) => setCategoria(e.target.value)} />
+            <input id="categoria" type="select" placeholder="Escolha uma categoria" onChange={(e) => setCategoria(e.target.value)} required />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="descricao">Descrição</label>
-            <textarea id="descricao" onChange={(e) => setDescricao(e.target.value)} />
+            <textarea id="descricao" onChange={(e) => setDescricao(e.target.value)} required />
             <span className="mr06rem">Máx.: 50 caracteres</span>
           </div>
         </div>
@@ -95,15 +95,15 @@ function getStepContent(stepIndex) {
         <div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="taxaEntrega">Taxa de entrega</label>
-            <input id="taxaEntrega" type="number" onChange={(e) => setTaxa(e.target.value)} />
+            <input id="taxaEntrega" type="number" onChange={(e) => setTaxa(e.target.value)} required />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="tempoEntrega">Tempo estimado de entrega</label>
-            <input id="tempoEntrega" type="time" onChange={(e) => setTempo(e.target.value)} />
+            <input id="tempoEntrega" type="time" onChange={(e) => setTempo(e.target.value)} required />
           </div>
           <div className="flexColunm mb1rem posRelative">
             <label htmlFor="valorPedido">Valor mínimo do pedido</label>
-            <input id="valorPedido" type="money" onChange={(e) => setValorMinimo(e.target.value)} />
+            <input id="valorPedido" type="money" onChange={(e) => setValorMinimo(e.target.value)} required />
           </div>
         </div>
       );
