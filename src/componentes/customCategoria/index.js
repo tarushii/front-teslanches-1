@@ -2,10 +2,17 @@ import './styles.css';
 
 const categorias = [
   'Escolha uma categoria',
-  'chines',
-  'japones',
-  'mineira',
-  'italiana'
+  'Árabe',
+  'Brasileira',
+  'Carnes',
+  'Chinesa',
+  'Diversos',
+  'Italiana',
+  'Japonesa',
+  'Lanches',
+  'Massas',
+  'Mexicano',
+  'Pizzas'
 ];
 
 export default function InputSelect({ setCategoria }) {
