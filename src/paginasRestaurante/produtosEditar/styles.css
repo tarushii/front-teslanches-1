@@ -1,14 +1,15 @@
 .bodyProdutosDialog{
-width: 1008px;
-height: 798.6px;
+width: 63rem;
+height: 49.9125rem;
 background: #FFFFFF;
-box-shadow: 0px 4px 16px rgba(50, 50, 50, 0.4);
-border-radius: 16px;
+box-shadow: 0px .25rem 1rem rgba(50, 50, 50, 0.4);
+border-radius: 1rem;
 border: solid .0625rem red;
 box-sizing: border-box;
 }
 
 .fotoProdutosEditar{
+  position: relative;
   margin-top: 8.6rem;
   width: 24rem;
   height: 24rem;
@@ -26,14 +27,50 @@ input#valor{
 .inputFile{
   position: absolute;
   bottom: -1.61rem;
-  cursor: pointer;
 }
 
-input#file{
+input#fileEdit{
+  text-decoration: unset;
   all: unset;
-  width: 5rem;
   cursor: pointer;
   height: 24rem;
   width: 24rem;
-  border-radius: 16px;
+  border-radius: 1rem;
+  display: none;
+}
+
+.fileEdit{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  cursor: pointer;  
+  border-radius: 1rem;
+  text-align: center;
+  margin-bottom: 0px;
+   z-index: 3;
+}
+
+.iconeUpload{
+  position: absolute;
+  top: 11rem;
+  left: 11rem;
+  z-index: 2;
+}
+
+.labelIconeUpload{
+    position: absolute;
+  top: 15rem;
+  left: 6rem;
+  z-index: 3;
+  width: 12.8125rem;
+  height: 2.625rem;
+  font-style: normal;
+  font-weight: 600;
+  font-size: .875rem;
+  line-height: 150%;
+  text-align: center;
+  color: #FFFFFF;
+   z-index: 2;
 }
