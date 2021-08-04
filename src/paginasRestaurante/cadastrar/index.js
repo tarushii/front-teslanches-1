@@ -11,59 +11,99 @@ export default function Cadastrar() {
   const [dados, setDados] = useState({
 
   });
+  const [restaurante, setRestaurante] = useState({
 
-  const validar = function validaDadosDoStepper(etapa) {
+  });
+
+  const validar = function validaDadosDoStepper() {
     const validacao = {
       mensagem: 'Nenhum erro encontrado.',
       valido: true
     };
 
+    // Valida Etapa 1
     if (etapa === 1) {
-      const dados = {
+      const dadosE = {
         Nome: document.querySelector('.nome-usuario').value,
         Email: document.querySelector('.email-usuario').value,
         Senha: document.querySelector('.senha-usuario').value,
         Confirma: document.querySelector('.confirma-senha-usuario').value
       };
 
-      if (!dados.Nome || dados.Nome.trim() === '') {
+      if (!dadosE.Nome || dadosE.Nome.trim() === '') {
         validacao.mensagem = 'NOME é um campo obrigatório.';
         validacao.valido = false;
-      } else if (!dados.Email || dados.Email.trim() === '' || !dados.Email.includes('@') || !dados.Email.includes('.com')) {
+      } else if (!dadosE.Email || dadosE.Email.trim() === '' || !dadosE.Email.includes('@') || !dadosE.Email.includes('.com')) {
         validacao.mensagem = 'E-MAIL é um campo obrigatório.';
         validacao.valido = false;
-      } else if (!dados.Senha || dados.Senha.trim() === '') {
+      } else if (!dadosE.Senha || dadosE.Senha.trim() === '') {
         validacao.mensagem = 'SENHA é um campo obrigatório.';
         validacao.valido = false;
-      } else if (dados.Senha.length < 8) {
+      } else if (dadosE.Senha.length < 8) {
         validacao.mensagem = 'A senha deve conter, ao menos, 8 caracteres.';
         validacao.valido = false;
-      } else if (dados.Senha !== dados.Confirma) {
+      } else if (dadosE.Senha !== dadosE.Confirma) {
         validacao.mensagem = 'As senhas devem ser iguais.';
         validacao.valido = false;
       }
 
-      setDados({
-        nome: dados.Nome,
-        email: dados.Email,
-        senha: dados.Senha
-      });
+      if (validacao.valido) {
+        setDados({
+          nome: dadosE.Nome,
+          email: dadosE.Email,
+          senha: dadosE.Senha
+        });
+      }
 
-      console.log(dados);
       return (validacao);
     }
+    // Valida Etapa 2
     if (etapa === 2) {
+      const dadosE = {
+        NomeRestaurante: document.querySelector('.nome-restaurante').value,
+        Categoria: document.querySelector('.categoria-restaurante').value,
+        Descricao: document.querySelector('.descricao-restaurante').value
+      };
+
+      if (!dadosE.NomeRestaurante || dadosE.NomeRestaurante.trim() === '') {
+        validacao.mensagem = 'NOME DO RESTAURANTE é um campo obrigatório.';
+        validacao.valido = false;
+      } else if (!dadosE.Categoria || dadosE.Categoria.trim() === '') {
+        validacao.mensagem = 'CATEGORIA é um campo obrigatório.';
+        validacao.valido = false;
+      } else if (dadosE.Descricao.length > 50) {
+        validacao.mensagem = 'DESCRIÇÃO deve conter, no máximo, 50 caracteres.';
+        validacao.valido = false;
+      }
+
+      if (validacao.valido) {
+        setDados({
+          ...dados,
+          restaurante: {
+            nome: dadosE.NomeRestaurante,
+            idCategoria: dadosE.Categoria,
+            descricao: dadosE.Descricao
+          },
+        });
+      }
+
       return (validacao);
     }
+
+    // Valida Etapa 3
     if (etapa === 3) {
       return (validacao);
     }
+
+    // Confirma registro
     if (etapa === 4) {
       return (validacao);
     }
 
     return (validacao);
   };
+
+  console.log(dados);
 
   const recuar = function recuaStepper() {
     if (etapa === 1) {
@@ -128,7 +168,27 @@ export default function Cadastrar() {
       case 2:
         return (
           <>
-            <h1>Etapa 2</h1>
+            <p>Nome do Restaurante</p>
+            <input type="text" className="nome-restaurante" />
+            <br />
+            <p>Categoria</p>
+            <select className="categoria-restaurante" name="categoria" id="categorias" placeholder="Escolha uma categoria">
+              <option value="1">Diversos</option>
+              <option value="2">Lanches</option>
+              <option value="3">Carnes</option>
+              <option value="4">Massas</option>
+              <option value="5">Pizzas</option>
+              <option value="6">Japonesa</option>
+              <option value="7">Chinesa</option>
+              <option value="8">Mexicano</option>
+              <option value="9">Brasileira</option>
+              <option value="10">Italiana</option>
+              <option value="11">Árabe</option>
+            </select>
+            <br />
+            <br />
+            <p>Descrição</p>
+            <textarea className="descricao-restaurante" cols="33" rows="3" />
           </>
         );
       case 3:

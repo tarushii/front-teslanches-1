@@ -86,6 +86,11 @@
   opacity: 0.8;
 }
 
+.telaRegistro main {
+  color: var(--cinzaEscuro);
+  font-weight: bold;
+}
+
 .telaRegistro main div{
   display: flex;
   justify-content: center;
@@ -101,4 +106,3 @@
   text-align: center;
   color: red;
 }
-
