@@ -6,14 +6,22 @@ const stepper1 = document.querySelector('.item-1');
 const stepper2 = document.querySelector('.item-2');
 const stepper3 = document.querySelector('.item-3');
 
+const dadosDoUsuario = {
+  nome: null,
+  email: null,
+  senha: null,
+  restaurante: {
+    nome: null,
+    descricao: null,
+    idCategoria: null,
+    taxaEntrega: null,
+    tempoEntregaEmMinutos: null,
+    valorMinimoPedido: null,
+  }
+};
+
 export default function Cadastrar() {
   const [etapa, setEtapa] = useState(1);
-  const [dados, setDados] = useState({
-
-  });
-  const [restaurante, setRestaurante] = useState({
-
-  });
 
   const validar = function validaDadosDoStepper() {
     const validacao = {
@@ -48,11 +56,9 @@ export default function Cadastrar() {
       }
 
       if (validacao.valido) {
-        setDados({
-          nome: dadosE.Nome,
-          email: dadosE.Email,
-          senha: dadosE.Senha
-        });
+        dadosDoUsuario.nome = dadosE.Nome;
+        dadosDoUsuario.email = dadosE.Email;
+        dadosDoUsuario.senha = dadosE.Senha;
       }
 
       return (validacao);
@@ -71,20 +77,18 @@ export default function Cadastrar() {
       } else if (!dadosE.Categoria || dadosE.Categoria.trim() === '') {
         validacao.mensagem = 'CATEGORIA é um campo obrigatório.';
         validacao.valido = false;
+      } else if (!dadosE.Descricao || dadosE.Descricao.trim() === '') {
+        validacao.mensagem = 'DESCRIÇÃO é um campo obrigatório.';
+        validacao.valido = false;
       } else if (dadosE.Descricao.length > 50) {
         validacao.mensagem = 'DESCRIÇÃO deve conter, no máximo, 50 caracteres.';
         validacao.valido = false;
       }
 
       if (validacao.valido) {
-        setDados({
-          ...dados,
-          restaurante: {
-            nome: dadosE.NomeRestaurante,
-            idCategoria: dadosE.Categoria,
-            descricao: dadosE.Descricao
-          },
-        });
+        dadosDoUsuario.restaurante.nome = dadosE.NomeRestaurante;
+        dadosDoUsuario.restaurante.idCategoria = dadosE.Categoria;
+        dadosDoUsuario.restaurante.descricao = dadosE.Descricao;
       }
 
       return (validacao);
@@ -92,6 +96,29 @@ export default function Cadastrar() {
 
     // Valida Etapa 3
     if (etapa === 3) {
+      const dadosE = {
+        Taxa: document.querySelector('.taxa-restaurante').value,
+        Tempo: document.querySelector('.tempo-restaurante').value,
+        ValorMinimo: document.querySelector('.pedido-minimo-restaurante').value
+      };
+
+      if (!dadosE.Taxa || dadosE.Taxa.trim() === '') {
+        validacao.mensagem = 'TAXA DE ENTREGA é um campo obrigatório.';
+        validacao.valido = false;
+      } else if (!dadosE.Tempo || dadosE.Tempo.trim() === '') {
+        validacao.mensagem = 'TEMPO ESTIMADO DE ENTREGA é um campo obrigatório.';
+        validacao.valido = false;
+      } else if (!dadosE.ValorMinimo || dadosE.ValorMinimo.trim() === '') {
+        validacao.mensagem = 'VALOR MÍNIMO DO PEDIDO é um campo obrigatório.';
+        validacao.valido = false;
+      }
+
+      if (validacao.valido) {
+        dadosDoUsuario.restaurante.taxaEntrega = dadosE.Taxa * 100;
+        dadosDoUsuario.restaurante.tempoEntregaEmMinutos = Number(dadosE.Tempo);
+        dadosDoUsuario.restaurante.valorMinimoPedido = Number(dadosE.ValorMinimo * 100);
+      }
+
       return (validacao);
     }
 
@@ -103,7 +130,7 @@ export default function Cadastrar() {
     return (validacao);
   };
 
-  console.log(dados);
+  console.log(dadosDoUsuario);
 
   const recuar = function recuaStepper() {
     if (etapa === 1) {
@@ -194,7 +221,15 @@ export default function Cadastrar() {
       case 3:
         return (
           <>
-            <h1>Etapa 3</h1>
+            <p>Taxa de entrega</p>
+            <input type="number" min="0" className="taxa-restaurante" placeholder="R$" />
+            <br />
+            <p>Tempo estimado de entrega</p>
+            <input type="number" min="0" className="tempo-restaurante" placeholder="Minutos" />
+            <br />
+            <p>Valor mínimo do pedido</p>
+            <input type="number" min="0" className="pedido-minimo-restaurante" placeholder="R$" />
+            <br />
           </>
         );
       case 4:
