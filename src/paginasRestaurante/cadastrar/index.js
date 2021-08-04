@@ -1,10 +1,7 @@
 import { React, useState } from 'react';
 import './styles.css';
 import '../../styles/global.css';
-
-const stepper1 = document.querySelector('.item-1');
-const stepper2 = document.querySelector('.item-2');
-const stepper3 = document.querySelector('.item-3');
+import { postNaoAutenticado } from '../../services/apiClient';
 
 const dadosDoUsuario = {
   nome: null,
@@ -21,6 +18,9 @@ const dadosDoUsuario = {
 };
 
 export default function Cadastrar() {
+  const stepper1 = document.querySelector('.item-1');
+  const stepper2 = document.querySelector('.item-2');
+  const stepper3 = document.querySelector('.item-3');
   const [etapa, setEtapa] = useState(1);
 
   const validar = function validaDadosDoStepper() {
@@ -59,6 +59,10 @@ export default function Cadastrar() {
         dadosDoUsuario.nome = dadosE.Nome;
         dadosDoUsuario.email = dadosE.Email;
         dadosDoUsuario.senha = dadosE.Senha;
+        stepper1.classList.remove('stepper--atual');
+        stepper1.classList.add('stepper--finalizado');
+        stepper2.classList.remove('stepper--incompleto');
+        stepper2.classList.add('stepper--atual');
       }
 
       return (validacao);
@@ -89,6 +93,11 @@ export default function Cadastrar() {
         dadosDoUsuario.restaurante.nome = dadosE.NomeRestaurante;
         dadosDoUsuario.restaurante.idCategoria = dadosE.Categoria;
         dadosDoUsuario.restaurante.descricao = dadosE.Descricao;
+
+        stepper2.classList.remove('stepper--atual');
+        stepper2.classList.add('stepper--finalizado');
+        stepper3.classList.remove('stepper--incompleto');
+        stepper3.classList.add('stepper--atual');
       }
 
       return (validacao);
@@ -117,12 +126,15 @@ export default function Cadastrar() {
         dadosDoUsuario.restaurante.taxaEntrega = dadosE.Taxa * 100;
         dadosDoUsuario.restaurante.tempoEntregaEmMinutos = Number(dadosE.Tempo);
         dadosDoUsuario.restaurante.valorMinimoPedido = Number(dadosE.ValorMinimo * 100);
+
+        stepper3.classList.remove('stepper--atual');
+        stepper3.classList.add('stepper--finalizado');
       }
 
       return (validacao);
     }
 
-    // Confirma registro
+    // Confirma registro e retorna para login
     if (etapa === 4) {
       return (validacao);
     }
@@ -130,11 +142,31 @@ export default function Cadastrar() {
     return (validacao);
   };
 
-  console.log(dadosDoUsuario);
+  const enviarParaApi = async function fazCadastroDoUsuario() {
+    // postNaoAutenticado('/usuarios', dadosDoUsuario)
+  };
 
   const recuar = function recuaStepper() {
-    if (etapa === 1) {
-      return;
+    switch (etapa) {
+      default: return;
+      case 1:
+        return;
+      case 2:
+        stepper1.classList.remove('stepper--finalizado');
+        stepper1.classList.add('stepper--atual');
+        stepper2.classList.remove('stepper--atual');
+        stepper2.classList.add('stepper--incompleto');
+        break;
+      case 3:
+        stepper2.classList.remove('stepper--finalizado');
+        stepper2.classList.add('stepper--atual');
+        stepper3.classList.remove('stepper--atual');
+        stepper3.classList.add('stepper--incompleto');
+        break;
+      case 4:
+        stepper3.classList.remove('stepper--finalizado');
+        stepper3.classList.add('stepper--atual');
+        break;
     }
     setEtapa(etapa - 1);
   };
@@ -145,6 +177,10 @@ export default function Cadastrar() {
 
     if (dadosValidos.valido) {
       mensagemErro.innerHTML = '';
+
+      if (etapa === 3) {
+        enviarParaApi();
+      }
 
       setEtapa(etapa + 1);
     } else {
@@ -235,7 +271,7 @@ export default function Cadastrar() {
       case 4:
         return (
           <>
-            <h1>Finalizado</h1>
+            <h2>Usuário registrado com sucesso!</h2>
           </>
         );
     }
@@ -247,14 +283,14 @@ export default function Cadastrar() {
         <header>
           <h1>Cadastro</h1>
           <section className="formulario__stepper">
-            <div className="stepper--atual">
-              <p className="stepper__item item-1">1</p>
+            <div className="item-1 stepper--atual">
+              <p className="stepper__item">1</p>
             </div>
-            <div className="stepper--incompleto">
-              <p className="stepper__item item-2">2</p>
+            <div className="item-2 stepper--incompleto">
+              <p className="stepper__item">2</p>
             </div>
-            <div className="stepper--incompleto">
-              <p className="stepper__item item-3">3</p>
+            <div className="item-3 stepper--incompleto">
+              <p className="stepper__item">3</p>
             </div>
           </section>
         </header>
