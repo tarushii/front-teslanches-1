@@ -1,14 +1,17 @@
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
+import React, { useState } from 'react';
+
 import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { useStyles, useColorlibStepIconStyles } from './styles';
 import './styles.css';
 import '../../styles/global.css';
-import { useStyles, useColorlibStepIconStyles } from './styles';
+import { postNaoAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 
 function ColorlibStepIcon(props) {
   const classes = useColorlibStepIconStyles();
@@ -36,11 +39,65 @@ function getSteps() {
   return ['', '', ''];
 }
 
-export default function CustomizedSteppers({ getStepContent, title }) {
+export default function CustomStepper({ getStepContent, title, data }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
 
+  async function onSubmit(data) {
+    try {
+      const { dados, ok } = await postNaoAutenticado('/usuarios', data);
+      setCarregando(false);
+
+      if (!ok) {
+        setErro(dados);
+        return;
+      }
+
+      history.push('/');
+    } catch (error) {
+      setErro(error.message);
+      setCarregando(false);
+    }
+  }
+
+  console.log(data);
+
+  if (activeStep === steps.length) {
+    let invalido = false;
+    if (!data.nome || data.nome.trim() === '') {
+      alert('Nome é um campo obrigatório');
+      invalido = true;
+    } else if (!data.email || data.email.trim() === '') {
+      alert('Email é um campo obrigatório');
+      invalido = true;
+    } else if (!data.senha || data.senha.trim() === '') {
+      alert('Senha é um campo obrigatório');
+      invalido = true;
+    }
+
+    if (!data.restaurante.nome || data.restaurante.nome.trim() === '') {
+      alert('Nome do Restaurante é um campo obrigatório');
+      invalido = true;
+    } else if (!data.restaurante.descricao || data.restaurante.descricao.trim() === '') {
+      alert('Descrição é um campo obrigatório');
+      invalido = true;
+    } else if (!data.restaurante.idCategoria || data.restaurante.idCategoria.trim() === '') {
+      alert('Categoria é um campo obrigatório');
+      invalido = true;
+    }
+
+    if (invalido) {
+      window.location.href = 'http://localhost:3000/cadastrar';
+    } else {
+      alert('Usuário registrado com sucesso!');
+      window.location.href = 'http://localhost:3000/';
+    }
+  }
+
+  console.log(activeStep);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -78,7 +135,7 @@ export default function CustomizedSteppers({ getStepContent, title }) {
         ) : (
           <div>
             <Typography className={classes.instructions}>
-              { getStepContent(activeStep) }
+              {getStepContent(activeStep)}
             </Typography>
             <div className="flexRow contentCenter ">
               <button

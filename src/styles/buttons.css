@@ -1,17 +1,30 @@
 .btLaranja{
   all: unset;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background-color: var(--laranjaEscuro);
-  padding: 8px 40px;
-  max-height: 40px;
-  font-size: 14px;
+  padding: .5rem 2.5rem;
+  max-height: 2.5rem;
+  font-size: .875rem;
   color: var(--branco);
   cursor: pointer;
 }
 
 .btAzul{
   all: unset;
-  font-size: 14px;
+  font-size: .875rem;
   color: var(--azulEscuro);
   cursor: pointer;
+}
+
+.btTransparente{
+  all: unset;
+  font-style: normal;
+  font-weight: 600;
+  font-size: .875rem;
+  line-height: 100%;
+  text-align: center;
+  color: #F21B1B;
+  width: 13.5rem;
+  height: 2.5rem;
+  border-radius: 1.25rem;
 }

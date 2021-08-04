@@ -1,4 +1,4 @@
-input{
+.categoria{
   border: 1px solid #BEBEBE;
   box-sizing: border-box;
   border-radius: .44657rem;
@@ -6,11 +6,3 @@ input{
   Width:25.5rem;
   padding-left: 0.8rem;
 }
-
-label{
-  margin-bottom: 0.5rem;
-  padding-left: 1rem;
-  color: var(--cinzaEscuro);
-  font-weight: bold;
-}
-

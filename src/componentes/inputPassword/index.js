@@ -14,6 +14,7 @@ export default function InputPassword(props) {
         value={props.value}
         {... props.register()}
         onChange={(e) => props.setValue(e.target.value)}
+
       />
       <FontAwesomeIcon
         onClick={() => setMostrarSenha(!mostrarSenha)}

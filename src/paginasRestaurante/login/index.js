@@ -7,17 +7,39 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
+import { postNaoAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaLogin)
   });
   const [password, setPassword] = useState('');
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
   const history = useHistory();
-
+  const { logar } = useAuth();
   async function onSubmit(data) {
-    history.push('/produtos');
+    setCarregando(true);
+    setErro('');
     console.log(data);
+    try {
+      const { dados, ok } = await postNaoAutenticado('/login', data);
+      setCarregando(false);
+      console.log(dados);
+      if (!ok) {
+        setErro(dados);
+        console.log(erro);
+        return;
+      }
+
+      logar(dados.usuario, dados.tokenUsuario);
+
+      history.push('/produtos');
+    } catch (error) {
+      setErro(`Erro:${error.message}`);
+    }
+    setCarregando(false);
   }
 
   return (
@@ -43,6 +65,7 @@ export default function Login() {
                 register={() => register('senha', { required: true, minLength: 8 })}
                 value={password}
                 setValue={setPassword}
+
               />
               <p>{errors.senha?.message}</p>
               <div className="flexRow contentCenter mt1rem mb1rem">

@@ -1,6 +1,7 @@
 import './styles.css';
 import '../../styles/global.css';
 import fotoProduto from '../../assets/foto-produto.svg';
+import uploadIcon from '../../assets/upload-icon.svg';
 import CustomSwitch from '../../componentes/customSwitch';
 
 export default function ProdutosNovo() {
@@ -31,14 +32,14 @@ export default function ProdutosNovo() {
         </form>
         <div className="fotoProdutosNovo posRelative">
           <img src={fotoProduto} alt="foto do produto" />
-          <div className="inputFile">
-            <label htmlFor="file">
-              Clique ou arraste
-              para adicionar uma imagem
-            </label>
-            <input type="file" id="file" name="file" multiple />
-          </div>
+          <label htmlFor="fileNew" className="fileNew" />
+          <input type="file" id="fileNew" name="file" multiple />
+          <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
 
+          <label htmlFor="iconeUpload" className="labelIconeUpload">
+            Clique
+            para adicionar uma imagem
+          </label>
         </div>
       </div>
       <div className="acoesProdutos flexRow contentEnd contentCenter gap2rem itemsCenter" />

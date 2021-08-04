@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
@@ -6,49 +7,48 @@ import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
 import CustomCard from '../../componentes/customCard';
-import imgPizza from '../../assets/pizza.png';
+import useAuth from '../../hooks/useAuth';
+import { get, del } from '../../services/apiClient';
 
-const testeProdutoLista = [
-  {
-    nome: 'teste',
-    descricao: 'blablabla',
-    valor: 1234,
-    imagem: imgPizza
-  },
-  {
-    nome: 'teste1',
-    descricao: 'blablabla',
-    valor: 1234,
-    imagem: imgPizza
-  },
-  {
-    nome: 'teste2',
-    descricao: 'blablabla',
-    valor: 1234,
-    imagem: imgPizza
-  },
-  {
-    nome: 'teste3',
-    descricao: 'blablabla',
-    valor: 1234,
-    imagem: imgPizza
-  },
-];
 export default function produtos() {
   const [cardapio, setCardapio] = useState([]);
+  const { user, token, deslogar } = useAuth();
+  const [prod, setProd] = useState([]);
+
   useEffect(() => {
-    // async function carregarCardapio() {
-    //   const resposta = await fetch(testeProdutoLista);
-    //   const cardapioRetornado = await resposta.json();
-    // }
-    setCardapio(testeProdutoLista);
+    buscarProdutos();
   }, []);
 
+  async function buscarProdutos() {
+    try {
+      const { dados, ok } = await get('/produtos', token);
+
+      if (!ok) {
+        console.log(dados);
+        return;
+      }
+      setProd(dados);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function removerProduto(id) {
+    try {
+      const dados = await del(`produtos/${id}`);
+
+      setProd(dados);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  console.log(prod);
   return (
     <div className="bodyProdutos">
       <div className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">Pizza Pizzaria & Delivery</h1>
+          <h1 className="nomeRestaurante">{user.NomeRestaurante}</h1>
           <Link className="logout" to="/login">Logout</Link>
         </div>
       </div>
@@ -57,8 +57,8 @@ export default function produtos() {
         .
       </div>
 
-      <div className={`${cardapio.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
-        <div className="contemBotao flexRow">
+      <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
+        <div className="contemBotao flexRow itemsCenter">
           <CustomizedDialogs
             btAbrirMensagem={<> Adicionar produto ao cardápio</>}
             btMensagem={<>Adicionar produto novo</>}
@@ -67,9 +67,14 @@ export default function produtos() {
         </div>
 
         <div className="conteinerCardapio flexRow gap2rem">
-          { cardapio.map((produto) => (
-            <div className="cardProduto" item key={produto.id}>
-              <CustomCard {...produto} />
+          { prod.map((produto) => (
+            <div style={{ cursor: 'pointer' }} item key={produto.id}>
+              <CustomCard
+                nome={produto.nome}
+                valor={produto.preco}
+                descricao={produto.descricao}
+                removerProduto={removerProduto}
+              />
             </div>
           ))}
         </div>
@@ -87,6 +92,7 @@ export default function produtos() {
           conteudo={<ProdutosNovo />}
         />
       </div>
+
     </div>
   );
 }
