@@ -82,6 +82,18 @@
   font-weight: 600;
 }
 
+.botao-finalizar {
+  position: relative;
+  left: 6rem;
+  margin-left: 1rem;
+  padding: 0.7rem 2.5rem;
+  background-color: #D13201;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;;
+  color: #fff;
+  font-weight: 600;
+}
+
 .proximo-form:hover {
   opacity: 0.8;
 }

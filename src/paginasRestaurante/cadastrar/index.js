@@ -18,12 +18,12 @@ const dadosDoUsuario = {
 };
 
 export default function Cadastrar() {
-  const stepper1 = document.querySelector('.item-1');
-  const stepper2 = document.querySelector('.item-2');
-  const stepper3 = document.querySelector('.item-3');
   const [etapa, setEtapa] = useState(1);
 
   const validar = function validaDadosDoStepper() {
+    const stepper1 = document.querySelector('.item-1');
+    const stepper2 = document.querySelector('.item-2');
+    const stepper3 = document.querySelector('.item-3');
     const validacao = {
       mensagem: 'Nenhum erro encontrado.',
       valido: true
@@ -123,12 +123,17 @@ export default function Cadastrar() {
       }
 
       if (validacao.valido) {
+        const botaoProximo = document.querySelector('.proximo-form');
+        const botaoAnterior = document.querySelector('.anterior-form');
+
         dadosDoUsuario.restaurante.taxaEntrega = dadosE.Taxa * 100;
         dadosDoUsuario.restaurante.tempoEntregaEmMinutos = Number(dadosE.Tempo);
         dadosDoUsuario.restaurante.valorMinimoPedido = Number(dadosE.ValorMinimo * 100);
 
         stepper3.classList.remove('stepper--atual');
         stepper3.classList.add('stepper--finalizado');
+        botaoProximo.style.display = 'none';
+        botaoAnterior.style.display = 'none';
       }
 
       return (validacao);
@@ -147,6 +152,10 @@ export default function Cadastrar() {
   };
 
   const recuar = function recuaStepper() {
+    const stepper1 = document.querySelector('.item-1');
+    const stepper2 = document.querySelector('.item-2');
+    const stepper3 = document.querySelector('.item-3');
+
     switch (etapa) {
       default: return;
       case 1:
@@ -272,6 +281,7 @@ export default function Cadastrar() {
         return (
           <>
             <h2>Usuário registrado com sucesso!</h2>
+            <button className="botao-finalizar" type="button" onClick={() => window.location.replace('http://localhost:3000/')}>Legal!</button>
           </>
         );
     }
