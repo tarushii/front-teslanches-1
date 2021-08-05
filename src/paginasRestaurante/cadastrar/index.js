@@ -148,7 +148,11 @@ export default function Cadastrar() {
   };
 
   const enviarParaApi = async function fazCadastroDoUsuario() {
-    // postNaoAutenticado('/usuarios', dadosDoUsuario)
+    const { dados, ok } = await postNaoAutenticado('/usuarios', dadosDoUsuario);
+
+    if (!ok) {
+      console.log(dados);
+    }
   };
 
   const recuar = function recuaStepper() {
