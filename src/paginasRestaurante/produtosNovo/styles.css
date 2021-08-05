@@ -73,3 +73,12 @@ input#fileNew{
   color: #FFFFFF;
    z-index: 2;
 }
+
+.formProdutos p{
+  position: absolute;
+  transform: translateY(3.5rem);
+}
+
+#btAddProduto{
+  transform: translateX(28.125rem);
+}

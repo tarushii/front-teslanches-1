@@ -31,7 +31,7 @@ export default function ProdutosNovo() {
     const response = await fetch('http://localhost:8000/upload', {
       method: 'POST',
       headers: {
-        // Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       body: formData
     });
@@ -45,8 +45,9 @@ export default function ProdutosNovo() {
     setCarregando(true);
     setErro('');
     console.log(data);
+
     try {
-      // const { dados, ok } = await postNaoAutenticado('/login', data);
+      const { dados, ok } = await postAutenticado('/produtos', data);
       setCarregando(false);
       console.log(data);
       if (!ok) {
@@ -55,9 +56,9 @@ export default function ProdutosNovo() {
         return;
       }
 
-      // logar(dados.usuario, dados.tokenUsuario);
+      logar(dados.usuario, dados.tokenUsuario);
 
-      // history.push('/produtos');
+      history.push('/produtos');
     } catch (error) {
       setErro(`Erro:${error.message}`);
     }
@@ -72,25 +73,32 @@ export default function ProdutosNovo() {
           <div className="flexColunm mb1rem ">
             <label htmlFor="nomeRestaurante">Nome</label>
             <input id="nomeRestaurante" type="text" {...register('nome', { required: true })} />
+            <p>{errors.nome?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="descricao">Descrição</label>
-            <input id="descricao" type="text-field" {...register('descricao', { required: true })} />
+            <input id="descricao" type="text" {...register('descricao', { required: true })} />
             <span className="mr06rem">Máx.: 50 caracteres</span>
+            <p>{errors.descricao?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
             <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true })} />
+            <p>{errors.preco?.message}</p>
           </div>
           <div className="ativarProdutos">
+            <p>{errors.permiteObservacoes?.message}</p>
             <CustomSwitch label="Ativar produto" />
             <br />
-            <CustomSwitch label="Permitir observações" {...register('permiteObservacoes', { required: true })} />
+            <CustomSwitch label="Permitir observações" />
           </div>
           <div />
-          <button className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
-            Adicionar produto
-          </button>
+          <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
+
+            <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
+              Adicionar produto
+            </button>
+          </div>
         </form>
         <div className="fotoProdutosNovo posRelative">
           { produto.imagemProduto
@@ -106,7 +114,6 @@ export default function ProdutosNovo() {
           </label>
         </div>
       </div>
-      <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter" />
     </div>
 
   );
