@@ -65,6 +65,20 @@ export default function ProdutosNovo() {
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
+
+    const data = {
+      nome: 'rex.jpg',
+      imagem: `${base64.split(',')[1]}`
+    };
+    const response = await fetch('http://localhost:8000/upload', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json',
+      }
+    });
+
+    const urlImagem = await response.json();
   };
 
   return (
