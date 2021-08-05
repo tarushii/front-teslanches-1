@@ -22,25 +22,6 @@ export default function ProdutosNovo() {
     resolver: yupResolver(schemaCadastrarProdutos)
   });
 
-  async function uploadImagem(e) {
-    setCarregando(true);
-    setErro('');
-    const formData = new FormData();
-    formData.append('imagemProduto', e.target.files[0]);
-
-    const response = await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      body: formData
-    });
-
-    const urlImagem = await response.json();
-    setProduto(urlImagem);
-    setCarregando(false);
-  }
-
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
@@ -64,6 +45,27 @@ export default function ProdutosNovo() {
     }
     setCarregando(false);
   }
+
+  const [baseImage, setBaseImage] = useState('');
+
+  const convertBase64 = (file) => new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+
+  const uploadImagem = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setBaseImage(base64);
+  };
 
   return (
     <div className="flexColumn">
@@ -101,8 +103,9 @@ export default function ProdutosNovo() {
           </div>
         </form>
         <div className="fotoProdutosNovo posRelative">
-          { produto.imagemProduto
-            ? (<img src={produto.imagemProduto} alt="foto do produto" />)
+
+          { baseImage
+            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
           <input type="file" id="fileNew" name="file" onChange={(e) => uploadImagem(e)} />
