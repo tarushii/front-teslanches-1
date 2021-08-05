@@ -39,14 +39,9 @@ export default function CustomizedDialogs(props) {
 
         <DialogContent dividers>
           {props.conteudo}
-
+          <button id="btCancelar" className="btTransparente" type="button" onClick={handleClose}>cancelar</button>
         </DialogContent>
-        <DialogActions>
-          <Link to="/produtos">Cancelar</Link>
-          <button className="btLaranja mr2rem mb2rem mt2rem" type="submit" onClick={handleClose} color="primary">
-            {props.btMensagem}
-          </button>
-        </DialogActions>
+
       </Dialog>
     </div>
   );

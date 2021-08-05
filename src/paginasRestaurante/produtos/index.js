@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
+import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
@@ -54,7 +55,9 @@ export default function produtos() {
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
       <div className="avatarRestaurante">
-        .
+        <CustomizedDialogs
+          conteudo={<UsuarioEditar />}
+        />
       </div>
 
       <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
