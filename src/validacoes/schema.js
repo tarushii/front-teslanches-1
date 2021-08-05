@@ -17,4 +17,11 @@ const schemaCadastro = yup.object().shape({
   valor_pedido: yup.number().positive().integer().required(),
 });
 
-export { schemaCadastro, schemaLogin };
+const schemaCadastrarProdutos = yup.object().shape({
+  nome: yup.string().max(50).required(),
+  descricao: yup.string().max(100),
+  preco: yup.number().required(),
+  permiteObservacoes: yup.boolean().required(),
+});
+
+export { schemaCadastro, schemaLogin, schemaCadastrarProdutos };
