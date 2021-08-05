@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import { Link } from 'react-router-dom';
 
 import './styles.css';
@@ -12,13 +11,6 @@ const DialogContent = withStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
-
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = useState(false);
@@ -39,14 +31,9 @@ export default function CustomizedDialogs(props) {
 
         <DialogContent dividers>
           {props.conteudo}
-
+          <button id="btCancelar" className="btTransparente" type="button" onClick={handleClose}>cancelar</button>
         </DialogContent>
-        <DialogActions>
-          <Link to="/produtos">Cancelar</Link>
-          <button className="btLaranja mr2rem mb2rem mt2rem" type="submit" onClick={handleClose} color="primary">
-            {props.btMensagem}
-          </button>
-        </DialogActions>
+
       </Dialog>
     </div>
   );
