@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import CustomSwitch from '../../componentes/customSwitch';
 import { get } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
 
@@ -71,9 +70,7 @@ export default function ProdutosNovo() {
             <input id="valor" type="number" placeholder="00,00" value={produto.preco} />
           </div>
           <div className="ativarProdutos">
-            <CustomSwitch label="Ativar produto" />
             <br />
-            <CustomSwitch label="Permitir observações" value={produto.permiteObservacoes} />
           </div>
           <div />
         </form>
