@@ -7,18 +7,23 @@ import { Link, useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import CustomSwitch from '../../componentes/customSwitch';
 import { postAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 import AuthContext from '../../context/AuthContext';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosNovo() {
-  const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [urlImagem, setUrlImagem] = useState('');
+  const [baseImage, setBaseImage] = useState('');
+  const [ativado, setAtivado] = useState(true);
   const history = useHistory();
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { user, token } = useAuth();
+  const {
+    register, handleSubmit, formState: { errors }
+  } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
 
@@ -29,7 +34,6 @@ export default function ProdutosNovo() {
 
     try {
       const { dados, ok } = await postAutenticado('/produtos', data);
-      setCarregando(false);
       console.log(data);
       if (!ok) {
         setErro(dados);
@@ -40,9 +44,8 @@ export default function ProdutosNovo() {
       setErro(`Erro:${error.message}`);
     }
     setCarregando(false);
+    // post direto so da url
   }
-
-  const [baseImage, setBaseImage] = useState('');
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -58,27 +61,27 @@ export default function ProdutosNovo() {
   });
 
   const uploadImagem = async (e) => {
-    const id = 2;// id do usuario vindo do token
+    const { ID } = user;
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
     const data = {
-      nome: `${id}/produto.jpg`, // talvez pegar o id do produto tbm para dar nome a foto
+      nome: `${ID}/produto.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
 
-    // add um delete de foto com mesmo nome aqui pra nao lotar o supa
+    const { nome } = data;
+    const imagem = { imagem: `${nome}` };
+    await postNaoAutenticado('/delete', imagem);
 
-    const adicionaFotoNova = await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json',
-      }
-    });
+    const { dados, ok } = await postNaoAutenticado('/upload', data);
 
-    const urlImagem = await adicionaFotoNova.json();
+    if (!ok) {
+      return console.log(dados);
+    }
+    setUrlImagem(dados);
+    return console.log('sucesso');
   };
 
   return (
@@ -99,15 +102,28 @@ export default function ProdutosNovo() {
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
-            <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true })} />
+            <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
             <p>{errors.preco?.message}</p>
           </div>
-          <div className="ativarProdutos">
-            <p>{errors.permiteObservacoes?.message}</p>
-            <CustomSwitch label="Ativar produto" />
-            <br />
-            <CustomSwitch label="Permitir observações" />
-          </div>
+          <actions className="ativarProdutos">
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Ativar produto</span>
+            </section>
+
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Permitir observações</span>
+            </section>
+          </actions>
           <div />
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 
