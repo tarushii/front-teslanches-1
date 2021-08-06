@@ -42,6 +42,7 @@
   border-radius: 50%;
   box-sizing: border-box;
   border: #ffffff .375rem solid;
+  cursor: pointer;
 }
 
 span.addProdutos{

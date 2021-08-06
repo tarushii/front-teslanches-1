@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './styles.css';
 import '../../styles/global.css';
 import { postNaoAutenticado } from '../../services/apiClient';
@@ -316,6 +317,10 @@ export default function Cadastrar() {
           <button className="anterior-form" type="button" onClick={() => recuar()}>Anterior</button>
           <button className="proximo-form" type="button" onClick={() => avancar()}>Próximo</button>
         </footer>
+        <p className="retornar-login">
+          Já tem uma conta?
+          <Link to="/">  Fazer login</Link>
+        </p>
       </section>
     </article>
   );
