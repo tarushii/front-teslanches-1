@@ -10,6 +10,7 @@ import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
+import ProdutosEditar from '../produtosEditar';
 
 export default function produtos() {
   const [cardapio, setCardapio] = useState([]);
@@ -71,19 +72,35 @@ export default function produtos() {
 
         <div className="conteinerCardapio flexRow gap2rem">
           { prod.map((produto) => (
-            <div style={{ cursor: 'pointer' }} item key={produto.id}>
-              <CustomCard
-                nome={produto.nome}
-                valor={produto.preco}
-                descricao={produto.descricao}
-                removerProduto={removerProduto}
-              />
+
+            <div className="flip-card" item key={produto.id}>
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <CustomCard
+                    nome={produto.nome}
+                    valor={produto.preco}
+                    descricao={produto.descricao}
+                    removerProduto={removerProduto}
+                  />
+                </div>
+                <div className="flip-card-back">
+                  <button className="btTransparente" type="button" onClick={removerProduto}>Excluir produto do catálogo</button>
+                  {' '}
+                  <CustomizedDialogs
+                    btAbrirMensagem={<> Editar produto </>}
+                    btMensagem={<>Atualizar produto </>}
+                    conteudo={<ProdutosEditar />}
+                  />
+                  {/* TODO - botoes so ativam da metade pra direita */}
+                </div>
+              </div>
             </div>
+
           ))}
         </div>
       </div>
 
-      <div className={`${cardapio.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
+      <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
         <span>
           Você ainda não tem nenhum produto no seu cardápio.
           <br />
