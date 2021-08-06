@@ -1,25 +1,20 @@
 /* eslint-disable no-undef */
 import './styles.css';
 import '../../styles/global.css';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import { postAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
-import AuthContext from '../../context/AuthContext';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosNovo() {
-  const [produto, setProduto] = useState({});
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
-  const [ativado, setAtivado] = useState(true);
-  const history = useHistory();
   const { user, token } = useAuth();
   const {
     register, handleSubmit, formState: { errors }
@@ -138,7 +133,12 @@ export default function ProdutosNovo() {
             ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
-          <input type="file" id="fileNew" name="file" onChange={(e) => uploadImagem(e)} />
+          <input
+            type="file"
+            id="fileNew"
+            name="file"
+            onChange={(e) => uploadImagem(e)}
+          />
           <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
 
           <label htmlFor="iconeUpload" className="labelIconeUpload">
