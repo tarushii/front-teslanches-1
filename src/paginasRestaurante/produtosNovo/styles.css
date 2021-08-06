@@ -1,10 +1,10 @@
 .bodyProdutosDialog{
-width: 63rem;
-height: 49.9125rem;
-background: #FFFFFF;
-box-shadow: 0px .25rem 1rem rgba(50, 50, 50, 0.4);
-border-radius: 1rem;
-box-sizing: border-box;
+  width: 63rem;
+  height: 49.9125rem;
+  background: #FFFFFF;
+  box-shadow: 0px .25rem 1rem rgba(50, 50, 50, 0.4);
+  border-radius: 1rem;
+  box-sizing: border-box;
 }
 
 .fotoProdutosNovo{
@@ -15,8 +15,8 @@ box-sizing: border-box;
 }
 
 .acoesProdutos{
-  margin-right: 6.5rem;
-  margin-top: 3.0625rem;
+  margin-right: 1.5rem;
+  margin-top: 1rem;
 }
 
 input#valor{
@@ -48,7 +48,7 @@ input#fileNew{
   border-radius: 1rem;
   text-align: center;
   margin-bottom: 0px;
-   z-index: 3;
+  z-index: 3;
 }
 
 .iconeUpload{
@@ -59,7 +59,7 @@ input#fileNew{
 }
 
 .labelIconeUpload{
-    position: absolute;
+  position: absolute;
   top: 15rem;
   left: 6rem;
   z-index: 3;
@@ -72,4 +72,19 @@ input#fileNew{
   text-align: center;
   color: #FFFFFF;
    z-index: 2;
+}
+
+.formProdutos p{
+  position: absolute;
+  transform: translateY(3.5rem);
+}
+
+#btAddProduto{
+  transform: translateX(28.125rem);
+}
+
+#fotoCarregada{
+  height: 24rem;
+  width: 24rem;
+  z-index: 4;
 }
