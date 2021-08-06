@@ -36,10 +36,6 @@ export default function ProdutosNovo() {
         console.log(erro);
         return;
       }
-
-      logar(dados.usuario, dados.tokenUsuario);
-
-      history.push('/produtos');
     } catch (error) {
       setErro(`Erro:${error.message}`);
     }
@@ -62,15 +58,19 @@ export default function ProdutosNovo() {
   });
 
   const uploadImagem = async (e) => {
+    const id = 2;// id do usuario vindo do token
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
     const data = {
-      nome: 'rex.jpg',
+      nome: `${id}/produto.jpg`, // talvez pegar o id do produto tbm para dar nome a foto
       imagem: `${base64.split(',')[1]}`
     };
-    const response = await fetch('http://localhost:8000/upload', {
+
+    // add um delete de foto com mesmo nome aqui pra nao lotar o supa
+
+    const adicionaFotoNova = await fetch('http://localhost:8000/upload', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -78,7 +78,7 @@ export default function ProdutosNovo() {
       }
     });
 
-    const urlImagem = await response.json();
+    const urlImagem = await adicionaFotoNova.json();
   };
 
   return (
