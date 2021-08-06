@@ -13,11 +13,13 @@ import AuthContext from '../../context/AuthContext';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosNovo() {
-  const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [urlImagem, setUrlImagem] = useState('');
+  const [baseImage, setBaseImage] = useState('');
   const history = useHistory();
+  const { user, token } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
@@ -29,7 +31,6 @@ export default function ProdutosNovo() {
 
     try {
       const { dados, ok } = await postAutenticado('/produtos', data);
-      setCarregando(false);
       console.log(data);
       if (!ok) {
         setErro(dados);
@@ -41,8 +42,6 @@ export default function ProdutosNovo() {
     }
     setCarregando(false);
   }
-
-  const [baseImage, setBaseImage] = useState('');
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
     const fileReader = new FileReader();
@@ -58,27 +57,27 @@ export default function ProdutosNovo() {
   });
 
   const uploadImagem = async (e) => {
-    const id = 2;// id do usuario vindo do token
+    const { ID } = user;
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
     const data = {
-      nome: `${id}/produto.jpg`, // talvez pegar o id do produto tbm para dar nome a foto
+      nome: `${ID}/produto.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
 
-    // add um delete de foto com mesmo nome aqui pra nao lotar o supa
+    const { nome } = data;
+    const imagem = { imagem: `${nome}` };
+    await postNaoAutenticado('/delete', imagem);
 
-    const adicionaFotoNova = await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json',
-      }
-    });
+    const { dados, ok } = await postNaoAutenticado('/upload', data);
 
-    const urlImagem = await adicionaFotoNova.json();
+    if (!ok) {
+      return console.log(dados);
+    }
+    setUrlImagem(dados);// post direto so da url
+    return console.log('sucesso');
   };
 
   return (
