@@ -7,8 +7,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import CustomSwitch from '../../componentes/customSwitch';
 import { postAutenticado } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 import AuthContext from '../../context/AuthContext';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
@@ -18,9 +18,12 @@ export default function ProdutosNovo() {
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
+  const [ativado, setAtivado] = useState(true);
   const history = useHistory();
   const { user, token } = useAuth();
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register, handleSubmit, formState: { errors }
+  } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
 
@@ -41,6 +44,7 @@ export default function ProdutosNovo() {
       setErro(`Erro:${error.message}`);
     }
     setCarregando(false);
+    // post direto so da url
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -76,7 +80,7 @@ export default function ProdutosNovo() {
     if (!ok) {
       return console.log(dados);
     }
-    setUrlImagem(dados);// post direto so da url
+    setUrlImagem(dados);
     return console.log('sucesso');
   };
 
@@ -98,15 +102,28 @@ export default function ProdutosNovo() {
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
-            <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true })} />
+            <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
             <p>{errors.preco?.message}</p>
           </div>
-          <div className="ativarProdutos">
-            <p>{errors.permiteObservacoes?.message}</p>
-            <CustomSwitch label="Ativar produto" />
-            <br />
-            <CustomSwitch label="Permitir observações" />
-          </div>
+          <actions className="ativarProdutos">
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Ativar produto</span>
+            </section>
+
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Permitir observações</span>
+            </section>
+          </actions>
           <div />
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 
