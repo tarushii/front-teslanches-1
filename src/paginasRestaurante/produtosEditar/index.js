@@ -3,6 +3,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import { get } from '../../services/apiClient';
@@ -27,12 +28,13 @@ export default function ProdutosEditar() {
     setErro('');
     console.log(data);
 
+    const dadosCompletos = { data, urlImagem };
     try {
-      const { dados, ok } = await postAutenticado('/produtos', data);
-      console.log(data);
+      const { dados, ok } = await postAutenticado('/produtos', dadosCompletos);
+      console.log(dadosCompletos);
       if (!ok) {
         setErro(dados);
-        console.log(erro);
+        toast.error(erro);
         return;
       }
     } catch (error) {
