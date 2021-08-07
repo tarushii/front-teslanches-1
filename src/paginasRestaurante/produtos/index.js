@@ -3,6 +3,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
@@ -13,7 +14,6 @@ import { get, del } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
 export default function produtos() {
-  const [cardapio, setCardapio] = useState([]);
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
 
@@ -26,12 +26,11 @@ export default function produtos() {
       const { dados, ok } = await get('/produtos', token);
 
       if (!ok) {
-        console.log(dados);
         return;
       }
       setProd(dados);
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
   }
 
@@ -41,8 +40,9 @@ export default function produtos() {
 
       setProd(dados);
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
     }
+    toast('Produto removido com sucesso');
   }
 
   console.log(prod);
