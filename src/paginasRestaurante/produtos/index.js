@@ -10,6 +10,18 @@ import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
 
+import Diversos from '../../assets/bg-Diversos.png';
+import Pizzaria from '../../assets/bg-Pizzaria.png';
+import Massas from '../../assets/bg-Massas.png';
+import Arabe from '../../assets/bg-Arabe.png';
+import Carnes from '../../assets/bg-Carnes.png';
+import Chinesa from '../../assets/bg-Chinesa.png';
+import Italiana from '../../assets/bg-Italiana.png';
+import Japonesa from '../../assets/bg-Japonesa.png';
+import Mexicano from '../../assets/bg-Mexicano.png';
+import Brasileira from '../../assets/bg-Brasileira.png';
+import Lanches from '../../assets/bg-Lanches.png';
+
 export default function produtos() {
   const [cardapio, setCardapio] = useState([]);
   const { user, token, deslogar } = useAuth();
@@ -44,9 +56,41 @@ export default function produtos() {
   }
 
   console.log(prod);
+  console.log(user.Categoria);
+
+  const categoriaStyle = () => {
+    const categoria = user.Categoria;
+    switch (categoria) {
+      default:
+        return { backgroundImage: `url(${Pizzaria})` };
+      case 'Diversos':
+        return { backgroundImage: `url(${Diversos})` };
+      case 'Lanches':
+        return { backgroundImage: `url(${Lanches})` };
+      case 'Carnes':
+        return { backgroundImage: `url(${Carnes})` };
+      case 'Massas':
+        return { backgroundImage: `url(${Massas})` };
+      case 'Pizzas':
+        return { backgroundImage: `url(${Pizzaria})` };
+      case 'Japonesa':
+        return { backgroundImage: `url(${Japonesa})` };
+      case 'Chinesa':
+        return { backgroundImage: `url(${Chinesa})` };
+      case 'Mexicano':
+        return { backgroundImage: `url(${Mexicano})` };
+      case 'Brasileira':
+        return { backgroundImage: `url(${Brasileira})` };
+      case 'Italiana':
+        return { backgroundImage: `url(${Italiana})` };
+      case 'Árabe':
+        return { backgroundImage: `url(${Arabe})` };
+    }
+  };
+
   return (
     <div className="bodyProdutos">
-      <div className="conteinerTopo contentCenter itemsCenter">
+      <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
           <h1 className="nomeRestaurante">{user.NomeRestaurante}</h1>
           <Link className="logout" to="/login">Logout</Link>
@@ -92,7 +136,6 @@ export default function produtos() {
           conteudo={<ProdutosNovo />}
         />
       </div>
-
     </div>
   );
 }

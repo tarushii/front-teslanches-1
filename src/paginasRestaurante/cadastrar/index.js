@@ -60,6 +60,7 @@ export default function Cadastrar() {
         dadosDoUsuario.nome = dadosE.Nome;
         dadosDoUsuario.email = dadosE.Email;
         dadosDoUsuario.senha = dadosE.Senha;
+
         stepper1.classList.remove('stepper--atual');
         stepper1.classList.add('stepper--finalizado');
         stepper2.classList.remove('stepper--incompleto');
@@ -140,7 +141,6 @@ export default function Cadastrar() {
       return (validacao);
     }
 
-    // Confirma registro e retorna para login
     if (etapa === 4) {
       return (validacao);
     }
