@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import { Link } from 'react-router-dom';
 
 import './styles.css';
 
