@@ -48,7 +48,7 @@ input#fileEdit{
   border-radius: 1rem;
   text-align: center;
   margin-bottom: 0px;
-   z-index: 3;
+  z-index: 3;
 }
 
 .iconeUpload{
@@ -59,7 +59,7 @@ input#fileEdit{
 }
 
 .labelIconeUpload{
-    position: absolute;
+  position: absolute;
   top: 15rem;
   left: 6rem;
   z-index: 3;
@@ -71,7 +71,7 @@ input#fileEdit{
   line-height: 150%;
   text-align: center;
   color: #FFFFFF;
-   z-index: 2;
+  z-index: 2;
 }
 
 

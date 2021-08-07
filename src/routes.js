@@ -23,13 +23,12 @@ export default function Routes() {
     <AuthProvider>
       <Router>
         <Switch>
-          <Route path="/" exact component={produtos} />
+          <Route path="/" exact component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/cadastrar" component={Cadastrar} />
-          <Route path="/produtos" component={produtos} />
-          <Route path="/produtos/:idProduto/editar" exact component={ProdutosEditar} />
           <RotasProtegidas>
-            .
+            <Route path="/produtos" component={produtos} />
+            <Route path="/produtos/:idProduto/editar" exact component={ProdutosEditar} />
           </RotasProtegidas>
         </Switch>
       </Router>

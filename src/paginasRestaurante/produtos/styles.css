@@ -28,6 +28,7 @@
   font-weight: normal;
   font-size:1rem;
   line-height: 170%;
+  z-index: 3;
 }
 
 .avatarRestaurante{
