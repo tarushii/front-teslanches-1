@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import { postAutenticado } from '../../services/apiClient';
+import { postAutenticado, postNaoAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
@@ -15,7 +15,9 @@ export default function ProdutosNovo() {
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
-  const { user, token } = useAuth();
+
+  const { user } = useAuth();
+
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
