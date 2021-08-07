@@ -22,6 +22,7 @@ export default function ProdutosEditar() {
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
+  const customId = 'custom-id-yes';
 
   async function onSubmit(data) {
     setCarregando(true);
@@ -34,7 +35,7 @@ export default function ProdutosEditar() {
       console.log(dadosCompletos);
       if (!ok) {
         setErro(dados);
-        toast.error(erro);
+        toast.error(erro, { toastId: customId });
         return;
       }
     } catch (error) {
@@ -42,7 +43,7 @@ export default function ProdutosEditar() {
     }
     setCarregando(false);
     // post direto so da url
-    toast.success('O produto foi criado com sucesso');
+    toast.success('O produto foi criado com sucesso', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -77,11 +78,11 @@ export default function ProdutosEditar() {
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return toast.error(dados);
+      return toast.error(dados, { toastId: customId });
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return toast.success('A imagem foi alterada');
+    return toast.success('A imagem foi alterada', { toastId: customId });
   }
 
   useEffect(() => {
@@ -95,9 +96,9 @@ export default function ProdutosEditar() {
     setCarregando(false);
   }, []);
 
-  toast.error(errors.nome?.message);
-  toast.error(errors.descricao?.message);
-  toast.error(errors.preco?.message);
+  toast.error(errors.nome?.message, { toastId: customId });
+  toast.error(errors.descricao?.message, { toastId: customId });
+  toast.error(errors.preco?.message, { toastId: customId });
 
   return (
     <div className="flexColumn">
