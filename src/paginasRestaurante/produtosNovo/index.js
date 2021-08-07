@@ -24,6 +24,7 @@ export default function ProdutosNovo() {
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
+  const customId = 'custom-id-yes';
 
   async function onSubmit(data) {
     setCarregando(true);
@@ -43,7 +44,7 @@ export default function ProdutosNovo() {
     }
     setCarregando(false);
     // post direto so da url
-    toast.success('Produto criado com sucesso');
+    toast.success('Produto criado com sucesso', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -83,9 +84,9 @@ export default function ProdutosNovo() {
     return console.log('sucesso');
   };
 
-  toast.error(errors.nome?.message);
-  toast.error(errors.descricao?.message);
-  toast.error(errors.preco?.message);
+  toast.error(errors.nome?.message, { toastId: customId });
+  toast.error(errors.descricao?.message, { toastId: customId });
+  toast.error(errors.preco?.message, { toastId: customId });
 
   return (
     <div className="flexColumn">

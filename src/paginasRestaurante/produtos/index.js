@@ -16,6 +16,7 @@ import ProdutosEditar from '../produtosEditar';
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
+  const customId = 'custom-id-yes';
 
   useEffect(() => {
     buscarProdutos();
@@ -30,7 +31,7 @@ export default function produtos() {
       }
       setProd(dados);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, { toastId: customId });
     }
   }
 
@@ -40,9 +41,9 @@ export default function produtos() {
 
       setProd(dados);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, { toastId: customId });
     }
-    toast('Produto removido com sucesso');
+    toast('Produto removido com sucesso', { toastId: customId });
   }
 
   console.log(prod);

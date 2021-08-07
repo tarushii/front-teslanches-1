@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import './styles.css';
 import '../../styles/global.css';
 import { Link, useHistory } from 'react-router-dom';
@@ -20,17 +21,18 @@ export default function Login() {
   const [carregando, setCarregando] = useState(false);
   const history = useHistory();
   const { logar } = useAuth();
+  const customId = 'custom-id-yes';
+
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    console.log(data);
     try {
       const { dados, ok } = await postNaoAutenticado('/login', data);
       setCarregando(false);
-      console.log(dados);
+
       if (!ok) {
         setErro(dados);
-        console.log(erro);
+        toast.error(erro, { toastId: customId });
         return;
       }
 
@@ -38,13 +40,15 @@ export default function Login() {
 
       history.push('/produtos');
     } catch (error) {
+      toast.error(error.message, { toastId: customId });
       setErro(`Erro:${error.message}`);
     }
     setCarregando(false);
   }
-  toast.error(errors.email?.message);
-  toast.error(errors.senha?.message);
-  // TODO - toast duplicado nada na net me ajudou consertar
+
+  toast.error(errors.email?.message, { toastId: customId });
+  toast.error(errors.senha?.message, { toastId: customId });
+
   return (
     <div className="bodyLogin">
       <div className="conteinerFormLogin">
