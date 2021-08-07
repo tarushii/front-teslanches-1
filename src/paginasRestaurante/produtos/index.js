@@ -50,8 +50,8 @@ export default function produtos() {
     <div className="bodyProdutos">
       <div className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">{user.NomeRestaurante}</h1>
-          <Link className="logout" to="/login">Logout</Link>
+          <h1 className="nomeRestaurante">{ user.NomeRestaurante }</h1>
+          <button className="btTransparente logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
@@ -91,7 +91,6 @@ export default function produtos() {
                     btMensagem={<>Atualizar produto </>}
                     conteudo={<ProdutosEditar />}
                   />
-                  {/* TODO - botoes so ativam da metade pra direita */}
                 </div>
               </div>
             </div>

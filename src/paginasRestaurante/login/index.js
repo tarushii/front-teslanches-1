@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
@@ -41,7 +42,9 @@ export default function Login() {
     }
     setCarregando(false);
   }
-
+  toast.error(errors.email?.message);
+  toast.error(errors.senha?.message);
+  // TODO - toast duplicado nada na net me ajudou consertar
   return (
     <div className="bodyLogin">
       <div className="conteinerFormLogin">
@@ -55,7 +58,6 @@ export default function Login() {
               <div className="flexColunm mb1rem">
                 <label htmlFor="email">Email</label>
                 <input id="email" type="text" {...register('email', { required: true })} />
-                <p>{errors.email?.message}</p>
 
               </div>
 
@@ -67,7 +69,6 @@ export default function Login() {
                 setValue={setPassword}
 
               />
-              <p>{errors.senha?.message}</p>
               <div className="flexRow contentCenter mt1rem mb1rem">
                 <button className="btLaranja" type="submit"> Entrar </button>
               </div>

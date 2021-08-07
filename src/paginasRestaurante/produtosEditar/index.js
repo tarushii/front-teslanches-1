@@ -42,6 +42,7 @@ export default function ProdutosEditar() {
     }
     setCarregando(false);
     // post direto so da url
+    toast.success('O produto foi criado com sucesso');
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -76,11 +77,11 @@ export default function ProdutosEditar() {
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return console.log(dados);
+      return toast.error(dados);
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return console.log('sucesso');
+    return toast.success('A imagem foi alterada');
   }
 
   useEffect(() => {
@@ -93,6 +94,10 @@ export default function ProdutosEditar() {
     carregarProduto();
     setCarregando(false);
   }, []);
+
+  toast.error(errors.nome?.message);
+  toast.error(errors.descricao?.message);
+  toast.error(errors.preco?.message);
 
   return (
     <div className="flexColumn">
@@ -107,7 +112,6 @@ export default function ProdutosEditar() {
               defaultValue={produto.nome}
               {...register('nome')}
             />
-            <p>{errors.nome?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="descricao">Descrição</label>
@@ -118,7 +122,6 @@ export default function ProdutosEditar() {
               {...register('nome')}
             />
             <span className="mr06rem">Máx.: 50 caracteres</span>
-            <p>{errors.descricao?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
@@ -128,7 +131,6 @@ export default function ProdutosEditar() {
               placeholder="00,00"
               defaultValue={produto.preco}
             />
-            <p>{errors.preco?.message}</p>
           </div>
           <actions className="ativarProdutos">
             <section>

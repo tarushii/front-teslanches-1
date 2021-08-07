@@ -4,6 +4,7 @@ import '../../styles/global.css';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import { postAutenticado, postNaoAutenticado } from '../../services/apiClient';
@@ -42,6 +43,7 @@ export default function ProdutosNovo() {
     }
     setCarregando(false);
     // post direto so da url
+    toast.success('Produto criado com sucesso');
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -81,6 +83,10 @@ export default function ProdutosNovo() {
     return console.log('sucesso');
   };
 
+  toast.error(errors.nome?.message);
+  toast.error(errors.descricao?.message);
+  toast.error(errors.preco?.message);
+
   return (
     <div className="flexColumn">
       <div className="formProdutos flexRow gap3rem px2rem">
@@ -89,18 +95,15 @@ export default function ProdutosNovo() {
           <div className="flexColunm mb1rem ">
             <label htmlFor="nomeRestaurante">Nome</label>
             <input id="nomeRestaurante" type="text" {...register('nome', { required: true })} />
-            <p>{errors.nome?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="descricao">Descrição</label>
             <input id="descricao" type="text" {...register('descricao', { required: true })} />
             <span className="mr06rem">Máx.: 50 caracteres</span>
-            <p>{errors.descricao?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
             <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
-            <p>{errors.preco?.message}</p>
           </div>
           <actions className="ativarProdutos">
             <section>
