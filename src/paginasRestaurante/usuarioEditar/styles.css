@@ -1,0 +1,93 @@
+.bodyProdutosDialog{
+    width: 63rem;
+    height: 49.9125rem;
+    background: #FFFFFF;
+    box-shadow: 0px .25rem 1rem rgba(50, 50, 50, 0.4);
+    border-radius: 1rem;
+    box-sizing: border-box;
+    }
+    
+    .fotoProdutosNovo{
+      position: relative;
+      margin-top: 8.6rem;
+      width: 24rem;
+      height: 24rem;
+    }
+    
+    .acoesProdutos{
+      margin-right: 6.5rem;
+      margin-top: 3.0625rem;
+    }
+    
+    input#valor{
+      width: 11rem;
+    }
+    
+    .inputFile{
+      position: absolute;
+      bottom: -1.61rem;
+    }
+    
+    input#fileNew{
+      text-decoration: unset;
+      all: unset;
+      cursor: pointer;
+      height: 24rem;
+      width: 24rem;
+      border-radius: 1rem;
+      display: none;
+    }
+    
+    .fileNew{
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      cursor: pointer;  
+      border-radius: 1rem;
+      text-align: center;
+      margin-bottom: 0px;
+       z-index: 3;
+    }
+    
+    .iconeUpload{
+      position: absolute;
+      top: 11rem;
+      left: 11rem;
+      z-index: 2;
+    }
+    
+    .labelIconeUpload{
+        position: absolute;
+      top: 15rem;
+      left: 6rem;
+      z-index: 3;
+      width: 12.8125rem;
+      height: 2.625rem;
+      font-style: normal;
+      font-weight: 600;
+      font-size: .875rem;
+      line-height: 150%;
+      text-align: center;
+      color: #FFFFFF;
+       z-index: 2;
+    }
+
+    textarea{
+        border-radius: 1rem;
+        resize: none;
+    }
+
+    .inputPassword{
+      position: relative;
+    }
+    
+    .eyePassword{
+      position: absolute;
+      top: 2.8125rem;
+      right: .9375rem;
+      cursor: pointer;
+    }
+
+    

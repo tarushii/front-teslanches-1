@@ -1,57 +1,133 @@
-body{
-  overflow: hidden;
-}
-.bodyCadastrar{
-  background-color: black;
+.telaRegistro {
+  height: 100vh;
   background-image: url('../../assets/bg-cadastro.png');
-  background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.conteinerFormCadastro{
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.formCadastro{
-  position: absolute;
+.telaRegistro__formulario {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  padding-right: 8rem;
-  padding-left: 6rem;
-  background-color: white;
-  border-radius:  0 88px 88px 0px;
-  height: 120%;
-  left: 0px;
-  top: -9.62rem;
-  z-index: 2;
-}
-
-label {
-  padding: 0;
-  font-size: .875rem;
-}
-
-span{
-  font-size: .75rem;
-  color: var(--cinza);
-}
-
-.espacoTopo{
-  height: 14.375rem;
-}
-
-.vetorCadastro{
   position: absolute;
-  z-index: 1;
-  width: 50.171875rem;
-  height: 49.1875rem;
-  left: 38rem;
-  top: 20.125rem;
+  left: 0;
+  width: 40%;
+  height: 100vh;
+  border-radius: 0 0 88px 0;
+  background-color: #fff;
+}
+
+.telaRegistro__formulario header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 25rem;
+  margin-bottom: 2rem;
+}
+
+.formulario__stepper {
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  gap: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.formulario__stepper div {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+}
+
+.stepper--atual {
+  background-color: rgba(209, 50, 1, 0.45);
+  color: #D13201;
+}
+
+.stepper--finalizado {
+  background-color: rgba(13, 138, 79, 0.45);
+  color: #0D8A4F;
+}
+
+.stepper--incompleto {
+  background-color: rgba(128, 128, 128, 0.45);
+}
+
+.telaRegistro button {
+  cursor: pointer;
+  border: none;
+}
+
+.anterior-form {
+  background-color: transparent;
+  color: blue;
+}
+
+.anterior-form:hover {
+  color: #D13201;
+}
+
+.proximo-form {
+  margin-left: 1rem;
+  padding: 0.7rem 2.5rem;
+  background-color: #D13201;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;;
+  color: #fff;
+  font-weight: 600;
+}
+
+.botao-finalizar {
+  position: relative;
+  left: 6rem;
+  margin-left: 1rem;
+  padding: 0.7rem 2.5rem;
+  background-color: #D13201;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;;
+  color: #fff;
+  font-weight: 600;
+}
+
+.proximo-form:hover {
+  opacity: 0.8;
+}
+
+.telaRegistro main {
+  color: var(--cinzaEscuro);
+  font-weight: bold;
+}
+
+.telaRegistro main div{
+  display: flex;
+  justify-content: center;
+}
+
+.telaRegistro main div button {
+  margin-left: auto;
+  background-color: transparent;
+  color: #D13201;
+}
+
+.erros {
+  text-align: center;
+  color: red;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.retornar-login {
+  position: relative;
+  right: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: rgb(128, 128, 128);
 }

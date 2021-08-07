@@ -8,78 +8,164 @@ import uploadIcon from '../../assets/upload-icon.svg';
 import { get } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
 
-export default function ProdutosNovo() {
+export default function ProdutosEditar() {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
-  const { handleSubmit } = useForm();
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
+  const [urlImagem, setUrlImagem] = useState('');
+  const [baseImage, setBaseImage] = useState('');
+  const { user } = useAuth();
+  const {
+    register, handleSubmit, formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schemaCadastrarProdutos)
+  });
+
+  async function onSubmit(data) {
+    setCarregando(true);
+    setErro('');
+    console.log(data);
+
+    try {
+      const { dados, ok } = await postAutenticado('/produtos', data);
+      console.log(data);
+      if (!ok) {
+        setErro(dados);
+        console.log(erro);
+        return;
+      }
+    } catch (error) {
+      setErro(`Erro:${error.message}`);
+    }
+    setCarregando(false);
+    // post direto so da url
+  }
+
+  const convertBase64 = (file) => new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 
   async function uploadImagem(e) {
-    const formData = new FormData();
-    formData.append('imagemProduto', e.target.files[0]);
+    setCarregando(true);
+    const { ID } = user;
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setBaseImage(base64);
 
-    const response = await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      body: formData
-    });
+    const data = {
+      nome: `${ID}/produto.jpg`,
+      imagem: `${base64.split(',')[1]}`
+    };
 
-    const urlImagem = await response.json();
-    setProduto(urlImagem);
+    const { nome } = data;
+    const imagem = { imagem: `${nome}` };
+    await postNaoAutenticado('/delete', imagem);
+
+    const { dados, ok } = await postNaoAutenticado('/upload', data);
+
+    if (!ok) {
+      return console.log(dados);
+    }
+    setUrlImagem(dados);
+    setCarregando(false);
+    return console.log('sucesso');
   }
 
   useEffect(() => {
+    setCarregando(true);
     async function carregarProduto() {
       const produtoInfo = await get(`/produtos/${idProduto}`, token);
       setProduto(produtoInfo);
     }
 
     carregarProduto();
+    setCarregando(false);
   }, []);
-
-  async function onSubmit(data) {
-    const produtoInfo = Object.fromEntries(Object.entries(data).filter(([, value]) => value));
-
-    await fetch('http://localhost:8000/upload', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(produtoInfo)
-    });
-  }
 
   return (
     <div className="flexColumn">
       <div className="formProdutos flexRow gap3rem px2rem">
-        <form>
-          <h1>Novo produto</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h1>Editar produto</h1>
           <div className="flexColunm mb1rem ">
             <label htmlFor="nomeRestaurante">Nome</label>
-            <input id="nomeRestaurante" type="text" value={produto.nome} />
+            <input
+              id="nomeRestaurante"
+              type="text"
+              defaultValue={produto.nome}
+              {...register('nome')}
+            />
+            <p>{errors.nome?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="descricao">Descrição</label>
-            <input id="descricao" type="text-field" value={produto.descricao} />
+            <input
+              id="descricao"
+              type="text-field"
+              defaultValue={produto.descricao}
+              {...register('nome')}
+            />
             <span className="mr06rem">Máx.: 50 caracteres</span>
+            <p>{errors.descricao?.message}</p>
           </div>
           <div className="flexColunm mb1rem ">
             <label htmlFor="valor">Valor</label>
-            <input id="valor" type="number" placeholder="00,00" value={produto.preco} />
+            <input
+              id="valor"
+              type="number"
+              placeholder="00,00"
+              defaultValue={produto.preco}
+            />
+            <p>{errors.preco?.message}</p>
           </div>
-          <div className="ativarProdutos">
-            <br />
+          <actions className="ativarProdutos">
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Ativar produto</span>
+            </section>
+
+            <section>
+              <label className="switch">
+                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <span className="slider round" />
+                <span>ON</span>
+              </label>
+              <span className="ml1rem">Permitir observações</span>
+            </section>
+          </actions>
+          <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
+
+            <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
+              Adicionar produto
+            </button>
           </div>
-          <div />
         </form>
         <div className="fotoProdutosNovo posRelative">
-          { produto.imagemProduto
-            ? (<img src={produto.imagemProduto} alt="foto do produto" />)
+
+          { baseImage
+            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
-          <input type="file" id="fileNew" name="file" onChange={(e) => uploadImagem(e)} />
+          <input
+            type="file"
+            id="fileNew"
+            name="file"
+            onChange={(e) => uploadImagem(e)}
+          />
           <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
 
           <label htmlFor="iconeUpload" className="labelIconeUpload">
@@ -87,11 +173,6 @@ export default function ProdutosNovo() {
             para adicionar uma imagem
           </label>
         </div>
-      </div>
-      <div className="acoesProdutos flexRow contentEnd contentCenter gap2rem itemsCenter">
-        <button className="btLaranja mr2rem mb2rem mt2rem" type="submit" onClick={handleSubmit(onSubmit)} color="primary">
-          Adicionar produto
-        </button>
       </div>
     </div>
 

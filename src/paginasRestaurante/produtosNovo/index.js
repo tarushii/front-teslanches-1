@@ -15,7 +15,9 @@ export default function ProdutosNovo() {
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
+
   const { user } = useAuth();
+
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
@@ -133,7 +135,12 @@ export default function ProdutosNovo() {
             ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
-          <input type="file" id="fileNew" name="file" onChange={(e) => uploadImagem(e)} />
+          <input
+            type="file"
+            id="fileNew"
+            name="file"
+            onChange={(e) => uploadImagem(e)}
+          />
           <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
 
           <label htmlFor="iconeUpload" className="labelIconeUpload">
