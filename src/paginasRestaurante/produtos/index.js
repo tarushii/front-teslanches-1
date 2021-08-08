@@ -3,6 +3,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
@@ -12,27 +13,31 @@ import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
-export default function produtos() {
+export default function produtos({
+  id: idProduto, nome, descricao, preco, imagem
+}) {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
+  const history = useHistory();
   const customId = 'custom-id-yes';
 
   useEffect(() => {
+    async function buscarProdutos() {
+      try {
+        const { dados, ok } = await get('/produtos', token);
+
+        if (!ok) {
+          toast.error(dados, { toastId: customId });
+          return;
+        }
+        setProd(dados);
+      } catch (error) {
+        toast.error(error.message, { toastId: customId });
+      }
+    }
+
     buscarProdutos();
   }, []);
-
-  async function buscarProdutos() {
-    try {
-      const { dados, ok } = await get('/produtos', token);
-
-      if (!ok) {
-        return;
-      }
-      setProd(dados);
-    } catch (error) {
-      toast.error(error.message, { toastId: customId });
-    }
-  }
 
   async function removerProduto(id) {
     try {
@@ -45,7 +50,6 @@ export default function produtos() {
     toast('Produto removido com sucesso', { toastId: customId });
   }
 
-  console.log(prod);
   return (
     <div className="bodyProdutos">
       <div className="conteinerTopo contentCenter itemsCenter">
@@ -77,9 +81,7 @@ export default function produtos() {
               <div className="flip-card-inner">
                 <div className="flip-card-front">
                   <CustomCard
-                    nome={produto.nome}
-                    valor={produto.preco}
-                    descricao={produto.descricao}
+                    {...produto}
                     removerProduto={removerProduto}
                   />
                 </div>
@@ -89,7 +91,10 @@ export default function produtos() {
                   <CustomizedDialogs
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
-                    conteudo={<ProdutosEditar />}
+                    conteudo={(<ProdutosEditar />)}
+                    onClick={() => history.push(`/produto/${idProduto}`, {
+                      idProduto, nome, descricao, preco, imagem
+                    })}
                   />
                 </div>
               </div>

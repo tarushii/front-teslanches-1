@@ -4,10 +4,14 @@ import '../../styles/global.css';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useHistory } from 'react-router-dom';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import { get } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
+import useAuth from '../../hooks/useAuth';
+import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar() {
   const { token } = useContext(AuthContext);
@@ -24,15 +28,35 @@ export default function ProdutosEditar() {
   });
   const customId = 'custom-id-yes';
 
+  const history = useHistory();
+  const {
+    id, nome, descricao, preco, imagem
+  } = history.location.state ?? {};
+
+  useEffect(() => {
+    setCarregando(true);
+    const { idProduto } = produto;
+    async function carregarProduto() {
+      const dados = await get(`/produtos/${idProduto}`, token);
+      setProduto(dados);
+    }
+
+    carregarProduto();
+    setCarregando(false);
+  }, []);
+
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
     console.log(data);
+    const dadosAtualizados = Object
+      .fromEntries(Object
+        .entries(data)
+        .filter(([, value]) => value));
 
-    const dadosCompletos = { data, urlImagem };
     try {
-      const { dados, ok } = await postAutenticado('/produtos', dadosCompletos);
-      console.log(dadosCompletos);
+      const { dados, ok } = await postAutenticado(`/produtos/${idProduto}`, dadosAtualizados, token);
+
       if (!ok) {
         setErro(dados);
         toast.error(erro, { toastId: customId });
@@ -43,7 +67,7 @@ export default function ProdutosEditar() {
     }
     setCarregando(false);
     // post direto so da url
-    toast.success('O produto foi criado com sucesso', { toastId: customId });
+    toast.success('O produto foi atualizado com sucesso', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -85,17 +109,6 @@ export default function ProdutosEditar() {
     return toast.success('A imagem foi alterada', { toastId: customId });
   }
 
-  useEffect(() => {
-    setCarregando(true);
-    async function carregarProduto() {
-      const produtoInfo = await get(`/produtos/${idProduto}`, token);
-      setProduto(produtoInfo);
-    }
-
-    carregarProduto();
-    setCarregando(false);
-  }, []);
-
   toast.error(errors.nome?.message, { toastId: customId });
   toast.error(errors.descricao?.message, { toastId: customId });
   toast.error(errors.preco?.message, { toastId: customId });
@@ -120,7 +133,7 @@ export default function ProdutosEditar() {
               id="descricao"
               type="text-field"
               defaultValue={produto.descricao}
-              {...register('nome')}
+              {...register('descricao')}
             />
             <span className="mr06rem">Máx.: 50 caracteres</span>
           </div>
@@ -131,12 +144,13 @@ export default function ProdutosEditar() {
               type="number"
               placeholder="00,00"
               defaultValue={produto.preco}
+              {...register('preco')}
             />
           </div>
           <actions className="ativarProdutos">
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <input type="checkbox" defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -145,7 +159,7 @@ export default function ProdutosEditar() {
 
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
