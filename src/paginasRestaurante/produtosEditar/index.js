@@ -4,12 +4,17 @@ import '../../styles/global.css';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import { get } from '../../services/apiClient';
+import { get, put } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
+import useAuth from '../../hooks/useAuth';
+import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
-export default function ProdutosEditar() {
+export default function ProdutosEditar({
+  id: idProduto, nome, descricao, preco, imagem
+}) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
   const [erro, setErro] = useState('');
@@ -24,15 +29,28 @@ export default function ProdutosEditar() {
   });
   const customId = 'custom-id-yes';
 
+  useEffect(() => {
+    setCarregando(true);
+    async function carregarProduto() {
+      const dados = await get(`/produtos/${idProduto}`, token);
+      setProduto(dados);
+    }
+
+    carregarProduto();
+    setCarregando(false);
+  }, []);
+
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    console.log(data);
+    const dadosAtualizados = Object
+      .fromEntries(Object
+        .entries(data)
+        .filter(([, value]) => value));
 
-    const dadosCompletos = { data, urlImagem };
     try {
-      const { dados, ok } = await postAutenticado('/produtos', dadosCompletos);
-      console.log(dadosCompletos);
+      const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
+
       if (!ok) {
         setErro(dados);
         toast.error(erro, { toastId: customId });
@@ -43,7 +61,7 @@ export default function ProdutosEditar() {
     }
     setCarregando(false);
     // post direto so da url
-    toast.success('O produto foi criado com sucesso', { toastId: customId });
+    toast.success('O produto foi atualizado com sucesso', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -71,9 +89,9 @@ export default function ProdutosEditar() {
       imagem: `${base64.split(',')[1]}`
     };
 
-    const { nome } = data;
-    const imagem = { imagem: `${nome}` };
-    await postNaoAutenticado('/delete', imagem);
+    const { nome: nomeFoto } = data;
+    const imagemFoto = { imagem: `${nomeFoto}` };
+    await postNaoAutenticado('/delete', imagemFoto);
 
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
@@ -84,17 +102,6 @@ export default function ProdutosEditar() {
     setCarregando(false);
     return toast.success('A imagem foi alterada', { toastId: customId });
   }
-
-  useEffect(() => {
-    setCarregando(true);
-    async function carregarProduto() {
-      const produtoInfo = await get(`/produtos/${idProduto}`, token);
-      setProduto(produtoInfo);
-    }
-
-    carregarProduto();
-    setCarregando(false);
-  }, []);
 
   toast.error(errors.nome?.message, { toastId: customId });
   toast.error(errors.descricao?.message, { toastId: customId });
@@ -110,7 +117,7 @@ export default function ProdutosEditar() {
             <input
               id="nomeRestaurante"
               type="text"
-              defaultValue={produto.nome}
+              defaultValue={nome}
               {...register('nome')}
             />
           </div>
@@ -119,8 +126,8 @@ export default function ProdutosEditar() {
             <input
               id="descricao"
               type="text-field"
-              defaultValue={produto.descricao}
-              {...register('nome')}
+              defaultValue={descricao}
+              {...register('descricao')}
             />
             <span className="mr06rem">Máx.: 50 caracteres</span>
           </div>
@@ -130,13 +137,14 @@ export default function ProdutosEditar() {
               id="valor"
               type="number"
               placeholder="00,00"
-              defaultValue={produto.preco}
+              defaultValue={preco}
+              {...register('preco')}
             />
           </div>
           <actions className="ativarProdutos">
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <input type="checkbox" defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -145,7 +153,7 @@ export default function ProdutosEditar() {
 
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -155,14 +163,14 @@ export default function ProdutosEditar() {
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 
             <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
-              Adicionar produto
+              Atualizar produto
             </button>
           </div>
         </form>
         <div className="fotoProdutosNovo posRelative">
 
           { baseImage
-            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
+            ? (<img src={imagem && baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
           <input

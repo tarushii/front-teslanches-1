@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import './styles.css';
 import '../../styles/global.css';
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import illustrationTop from '../../assets/illustration-top.svg';
@@ -31,21 +30,22 @@ export default function produtos() {
   const customId = 'custom-id-yes';
 
   useEffect(() => {
+    async function buscarProdutos() {
+      try {
+        const { dados, ok } = await get('/produtos', token);
+
+        if (!ok) {
+          toast.error(dados, { toastId: customId });
+          return;
+        }
+        setProd(dados);
+      } catch (error) {
+        toast.error(error.message, { toastId: customId });
+      }
+    }
+
     buscarProdutos();
   }, []);
-
-  async function buscarProdutos() {
-    try {
-      const { dados, ok } = await get('/produtos', token);
-
-      if (!ok) {
-        return;
-      }
-      setProd(dados);
-    } catch (error) {
-      toast.error(error.message, { toastId: customId });
-    }
-  }
 
   async function removerProduto(id) {
     try {
@@ -57,6 +57,7 @@ export default function produtos() {
     }
     toast('Produto removido com sucesso', { toastId: customId });
   }
+
 
   console.log(prod);
   console.log(user.Categoria);
@@ -96,7 +97,7 @@ export default function produtos() {
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
           <h1 className="nomeRestaurante">{ user.NomeRestaurante }</h1>
-          <button className="btTransparente logout" type="button" onClick={deslogar}>Logout</button>
+          <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
@@ -122,9 +123,7 @@ export default function produtos() {
               <div className="flip-card-inner">
                 <div className="flip-card-front">
                   <CustomCard
-                    nome={produto.nome}
-                    valor={produto.preco}
-                    descricao={produto.descricao}
+                    {...produto}
                     removerProduto={removerProduto}
                   />
                 </div>
@@ -134,7 +133,8 @@ export default function produtos() {
                   <CustomizedDialogs
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
-                    conteudo={<ProdutosEditar />}
+                    conteudo={<ProdutosEditar {...produto} />}
+
                   />
                 </div>
               </div>

@@ -13,11 +13,12 @@ import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosNovo() {
   const [erro, setErro] = useState('');
+  const [open, setOpen] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const {
     register, handleSubmit, formState: { errors }
@@ -26,25 +27,32 @@ export default function ProdutosNovo() {
   });
   const customId = 'custom-id-yes';
 
+  function handleClose() {
+    setOpen(false);
+  }
+
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    console.log(data);
 
     try {
-      const { dados, ok } = await postAutenticado('/produtos', data);
-      console.log(data);
+      const { dados, ok } = await postAutenticado('/produtos', data, token);
+
       if (!ok) {
+        toast.error(erro, { toastId: customId });
         setErro(dados);
-        console.log(erro);
         return;
       }
+      toast.success('Produto criado com sucesso', { toastId: customId });
     } catch (error) {
+      toast.error(error, { toastId: customId });
       setErro(`Erro:${error.message}`);
+      return;
     }
+
     setCarregando(false);
     // post direto so da url
-    toast.success('Produto criado com sucesso', { toastId: customId });
+    handleClose();
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -109,7 +117,7 @@ export default function ProdutosNovo() {
           <actions className="ativarProdutos">
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('ativar')} defaultChecked="true" />
+                <input type="checkbox" defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -118,7 +126,7 @@ export default function ProdutosNovo() {
 
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('permitirObservacoes')} defaultChecked="true" />
+                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
