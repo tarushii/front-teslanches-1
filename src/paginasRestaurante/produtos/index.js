@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import './styles.css';
 import '../../styles/global.css';
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import illustrationTop from '../../assets/illustration-top.svg';
@@ -52,7 +51,7 @@ export default function produtos() {
       <div className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
           <h1 className="nomeRestaurante">{ user.NomeRestaurante }</h1>
-          <button className="btTransparente logout" type="button" onClick={deslogar}>Logout</button>
+          <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
