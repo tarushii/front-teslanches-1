@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import './styles.css';
 
 export default function CustomCard({
-  id: idProduto, nome, descricao, preco, imagem
+  nome, descricao, preco, imagem
 }) {
-  const [editModal, setEditModal] = useState('');
-  const [editProduct, setEditProduct] = useState({});
-
-  useEffect(() => {
-    setEditProduct({});
-  }, [editModal]);
-
   return (
 
     <card className="card flexRow gap1rem contentBetween itemsCenter posRelative">
