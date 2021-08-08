@@ -13,7 +13,9 @@ import AuthContext from '../../context/AuthContext';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
-export default function ProdutosEditar() {
+export default function ProdutosEditar({
+  id: idProduto, nome, descricao, preco, imagem
+}) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
   const [erro, setErro] = useState('');
@@ -28,14 +30,8 @@ export default function ProdutosEditar() {
   });
   const customId = 'custom-id-yes';
 
-  const history = useHistory();
-  const {
-    id, nome, descricao, preco, imagem
-  } = history.location.state ?? {};
-
   useEffect(() => {
     setCarregando(true);
-    const { idProduto } = produto;
     async function carregarProduto() {
       const dados = await get(`/produtos/${idProduto}`, token);
       setProduto(dados);
@@ -95,9 +91,9 @@ export default function ProdutosEditar() {
       imagem: `${base64.split(',')[1]}`
     };
 
-    const { nome } = data;
-    const imagem = { imagem: `${nome}` };
-    await postNaoAutenticado('/delete', imagem);
+    const { nome: nomeFoto } = data;
+    const imagemFoto = { imagem: `${nomeFoto}` };
+    await postNaoAutenticado('/delete', imagemFoto);
 
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
@@ -123,7 +119,7 @@ export default function ProdutosEditar() {
             <input
               id="nomeRestaurante"
               type="text"
-              defaultValue={produto.nome}
+              defaultValue={nome}
               {...register('nome')}
             />
           </div>
@@ -132,7 +128,7 @@ export default function ProdutosEditar() {
             <input
               id="descricao"
               type="text-field"
-              defaultValue={produto.descricao}
+              defaultValue={descricao}
               {...register('descricao')}
             />
             <span className="mr06rem">Máx.: 50 caracteres</span>
@@ -143,7 +139,7 @@ export default function ProdutosEditar() {
               id="valor"
               type="number"
               placeholder="00,00"
-              defaultValue={produto.preco}
+              defaultValue={preco}
               {...register('preco')}
             />
           </div>
@@ -176,7 +172,7 @@ export default function ProdutosEditar() {
         <div className="fotoProdutosNovo posRelative">
 
           { baseImage
-            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
+            ? (<img src={imagem && baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
           <input

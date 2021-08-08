@@ -3,7 +3,6 @@ import './styles.css';
 import '../../styles/global.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
@@ -13,12 +12,9 @@ import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
-export default function produtos({
-  id: idProduto, nome, descricao, preco, imagem
-}) {
+export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
-  const history = useHistory();
   const customId = 'custom-id-yes';
 
   useEffect(() => {
@@ -91,10 +87,8 @@ export default function produtos({
                   <CustomizedDialogs
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
-                    conteudo={(<ProdutosEditar />)}
-                    onClick={() => history.push(`/produto/${idProduto}`, {
-                      idProduto, nome, descricao, preco, imagem
-                    })}
+                    conteudo={<ProdutosEditar {...produto} />}
+
                   />
                 </div>
               </div>
