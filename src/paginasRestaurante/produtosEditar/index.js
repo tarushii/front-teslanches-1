@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import { get } from '../../services/apiClient';
+import { get, put } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
@@ -43,14 +43,13 @@ export default function ProdutosEditar({
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    console.log(data);
     const dadosAtualizados = Object
       .fromEntries(Object
         .entries(data)
         .filter(([, value]) => value));
 
     try {
-      const { dados, ok } = await postAutenticado(`/produtos/${idProduto}`, dadosAtualizados, token);
+      const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
 
       if (!ok) {
         setErro(dados);
@@ -164,7 +163,7 @@ export default function ProdutosEditar({
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 
             <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
-              Adicionar produto
+              Atualizar produto
             </button>
           </div>
         </form>
