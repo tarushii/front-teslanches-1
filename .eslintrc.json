@@ -25,10 +25,10 @@
         "jsx-a11y/label-has-associated-control":"off",
         "react/prop-types":"off",
         "react/jsx-props-no-spreading": "off",
-        "react/destructuring-assignment":"off",
-        "no-console":"off",
+        "react/destructuring-assignment":"warn",
+        "no-console":"warn",
         "no-unused-vars":"warn",
-        "import/no-cycle":"off",
+        "import/no-cycle":"warn",
         "no-restricted-globals":"warn",
         "no-shadow":"warn",
         "import/no-unresolved":"warn"

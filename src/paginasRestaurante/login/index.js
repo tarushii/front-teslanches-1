@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-expressions */
 import './styles.css';
 import '../../styles/global.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
 import illustrationCenter from '../../assets/illustration-center.svg';
 import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
@@ -19,17 +21,18 @@ export default function Login() {
   const [carregando, setCarregando] = useState(false);
   const history = useHistory();
   const { logar } = useAuth();
+  const customId = 'custom-id-yes';
+
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    console.log(data);
     try {
       const { dados, ok } = await postNaoAutenticado('/login', data);
       setCarregando(false);
-      console.log(dados);
+
       if (!ok) {
         setErro(dados);
-        console.log(erro);
+        toast.error(erro, { toastId: customId });
         return;
       }
 
@@ -37,10 +40,14 @@ export default function Login() {
 
       history.push('/produtos');
     } catch (error) {
+      toast.error(error.message, { toastId: customId });
       setErro(`Erro:${error.message}`);
     }
     setCarregando(false);
   }
+
+  toast.error(errors.email?.message, { toastId: customId });
+  toast.error(errors.senha?.message, { toastId: customId });
 
   return (
     <div className="bodyLogin">
@@ -55,7 +62,6 @@ export default function Login() {
               <div className="flexColunm mb1rem">
                 <label htmlFor="email">Email</label>
                 <input id="email" type="text" {...register('email', { required: true })} />
-                <p>{errors.email?.message}</p>
 
               </div>
 
@@ -67,7 +73,6 @@ export default function Login() {
                 setValue={setPassword}
 
               />
-              <p>{errors.senha?.message}</p>
               <div className="flexRow contentCenter mt1rem mb1rem">
                 <button className="btLaranja" type="submit"> Entrar </button>
               </div>

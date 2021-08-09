@@ -24,7 +24,18 @@
   line-height: 100%;
   text-align: center;
   color: #F21B1B;
-  width: 13.5rem;
-  height: 2.5rem;
   border-radius: 1.25rem;
+  cursor: pointer;
+}
+
+.btLogout{
+  all: unset;
+  font-style: normal;
+  font-weight: 600;
+  font-size: .875rem;
+  line-height: 100%;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 1.25rem;
+  cursor: pointer;
 }

@@ -3,9 +3,7 @@
 /* eslint-disable no-use-before-define */
 import './styles.css';
 import '../../styles/global.css';
-import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
 import { toast } from 'react-toastify';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
@@ -14,8 +12,10 @@ import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
+import ProdutosEditar from '../produtosEditar';
+
 import Diversos from '../../assets/bg-Diversos.png';
-import Pizzaria from '../../assets/bg-Pizzaria.png';
+import Pizzaria from '../../assets/bg-pizzaria.png';
 import Massas from '../../assets/bg-Massas.png';
 import Arabe from '../../assets/bg-Arabe.png';
 import Carnes from '../../assets/bg-Carnes.png';
@@ -27,12 +27,10 @@ import Brasileira from '../../assets/bg-Brasileira.png';
 import Lanches from '../../assets/bg-Lanches.png';
 
 export default function produtos() {
-  const [cardapio, setCardapio] = useState([]);
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
-  const history = useHistory();
 
   useEffect(() => {
     async function buscarProdutos() {
@@ -49,23 +47,23 @@ export default function produtos() {
       }
     }
 
+    const buscarUsuario = async () => {
+      try {
+        const { dados, ok } = await get('/usuario', token);
+
+        if (!ok) {
+          return toast.error(`erro${dados}`);
+        }
+        toast.error(dados);
+        return setUsuario(dados);
+      } catch (error) {
+        toast.error(error.message);
+      }
+      return toast.error('Usuario');
+    };
+    buscarUsuario();
     buscarProdutos();
   }, []);
-
-  const buscarUsuario = async () => {
-    try {
-      const { dados, ok } = await get('/usuario', token);
-
-      if (!ok) {
-        return console.log(`erro${dados}`);
-      }
-      console.log(dados);
-      return setUsuario(dados);
-    } catch (error) {
-      console.log(error.message);
-    }
-    return console.log('Usuario');
-  };
 
   async function removerProduto(id) {
     try {
@@ -73,9 +71,11 @@ export default function produtos() {
 
       setProd(dados);
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message, { toastId: customId });
     }
+    toast('Produto removido com sucesso', { toastId: customId });
   }
+
   console.log(prod);
   console.log(user.Categoria);
 
@@ -112,7 +112,7 @@ export default function produtos() {
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">{usuario.nome}</h1>
+          <h1 className="nomeRestaurante">{ user.NomeRestaurante }</h1>
           <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
@@ -136,19 +136,33 @@ export default function produtos() {
 
         <div className="conteinerCardapio flexRow gap2rem">
           { prod.map((produto) => (
-            <div style={{ cursor: 'pointer' }} item key={produto.id}>
-              <CustomCard
-                nome={produto.nome}
-                valor={produto.preco}
-                descricao={produto.descricao}
-                removerProduto={removerProduto}
-              />
+
+            <div className="flip-card" item key={produto.id}>
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <CustomCard
+                    {...produto}
+                    removerProduto={removerProduto}
+                  />
+                </div>
+                <div className="flip-card-back">
+                  <button className="btTransparente" type="button" onClick={removerProduto}>Excluir produto do catálogo</button>
+                  {' '}
+                  <CustomizedDialogs
+                    btAbrirMensagem={<> Editar produto </>}
+                    btMensagem={<>Atualizar produto </>}
+                    conteudo={<ProdutosEditar {...produto} />}
+
+                  />
+                </div>
+              </div>
             </div>
+
           ))}
         </div>
       </div>
 
-      <div className={`${cardapio.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
+      <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
         <span>
           Você ainda não tem nenhum produto no seu cardápio.
           <br />
@@ -160,7 +174,6 @@ export default function produtos() {
           conteudo={<ProdutosNovo />}
         />
       </div>
-
     </div>
   );
 }

@@ -7,6 +7,7 @@ import useAuth from './hooks/useAuth';
 import Login from './paginasRestaurante/login';
 import Cadastrar from './paginasRestaurante/cadastrar';
 import produtos from './paginasRestaurante/produtos';
+import ProdutosEditar from './paginasRestaurante/produtosEditar';
 
 function RotasProtegidas(props) {
   const { token } = useAuth();
@@ -27,6 +28,7 @@ export default function Routes() {
           <Route path="/cadastrar" component={Cadastrar} />
           <RotasProtegidas>
             <Route path="/produtos" component={produtos} />
+            <Route path="/produtos/:idProduto/editar" exact component={ProdutosEditar} />
           </RotasProtegidas>
         </Switch>
       </Router>

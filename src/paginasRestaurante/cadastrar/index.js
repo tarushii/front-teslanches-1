@@ -1,4 +1,5 @@
 import { React, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './styles.css';
 import '../../styles/global.css';
 import { postNaoAutenticado } from '../../services/apiClient';
@@ -59,6 +60,7 @@ export default function Cadastrar() {
         dadosDoUsuario.nome = dadosE.Nome;
         dadosDoUsuario.email = dadosE.Email;
         dadosDoUsuario.senha = dadosE.Senha;
+
         stepper1.classList.remove('stepper--atual');
         stepper1.classList.add('stepper--finalizado');
         stepper2.classList.remove('stepper--incompleto');
@@ -139,7 +141,6 @@ export default function Cadastrar() {
       return (validacao);
     }
 
-    // Confirma registro e retorna para login
     if (etapa === 4) {
       return (validacao);
     }
@@ -316,6 +317,10 @@ export default function Cadastrar() {
           <button className="anterior-form" type="button" onClick={() => recuar()}>Anterior</button>
           <button className="proximo-form" type="button" onClick={() => avancar()}>Próximo</button>
         </footer>
+        <p className="retornar-login">
+          Já tem uma conta?
+          <Link to="/">  Fazer login</Link>
+        </p>
       </section>
     </article>
   );

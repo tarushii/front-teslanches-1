@@ -1,3 +1,9 @@
 .MuiDialog-paperWidthSm{
   max-width: 87.5rem !important;
 }
+
+#btCancelar{
+  position: absolute;
+  right: 18.75rem;
+  bottom: 3.75rem;
+}
