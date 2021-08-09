@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-use-before-define */
 import './styles.css';
 import '../../styles/global.css';
@@ -13,7 +15,7 @@ import { get, del } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
 import Diversos from '../../assets/bg-Diversos.png';
-import Pizzaria from '../../assets/bg-Pizzaria.png';
+import Pizzaria from '../../assets/bg-pizzaria.png';
 import Massas from '../../assets/bg-Massas.png';
 import Arabe from '../../assets/bg-Arabe.png';
 import Carnes from '../../assets/bg-Carnes.png';
@@ -27,6 +29,7 @@ import Lanches from '../../assets/bg-Lanches.png';
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
+  const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
   useEffect(() => {
@@ -44,6 +47,21 @@ export default function produtos() {
       }
     }
 
+    const buscarUsuario = async () => {
+      try {
+        const { dados, ok } = await get('/usuario', token);
+
+        if (!ok) {
+          return toast.error(`erro${dados}`);
+        }
+        toast.error(dados);
+        return setUsuario(dados);
+      } catch (error) {
+        toast.error(error.message);
+      }
+      return toast.error('Usuario');
+    };
+    buscarUsuario();
     buscarProdutos();
   }, []);
 
@@ -57,7 +75,6 @@ export default function produtos() {
     }
     toast('Produto removido com sucesso', { toastId: customId });
   }
-
 
   console.log(prod);
   console.log(user.Categoria);
@@ -91,7 +108,6 @@ export default function produtos() {
         return { backgroundImage: `url(${Arabe})` };
     }
   };
-
   return (
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
@@ -101,6 +117,8 @@ export default function produtos() {
         </div>
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
+
+      <img src={usuario.imagem_restaurante} alt="avatarRestaurante" className="avatarRestaurante" />
       <div className="avatarRestaurante">
         <CustomizedDialogs
           conteudo={<UsuarioEditar />}
