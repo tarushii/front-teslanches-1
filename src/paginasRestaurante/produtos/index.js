@@ -58,8 +58,6 @@ export default function produtos() {
     toast('Produto removido com sucesso', { toastId: customId });
   }
 
-
-  console.log(prod);
   console.log(user.Categoria);
 
   const categoriaStyle = () => {
