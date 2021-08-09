@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable no-param-reassign */
 import './styles.css';
 import React, { useState, useEffect } from 'react';
@@ -76,15 +77,14 @@ export default function UsuarioEditar() {
     if (!ok) {
       return console.log(dados);
     }
-    setUrlImagem(`imagem_restaurante:${dados}`);
+    setUrlImagem({ imagem_restaurante: dados });
 
     return console.log('sucesso');
   };
 
   async function onSubmit(data) {
-    console.log(urlImagem);
-    console.log(data);
-    data.taxa_entrega *= 100;
+    data.taxa_entrega = ((parseInt(data.taxa_entrega)) * 100);
+    data.categoria_id = parseInt(data.categoria_id);
     if (data.nomeUsuario === '') {
       data.nomeUsuario = usuario.nomeusuario;
     }
@@ -109,22 +109,22 @@ export default function UsuarioEditar() {
     if (data.valor_minimo_pedido === '') {
       data.valor_minimo_pedido = usuario.valor_minimo_pedido;
     }
-    console.log(data);
-    console.log(values);
+    console.log(JSON.stringify(data));
+    if (!values.password) {
+      return toast.error('Senhas são obrigatórias ');
+    }
     if (values.password !== values.tryPassword) {
-      toast.error('Senhas não conferem');
+      return toast.error('Senhas não conferem');
     }
     try {
-      /* const { dados, ok } = await put('/usuario', data, token);
-
+      const { dados, ok } = await put('/usuario', data, token);
+      const imagemMudada = await put('/imagemUsuario', urlImagem, token);
+      console.log(imagemMudada);
       if (!ok) {
-        return console.log(`erro${dados}`);
+        return toast.error(`erro: ${dados}`);
       }
-
-      await put('/usuario', urlImagem, token);
-      */
     } catch (error) {
-      console.log(error.message);
+      return toast.error(error.message);
     }
     return console.log('sucesso ao editar usuario');
   }
