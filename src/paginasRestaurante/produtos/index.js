@@ -5,6 +5,7 @@ import './styles.css';
 import '../../styles/global.css';
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Button from '@material-ui/core/Button';
 import illustrationTop from '../../assets/illustration-top.svg';
 import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
@@ -62,10 +63,7 @@ export default function produtos() {
       console.log(error.message);
     }
   }
-  function abrirModal() {
-    return <CustomizedDialogs conteudo={<UsuarioEditar />} />;
-  }
-  console.log(prod);
+
   return (
     <div className="bodyProdutos">
       <div className="conteinerTopo contentCenter itemsCenter">
@@ -76,16 +74,13 @@ export default function produtos() {
       </div>
       <img className="vetorProdutos" src={illustrationTop} alt="vetor" />
 
-      <img
-        src={usuario.imagem_restaurante}
-        alt="Imagem do restaurante"
-        className="avatarRestaurante"
-        onClick={() => (
-          <CustomizedDialogs
-            conteudo={<UsuarioEditar />}
-          />
-        )}
-      />
+      <img src={usuario.imagem_restaurante} alt="avatarRestaurante" className="avatarRestaurante" />
+      <div className="avatarRestaurante">
+        <CustomizedDialogs
+          conteudo={<UsuarioEditar />}
+        />
+      </div>
+
       <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
         <div className="contemBotao flexRow itemsCenter">
           <CustomizedDialogs
