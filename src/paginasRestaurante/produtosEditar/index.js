@@ -7,13 +7,15 @@ import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
-import { get, put } from '../../services/apiClient';
+import {
+  get, postAutenticado, postNaoAutenticado, put
+} from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar({
-  id: idProduto, nome, descricao, preco, imagem
+  id: idProduto, nome, descricao, preco, imagemProduto
 }) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
@@ -43,25 +45,42 @@ export default function ProdutosEditar({
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-    const dadosAtualizados = Object
+
+    const { permiteObservacoes: permite, ativo: ativar } = data;
+    // const todosDados = { ...data, imagem_produto: urlImagem };
+    const dadosFoto = { imagem_produto: urlImagem };
+
+    const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(data)
         .filter(([, value]) => value));
 
+    console.log(todosDados);
+
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
+      const fotoRes = await put(`/produtos/${idProduto}`, dadosFoto, token);
 
       if (!ok) {
         setErro(dados);
-        toast.error(erro, { toastId: customId });
+        toast.error(erro.message, { toastId: customId });
         return;
+      }
+
+      if (ativo) {
+        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, ativo, token);
+        toast.success(ativado, { toastId: customId });
+      } else {
+        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, ativo, token);
+        toast.success(ativado, { toastId: customId });
       }
     } catch (error) {
       setErro(`Erro:${error.message}`);
+      toast.error(error);
     }
     setCarregando(false);
-    // post direto so da url
-    toast.success('O produto foi atualizado com sucesso', { toastId: customId });
+
+    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -144,7 +163,7 @@ export default function ProdutosEditar({
           <actions className="ativarProdutos">
             <section>
               <label className="switch">
-                <input type="checkbox" defaultChecked="true" />
+                <input type="checkbox" defaultChecked="true" {...register('ativar')} />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -153,7 +172,7 @@ export default function ProdutosEditar({
 
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked="true" />
+                <input type="checkbox" {...register('permite')} defaultChecked="true" />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -170,7 +189,7 @@ export default function ProdutosEditar({
         <div className="fotoProdutosNovo posRelative">
 
           { baseImage
-            ? (<img src={imagem && baseImage} alt="foto do produto" id="fotoCarregada" />)
+            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
             : (<img src={fotoProduto} alt="foto do produto" />)}
           <label htmlFor="fileNew" className="fileNew" />
           <input

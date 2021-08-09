@@ -23,7 +23,7 @@ export default function CustomizedDialogs(props) {
 
   return (
     <div>
-      <button className="btLaranja mt2rem" type="button" onClick={handleClickOpen}>
+      <button className={`${props.btClassName} mt2rem`} type="button" onClick={handleClickOpen}>
         {props.btAbrirMensagem}
       </button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>

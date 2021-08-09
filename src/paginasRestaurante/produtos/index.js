@@ -76,7 +76,7 @@ export default function produtos() {
     toast('Produto removido com sucesso', { toastId: customId });
   }
 
-  console.log(prod);
+
   console.log(user.Categoria);
 
   const categoriaStyle = () => {
@@ -121,6 +121,7 @@ export default function produtos() {
       <img src={usuario.imagem_restaurante} alt="avatarRestaurante" className="avatarRestaurante" />
       <div className="avatarRestaurante">
         <CustomizedDialogs
+          btClassName="btEditarUsuario"
           conteudo={<UsuarioEditar />}
         />
       </div>
@@ -128,6 +129,7 @@ export default function produtos() {
       <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
         <div className="contemBotao flexRow itemsCenter">
           <CustomizedDialogs
+            btClassName="btLaranja"
             btAbrirMensagem={<> Adicionar produto ao cardápio</>}
             btMensagem={<>Adicionar produto novo</>}
             conteudo={<ProdutosNovo />}
@@ -149,6 +151,7 @@ export default function produtos() {
                   <button className="btTransparente" type="button" onClick={removerProduto}>Excluir produto do catálogo</button>
                   {' '}
                   <CustomizedDialogs
+                    btClassName="btLaranja"
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
                     conteudo={<ProdutosEditar {...produto} />}
@@ -169,6 +172,7 @@ export default function produtos() {
           Gostaria de adicionar um novo produto?
         </span>
         <CustomizedDialogs
+          btClassName="btLaranja"
           btAbrirMensagem={<> Adicionar produto ao cardápio</>}
           btMensagem={<>Adicionar produto novo</>}
           conteudo={<ProdutosNovo />}
