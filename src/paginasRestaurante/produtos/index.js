@@ -76,9 +76,6 @@ export default function produtos() {
     toast('Produto removido com sucesso', { toastId: customId });
   }
 
-
-  console.log(user.Categoria);
-
   const categoriaStyle = () => {
     const categoria = user.Categoria;
     switch (categoria) {
@@ -122,7 +119,7 @@ export default function produtos() {
       <div className="avatarRestaurante">
         <CustomizedDialogs
           btClassName="btEditarUsuario"
-          conteudo={<UsuarioEditar />}
+          conteudo={<UsuarioEditar {...usuario} />}
         />
       </div>
 
