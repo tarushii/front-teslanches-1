@@ -45,6 +45,7 @@ export default function produtos() {
           return;
         }
         setProd(dados);
+        console.log(dados);
       } catch (error) {
         toast.error(error.message, { toastId: customId });
       }
@@ -64,6 +65,7 @@ export default function produtos() {
       }
       return toast.error('Usuario');
     };
+
     buscarUsuario();
     buscarProdutos();
   }, [token, f5]);
@@ -122,6 +124,7 @@ export default function produtos() {
             btAbrirMensagem={<> Adicionar produto ao cardápio</>}
             btMensagem={<>Adicionar produto novo</>}
             conteudo={<ProdutosNovo recarregarPag={() => setF5(true)} />}
+            recarregarPag={() => setF5(true)}
           />
         </div>
 
@@ -146,7 +149,7 @@ export default function produtos() {
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
                     conteudo={<ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />}
-
+                    recarregarPag={() => setF5(true)}
                   />
                 </div>
               </div>
