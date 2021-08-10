@@ -111,7 +111,7 @@ export default function produtos() {
       <div className="avatarRestaurante">
         <CustomizedDialogs
           btClassName="btEditarUsuario"
-          conteudo={<UsuarioEditar />}
+          conteudo={<UsuarioEditar recarregarPag={() => setF5(true)} />}
         />
       </div>
 
@@ -121,7 +121,7 @@ export default function produtos() {
             btClassName="btLaranja"
             btAbrirMensagem={<> Adicionar produto ao cardápio</>}
             btMensagem={<>Adicionar produto novo</>}
-            conteudo={<ProdutosNovo />}
+            conteudo={<ProdutosNovo recarregarPag={() => setF5(true)} />}
           />
         </div>
 

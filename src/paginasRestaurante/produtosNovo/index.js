@@ -11,7 +11,7 @@ import { postAutenticado, postNaoAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
-export default function ProdutosNovo() {
+export default function ProdutosNovo({ recarregarPag }) {
   const [erro, setErro] = useState('');
   const [open, setOpen] = useState('');
   const [carregando, setCarregando] = useState(false);
@@ -52,6 +52,7 @@ export default function ProdutosNovo() {
 
     setCarregando(false);
     // post direto so da url
+    recarregarPag();
     handleClose();
   }
 

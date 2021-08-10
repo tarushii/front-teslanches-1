@@ -15,7 +15,7 @@ import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar({
-  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes
+  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes, recarregarPag
 }) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
@@ -89,6 +89,7 @@ export default function ProdutosEditar({
 
     setCarregando(false);
     toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
+    recarregarPag();
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
