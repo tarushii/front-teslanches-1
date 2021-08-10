@@ -15,7 +15,7 @@ import { get } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
 import Diversos from '../../assets/bg-Diversos.png';
-import Pizzaria from '../../assets/bg-pizzaria.png';
+import Pizzaria from '../../assets/bg-Pizzaria.png';
 import Massas from '../../assets/bg-Massas.png';
 import Arabe from '../../assets/bg-Arabe.png';
 import Carnes from '../../assets/bg-Carnes.png';

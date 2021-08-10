@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 // Tive ajuda nesses estilos
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
 
   botoes: {
     display: 'flex',
