@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import './styles.css';
 
 export default function CustomCard({
-  nome, descricao, preco, imagemProduto
+  nome, descricao, preco, imagem_produto: imagemProduto
 }) {
   return (
 
@@ -27,7 +27,7 @@ export default function CustomCard({
         </cardcontent>
       </div>
       <div className="flexRow mr1rem">
-        <img className="imgCard" src={imagemProduto} alt={`foto de ${nome}`} />
+        <img className="imgCard" src={`${imagemProduto}`} alt={`foto de ${nome}`} />
       </div>
 
     </card>
