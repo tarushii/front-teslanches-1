@@ -68,7 +68,20 @@ export default function produtos() {
 
     buscarUsuario();
     buscarProdutos();
-  }, [token, f5]);
+
+  }, [token,f5]);
+
+  async function removerProduto(id) {
+    try {
+      const dados = await del(`produtos/${id}`);
+
+      setProd(dados);
+    } catch (error) {
+      toast.error(error.message, { toastId: customId });
+    }
+    toast('Produto removido com sucesso', { toastId: customId });
+  }
+  
 
   const categoriaStyle = () => {
     const categoria = user.Categoria;
@@ -113,7 +126,7 @@ export default function produtos() {
       <div className="avatarRestaurante">
         <CustomizedDialogs
           btClassName="btEditarUsuario"
-          conteudo={<UsuarioEditar recarregarPag={() => setF5(true)} />}
+          conteudo={<UsuarioEditar {...usuario} recarregarPag={() => setF5(true)} />}
         />
       </div>
 
