@@ -15,7 +15,7 @@ import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar({
-  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes
+  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes, recarregarPag
 }) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
@@ -46,13 +46,11 @@ export default function ProdutosEditar({
     setCarregando(true);
     setErro('');
 
-    // const { permiteObservacoes, ativo: ativar } = data;
-    // const todosDados = { ...data, imagem_produto: urlImagem };
-    const dadosFoto = { imagem_produto: urlImagem };
+    const todosDados = { ...data, imagemProduto: urlImagem };
 
     const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
-        .entries(data)
+        .entries(todosDados)
         .filter(([, value]) => value));
 
     console.log(dadosAtualizados);
@@ -60,7 +58,6 @@ export default function ProdutosEditar({
 
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-      const { resFoto, ok: okFoto } = await put(`/imagemProduto/${idProduto}`, dadosFoto, token);
 
       if (!ok) {
         setErro(dados);
@@ -88,6 +85,7 @@ export default function ProdutosEditar({
     }
 
     setCarregando(false);
+    recarregarPag();
     toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
   }
 
@@ -111,15 +109,18 @@ export default function ProdutosEditar({
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
+    const imagemFoto = { imagem: `${ID}/${idProduto}/${Date.now()}.jpg` };
+
+    const temFoto = await postNaoAutenticado('/imagem', imagemFoto);
+
+    if (temFoto) {
+      await postNaoAutenticado('/delete', imagemFoto);
+    }
+
     const data = {
-      nome: `${ID}/produto.jpg`,
+      nome: `${ID}/${idProduto}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
-
-    const { nome: nomeFoto } = data;
-    const imagemFoto = { imagem: `${nomeFoto}` };
-    await postNaoAutenticado('/delete', imagemFoto);
-
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {

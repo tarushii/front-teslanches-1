@@ -11,7 +11,7 @@ import { postAutenticado, postNaoAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
-export default function ProdutosNovo() {
+export default function ProdutosNovo({ recarregarPag }) {
   const [erro, setErro] = useState('');
   const [open, setOpen] = useState('');
   const [carregando, setCarregando] = useState(false);
@@ -35,6 +35,7 @@ export default function ProdutosNovo() {
     setCarregando(true);
     setErro('');
 
+    console.log(data);
     try {
       const { dados, ok } = await postAutenticado('/produtos', data, token);
 
@@ -49,9 +50,9 @@ export default function ProdutosNovo() {
       setErro(`Erro:${error.message}`);
       return;
     }
-
     setCarregando(false);
-    // post direto so da url
+    toast.success('O produto foi criado com sucesso!', { toastId: customId });
+    recarregarPag();
     handleClose();
   }
 
@@ -86,10 +87,11 @@ export default function ProdutosNovo() {
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return console.log(dados);
+      toast.error(dados, { toastId: customId });
+      return;
     }
     setUrlImagem(dados);
-    return console.log('sucesso');
+    toast.success('A foto foi carregada com sucesso!', { toastId: customId });
   };
 
   toast.error(errors.nome?.message, { toastId: customId });
@@ -133,6 +135,7 @@ export default function ProdutosNovo() {
               <span className="ml1rem">Permitir observações</span>
             </section>
           </actions>
+          <input type="text" {...register('imagemProduto')} value={urlImagem} />
           <div />
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 

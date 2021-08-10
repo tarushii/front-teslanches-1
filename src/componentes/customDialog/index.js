@@ -11,7 +11,9 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-export default function CustomizedDialogs(props) {
+export default function CustomizedDialogs({
+  btClassName, btAbrirMensagem, conteudo, recarregarPag
+}) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -23,13 +25,13 @@ export default function CustomizedDialogs(props) {
 
   return (
     <div>
-      <button className={`${props.btClassName} mt2rem`} type="button" onClick={handleClickOpen}>
-        {props.btAbrirMensagem}
+      <button className={`${btClassName} mt2rem`} type="button" onClick={handleClickOpen}>
+        {btAbrirMensagem}
       </button>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
 
         <DialogContent dividers>
-          {props.conteudo}
+          {conteudo}
           <button id="btCancelar" className="btTransparente" type="button" onClick={handleClose}>cancelar</button>
         </DialogContent>
 
