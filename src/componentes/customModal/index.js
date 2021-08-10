@@ -49,10 +49,6 @@ export default function CustomModal({ id, recarregarPag }) {
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
-      {/* <DeleteSweepIcon
-        className={classes.deleteIcon}
-        onClick={handleClickOpen}
-      /> */}
       <button type="button" className="btTransparente" onClick={handleClickOpen}>Excluir produto do catálogo</button>
       <Dialog
         open={open}
