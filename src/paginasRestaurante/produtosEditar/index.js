@@ -65,12 +65,6 @@ export default function ProdutosEditar({
         return;
       }
 
-      if (!okFoto) {
-        setErro(dados);
-        toast.error(erro.message, { toastId: customId });
-        return;
-      }
-
       if (!ativo) {
         const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
         toast.warn('O produto foi desativado', { toastId: customId });

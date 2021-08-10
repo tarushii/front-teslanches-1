@@ -35,15 +35,31 @@ export default function ProdutosNovo({ recarregarPag }) {
     setCarregando(true);
     setErro('');
 
-    console.log(data);
+    const todosDados = { ...data, imagemProduto: urlImagem };
+
+    const { ativo, ...dadosAtualizados } = Object
+      .fromEntries(Object
+        .entries(todosDados)
+        .filter(([, value]) => value));
+
+    console.log(dadosAtualizados);
     try {
-      const { dados, ok } = await postAutenticado('/produtos', data, token);
+      const { dados, ok } = await postAutenticado('/produtos', dadosAtualizados, token);
 
       if (!ok) {
         toast.error(erro, { toastId: customId });
         setErro(dados);
         return;
       }
+
+      if (!ativo) {
+        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
+        toast.warn('O produto foi desativado', { toastId: customId });
+      } else {
+        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
+        toast.warn('O produto foi ativado!', { toastId: customId });
+      }
+
       toast.success('Produto criado com sucesso', { toastId: customId });
     } catch (error) {
       toast.error(error, { toastId: customId });
@@ -69,30 +85,34 @@ export default function ProdutosNovo({ recarregarPag }) {
     };
   });
 
-  const uploadImagem = async (e) => {
+  async function uploadImagem(e) {
+    setCarregando(true);
     const { ID } = user;
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
+    const imagemFoto = { imagem: `${ID}/${Date.now()}.jpg` };
+
+    const temFoto = await postNaoAutenticado('/imagem', imagemFoto);
+
+    if (temFoto) {
+      await postNaoAutenticado('/delete', imagemFoto);
+    }
+
     const data = {
-      nome: `${ID}/produto.jpg`,
+      nome: `${ID}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
-
-    const { nome } = data;
-    const imagem = { imagem: `${nome}` };
-    await postNaoAutenticado('/delete', imagem);
-
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      toast.error(dados, { toastId: customId });
-      return;
+      return toast.error(dados, { toastId: customId });
     }
     setUrlImagem(dados);
-    toast.success('A foto foi carregada com sucesso!', { toastId: customId });
-  };
+    setCarregando(false);
+    return toast.success('A imagem foi alterada', { toastId: customId });
+  }
 
   toast.error(errors.nome?.message, { toastId: customId });
   toast.error(errors.descricao?.message, { toastId: customId });
@@ -135,7 +155,7 @@ export default function ProdutosNovo({ recarregarPag }) {
               <span className="ml1rem">Permitir observações</span>
             </section>
           </actions>
-          <input type="text" {...register('imagemProduto')} value={urlImagem} />
+          {/* <input type="text" {...register('imagemProduto')} value={urlImagem} /> */}
           <div />
           <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
 
