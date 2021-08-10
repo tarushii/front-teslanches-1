@@ -9,7 +9,7 @@ import ProdutosNovo from '../produtosNovo';
 import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
-import { get, del } from '../../services/apiClient';
+import { get } from '../../services/apiClient';
 import ProdutosEditar from '../produtosEditar';
 
 import Diversos from '../../assets/bg-Diversos.png';
@@ -23,13 +23,16 @@ import Japonesa from '../../assets/bg-Japonesa.png';
 import Mexicano from '../../assets/bg-Mexicano.png';
 import Brasileira from '../../assets/bg-Brasileira.png';
 import Lanches from '../../assets/bg-Lanches.png';
+import CustomModal from '../../componentes/customModal';
 
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
+  const [f5, setF5] = useState(false);
   const customId = 'custom-id-yes';
 
   useEffect(() => {
+    setF5(false);
     async function buscarProdutos() {
       try {
         const { dados, ok } = await get('/produtos', token);
@@ -45,20 +48,7 @@ export default function produtos() {
     }
 
     buscarProdutos();
-  }, []);
-
-  async function removerProduto(id) {
-    try {
-      const dados = await del(`produtos/${id}`);
-
-      setProd(dados);
-    } catch (error) {
-      toast.error(error.message, { toastId: customId });
-    }
-    toast('Produto removido com sucesso', { toastId: customId });
-  }
-
-  console.log(user.Categoria);
+  }, [token, f5]);
 
   const categoriaStyle = () => {
     const categoria = user.Categoria;
@@ -124,17 +114,19 @@ export default function produtos() {
                 <div className="flip-card-front">
                   <CustomCard
                     {...produto}
-                    removerProduto={removerProduto}
+                    recarregarPag={() => setF5(true)}
                   />
                 </div>
                 <div className="flip-card-back">
-                  <button className="btTransparente" type="button" onClick={removerProduto}>Excluir produto do catálogo</button>
+
+                  <CustomModal {...produto} recarregarPag={() => setF5(true)} />
+
                   {' '}
                   <CustomizedDialogs
                     btClassName="btLaranja"
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
-                    conteudo={<ProdutosEditar {...produto} />}
+                    conteudo={<ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />}
 
                   />
                 </div>
