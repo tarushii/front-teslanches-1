@@ -11,7 +11,7 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-export default function CustomizedDialogs(props) {
+export default function CustomizedDialogs({ props, recarregarPag }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

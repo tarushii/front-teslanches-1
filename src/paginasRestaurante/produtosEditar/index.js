@@ -47,12 +47,12 @@ export default function ProdutosEditar({
     setErro('');
 
     // const { permiteObservacoes, ativo: ativar } = data;
-    // const todosDados = { ...data, imagem_produto: urlImagem };
-    const dadosFoto = { imagem_produto: urlImagem };
+    const todosDados = { ...data, imagemProduto: urlImagem };
+    // const dadosFoto = { imagem_produto: urlImagem };
 
     const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
-        .entries(data)
+        .entries(todosDados)
         .filter(([, value]) => value));
 
     console.log(dadosAtualizados);
@@ -60,7 +60,7 @@ export default function ProdutosEditar({
 
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-      const { resFoto, ok: okFoto } = await put(`/imagemProduto/${idProduto}`, dadosFoto, token);
+      // const { resFoto, ok: okFoto } = await put(`/imagemProduto/${idProduto}`, dadosFoto, token);
 
       if (!ok) {
         setErro(dados);
@@ -88,8 +88,8 @@ export default function ProdutosEditar({
     }
 
     setCarregando(false);
-    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
     recarregarPag();
+    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
