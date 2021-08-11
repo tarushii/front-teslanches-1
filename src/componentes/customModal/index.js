@@ -32,9 +32,9 @@ export default function CustomModal({ id, recarregarPag }) {
 
   async function removerProduto() {
     try {
-      const produtoAtivo = await get(`/produtos/${id}`, token);
+      const { dados: dadosProduto } = await get(`/produtos/${id}`, token);
 
-      if (produtoAtivo.ativo) {
+      if (dadosProduto.ativo) {
         return toast.error('Produto ativo nao pode ser excluido', { toastId: customId });
       }
 
@@ -43,12 +43,11 @@ export default function CustomModal({ id, recarregarPag }) {
       if (!ok) {
         toast.error(dados);
       }
-
-      handleClose();
-      recarregarPag();
     } catch (error) {
       toast.error(error.message);
     }
+    handleClose();
+    recarregarPag();
     return toast.success('O produto foi excluido com sucesso!');
   }
 
