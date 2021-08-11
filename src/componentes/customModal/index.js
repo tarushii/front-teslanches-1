@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { useState, useContext } from 'react';
 import { toast } from 'react-toastify';
 import useStyles from './styles';
-import { del } from '../../services/apiClient';
+import { del, get } from '../../services/apiClient';
 import AuthContext from '../../context/AuthContext';
 import './styles.css';
 
@@ -16,6 +16,7 @@ export default function CustomModal({ id, recarregarPag }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { token } = useContext(AuthContext);
+  const customId = 'custom-id-yes';
 
   function handleClickOpen() {
     setOpen(true);
@@ -31,6 +32,12 @@ export default function CustomModal({ id, recarregarPag }) {
 
   async function removerProduto() {
     try {
+      const produtoAtivo = await get(`/produtos/${id}`, token);
+
+      if (produtoAtivo.ativo) {
+        return toast.error('Produto ativo nao pode ser excluido', { toastId: customId });
+      }
+
       const { dados, ok } = await del(`/produtos/${id}`, token);
 
       if (!ok) {
@@ -40,11 +47,9 @@ export default function CustomModal({ id, recarregarPag }) {
       handleClose();
       recarregarPag();
     } catch (error) {
-      // isso ta muito errado , ta excluido mas ta dando erro
-      toast.success('O produto foi excluido com sucesso!');
-      handleClose();
-      recarregarPag();
+      toast.error(error.message);
     }
+    return toast.success('O produto foi excluido com sucesso!');
   }
 
   return (
