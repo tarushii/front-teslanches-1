@@ -54,7 +54,6 @@ export default function ProdutosEditar({
         .filter(([, value]) => value));
 
     console.log(dadosAtualizados);
-    console.log(ativo);
 
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
@@ -65,6 +64,9 @@ export default function ProdutosEditar({
         return;
       }
 
+      handleClose();
+      recarregarPagNeto();
+
       if (!ativo) {
         const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
         toast.warn('O produto foi desativado', { toastId: customId });
@@ -72,15 +74,13 @@ export default function ProdutosEditar({
         const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
         toast.warn('O produto foi ativado!', { toastId: customId });
       }
+      setCarregando(false);
+      toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
+      return;
     } catch (error) {
       setErro(`Erro:${error.message}`);
       toast.error(error);
-      return;
     }
-
-    setCarregando(false);
-    recarregarPag();
-    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
