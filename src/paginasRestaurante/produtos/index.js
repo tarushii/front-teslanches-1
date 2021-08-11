@@ -12,7 +12,6 @@ import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
 import useAuth from '../../hooks/useAuth';
 import { get, del } from '../../services/apiClient';
-import ProdutosEditar from '../produtosEditar';
 
 import Diversos from '../../assets/bg-Diversos.png';
 import Pizzaria from '../../assets/bg-Pizzaria.png';
@@ -26,6 +25,7 @@ import Mexicano from '../../assets/bg-Mexicano.png';
 import Brasileira from '../../assets/bg-Brasileira.png';
 import Lanches from '../../assets/bg-Lanches.png';
 import CustomModal from '../../componentes/customModal';
+import ProdutosEditar from '../produtosEditar';
 
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
@@ -69,17 +69,6 @@ export default function produtos() {
     buscarUsuario();
     buscarProdutos();
   }, [token, f5]);
-
-  async function removerProduto(id) {
-    try {
-      const dados = await del(`produtos/${id}`);
-
-      setProd(dados);
-    } catch (error) {
-      toast.error(error.message, { toastId: customId });
-    }
-    toast('Produto removido com sucesso', { toastId: customId });
-  }
 
   const categoriaStyle = () => {
     const categoria = user.Categoria;
@@ -153,15 +142,9 @@ export default function produtos() {
                 <div className="flip-card-back">
 
                   <CustomModal {...produto} recarregarPag={() => setF5(true)} />
+                  { ' ' }
+                  <ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />
 
-                  {' '}
-                  <CustomizedDialogs
-                    btClassName="btLaranja"
-                    btAbrirMensagem={<> Editar produto </>}
-                    btMensagem={<>Atualizar produto </>}
-                    conteudo={<ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />}
-                    recarregarPag={() => setF5(true)}
-                  />
                 </div>
               </div>
             </div>
