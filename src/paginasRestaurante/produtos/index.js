@@ -45,7 +45,6 @@ export default function produtos() {
           return;
         }
         setProd(dados);
-        console.log(dados);
       } catch (error) {
         toast.error(error.message, { toastId: customId });
       }
