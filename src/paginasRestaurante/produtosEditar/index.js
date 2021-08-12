@@ -30,20 +30,20 @@ export default function ProdutosEditar({
   recarregarPag,
   imagem_produto: temImagem
 }) {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [erro, setErro] = useState('');
   const { token } = useContext(AuthContext);
   const { user } = useAuth();
+  const [carregando, setCarregando] = useState(false);
+  const [urlImagem, setUrlImagem] = useState('');
+  const [baseImage, setBaseImage] = useState('');
+  const classes = useStyles();
   const customId = 'custom-id-yes';
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
-  const [carregando, setCarregando] = useState(false);
-  const [urlImagem, setUrlImagem] = useState('');
-  const [baseImage, setBaseImage] = useState('');
 
   function handleClickOpen() {
     setOpen(true);
@@ -86,7 +86,7 @@ export default function ProdutosEditar({
 
       setCarregando(false);
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
       setErro(error.message);
     }
 
@@ -130,11 +130,12 @@ export default function ProdutosEditar({
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return toast.error(dados, { toastId: customId });
+      toast.error(dados, { toastId: customId });
+      return;
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return toast.success('A imagem foi alterada', { toastId: customId });
+    toast.success('A imagem foi alterada', { toastId: customId });
   }
 
   toast.error(errors.nome?.message, { toastId: customId });
@@ -143,7 +144,13 @@ export default function ProdutosEditar({
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
-      <button type="button" className="btLaranja mt2rem" onClick={handleClickOpen}>Editar produto</button>
+      <button
+        type="button"
+        className="btLaranja mt2rem"
+        onClick={handleClickOpen}
+      >
+        Editar produto
+      </button>
       <Dialog
         open={open}
         onClose={handleClose}
