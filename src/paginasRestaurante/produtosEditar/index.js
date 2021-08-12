@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Dialog from '@material-ui/core/Dialog';
@@ -16,7 +17,7 @@ import '../../styles/global.css';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import {
-  postAutenticado, postNaoAutenticado, put
+  postEstadoProduto, postNaoAutenticado, put
 } from '../../services/apiClient';
 
 export default function ProdutosEditar({
@@ -29,20 +30,20 @@ export default function ProdutosEditar({
   recarregarPag,
   imagem_produto: temImagem
 }) {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [erro, setErro] = useState('');
   const { token } = useContext(AuthContext);
   const { user } = useAuth();
+  const [carregando, setCarregando] = useState(false);
+  const [urlImagem, setUrlImagem] = useState('');
+  const [baseImage, setBaseImage] = useState('');
+  const classes = useStyles();
   const customId = 'custom-id-yes';
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
-  const [carregando, setCarregando] = useState(false);
-  const [urlImagem, setUrlImagem] = useState('');
-  const [baseImage, setBaseImage] = useState('');
 
   function handleClickOpen() {
     setOpen(true);
@@ -62,40 +63,36 @@ export default function ProdutosEditar({
 
     const todosDados = { ...data, imagemProduto: urlImagem };
 
-    const { ativo: ativou, ...dadosAtualizados } = Object
+    const { ativou, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
-
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
 
       if (!ok) {
         setErro(dados);
-        toast.error(erro.message, { toastId: customId });
+        toast.error(erro);
         return;
       }
 
-      if (!ativou) {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
-        toast.warn('O produto foi desativado', { toastId: customId });
-        return;
-      }
       if (ativou) {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
-        toast.warn('O produto foi ativado!', { toastId: customId });
-        return;
+        await postEstadoProduto(`/produtos/${idProduto}/ativar`, token);
+        toast.warn('O produto foi ativado!');
+      } else {
+        await postEstadoProduto(`/produtos/${idProduto}/desativar`, token);
+        toast.warn('O produto foi desativado');
       }
 
       setCarregando(false);
-      return;
     } catch (error) {
+      toast.error(error.message);
       setErro(error.message);
     }
 
-    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
     handleClose();
     recarregarPag();
+    toast.success('O produto foi atualizado com sucesso!');
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -133,11 +130,12 @@ export default function ProdutosEditar({
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return toast.error(dados, { toastId: customId });
+      toast.error(dados, { toastId: customId });
+      return;
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return toast.success('A imagem foi alterada', { toastId: customId });
+    toast.success('A imagem foi alterada', { toastId: customId });
   }
 
   toast.error(errors.nome?.message, { toastId: customId });
@@ -146,7 +144,13 @@ export default function ProdutosEditar({
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
-      <button type="button" className="btTransparente" onClick={handleClickOpen}>Editar produto</button>
+      <button
+        type="button"
+        className="btLaranja mt2rem"
+        onClick={handleClickOpen}
+      >
+        Editar produto
+      </button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -188,7 +192,7 @@ export default function ProdutosEditar({
               <actions className="ativarProdutos">
                 <section>
                   <label className="switch">
-                    <input type="checkbox" defaultChecked={ativo} {...register('ativo')} />
+                    <input type="checkbox" defaultChecked={ativo} {...register('ativou')} />
                     <span className="slider round" />
                     <span>ON</span>
                   </label>
@@ -205,11 +209,12 @@ export default function ProdutosEditar({
                 </section>
               </actions>
             </form>
-            <div className="fotoProdutosNovo posRelative">
+            <div className="fotoProdutosEditar posRelative">
 
-              { temImagem
-                ? (<img src={temImagem} alt="foto do produto" id="fotoCarregada" />)
-                : (<img src={fotoProduto} alt="foto do produto" />)}
+              { baseImage
+                ? (<img src={baseImage} alt="foto do produto" className="fotoCarregada" />)
+                : temImagem ? (<img src={temImagem} alt="foto do produto" className="fotoCarregada" />)
+                  : (<img src={fotoProduto} alt="foto do produto" className="fotoCarregada" />) }
               <label htmlFor="fileNew" className="fileNew" />
               <input
                 type="file"

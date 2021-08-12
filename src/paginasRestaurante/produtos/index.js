@@ -119,13 +119,7 @@ export default function produtos() {
 
       <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
         <div className="contemBotao flexRow itemsCenter">
-          <CustomizedDialogs
-            btClassName="btLaranja"
-            btAbrirMensagem={<> Adicionar produto ao cardápio</>}
-            btMensagem={<>Adicionar produto novo</>}
-            conteudo={<ProdutosNovo recarregarPag={() => setF5(true)} />}
-            recarregarPag={() => setF5(true)}
-          />
+          <ProdutosNovo recarregarPag={() => setF5(true)} />
         </div>
 
         <div className="conteinerCardapio flexRow gap2rem">
