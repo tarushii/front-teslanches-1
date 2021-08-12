@@ -90,10 +90,15 @@ input#fileEdit{
   transform: translateX(28.125rem);
 }
 
-#fotoCarregada{
+.fotoCarregada{
   height: 24rem;
   width: 24rem;
+  height: 384px;
+  width: 384px;
   z-index: 4;
+  border: 2px solid rgba(251, 59, 0, 0.2);
+  box-sizing: border-box;
+  border-radius: 16px;
 }
 
 .switch {
