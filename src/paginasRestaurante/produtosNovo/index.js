@@ -1,15 +1,22 @@
 /* eslint-disable no-undef */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import './styles.css';
 import '../../styles/global.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import { postAutenticado, postNaoAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
+import AuthContext from '../../context/AuthContext';
+import useStyles from './styles';
 
 export default function ProdutosNovo({ recarregarPag }) {
   const [erro, setErro] = useState('');
@@ -17,18 +24,26 @@ export default function ProdutosNovo({ recarregarPag }) {
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
-
-  const { user, token } = useAuth();
-
+  const { token } = useContext(AuthContext);
+  const { user } = useAuth();
+  const classes = useStyles();
+  const customId = 'custom-id-yes';
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
-  const customId = 'custom-id-yes';
+
+  function handleClickOpen() {
+    setOpen(true);
+  }
 
   function handleClose() {
     setOpen(false);
+  }
+
+  function stop(e) {
+    e.stopPropagation();
   }
 
   async function onSubmit(data) {
@@ -41,8 +56,6 @@ export default function ProdutosNovo({ recarregarPag }) {
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
-
-    console.log(dadosAtualizados);
     try {
       const { dados, ok } = await postAutenticado('/produtos', dadosAtualizados, token);
 
@@ -52,24 +65,14 @@ export default function ProdutosNovo({ recarregarPag }) {
         return;
       }
 
-      if (!ativo) {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
-        toast.warn('O produto foi desativado', { toastId: customId });
-      } else {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
-        toast.warn('O produto foi ativado!', { toastId: customId });
-      }
-
-      toast.success('Produto criado com sucesso', { toastId: customId });
+      setCarregando(false);
     } catch (error) {
-      toast.error(error, { toastId: customId });
-      setErro(`Erro:${error.message}`);
-      return;
+      toast.error(error.message);
+      setErro(error.message);
     }
-    setCarregando(false);
-    toast.success('O produto foi criado com sucesso!', { toastId: customId });
     recarregarPag();
     handleClose();
+    toast.success('Produto criado com sucesso', { toastId: customId });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -107,11 +110,12 @@ export default function ProdutosNovo({ recarregarPag }) {
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return toast.error(dados, { toastId: customId });
+      toast.error(dados, { toastId: customId });
+      return;
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return toast.success('A imagem foi alterada', { toastId: customId });
+    toast.success('A imagem foi adicionada', { toastId: customId });
   }
 
   toast.error(errors.nome?.message, { toastId: customId });
@@ -119,71 +123,86 @@ export default function ProdutosNovo({ recarregarPag }) {
   toast.error(errors.preco?.message, { toastId: customId });
 
   return (
-    <div className="flexColumn">
-      <div className="formProdutos flexRow gap3rem px2rem">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>Novo produto</h1>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="nomeRestaurante">Nome</label>
-            <input id="nomeRestaurante" type="text" {...register('nome', { required: true })} />
-          </div>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="descricao">Descrição</label>
-            <input id="descricao" type="text" {...register('descricao', { required: true })} />
-            <span className="mr06rem">Máx.: 50 caracteres</span>
-          </div>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="valor">Valor</label>
-            <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
-          </div>
-          <actions className="ativarProdutos">
-            <section>
-              <label className="switch">
-                <input type="checkbox" defaultChecked="true" />
-                <span className="slider round" />
-                <span>ON</span>
+    <div onClick={(e) => stop(e)} className={classes.container}>
+      <button
+        type="button"
+        className="btLaranja mt2rem"
+        onClick={handleClickOpen}
+      >
+        Adicionar produto ao cardápio
+      </button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <div className="flexColumn">
+          <div className="formProdutos flexRow gap3rem px2rem">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <h1>Novo produto</h1>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="nomeRestaurante">Nome</label>
+                <input id="nomeRestaurante" type="text" {...register('nome', { required: true })} />
+              </div>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="descricao">Descrição</label>
+                <input id="descricao" type="text" {...register('descricao', { required: true })} />
+                <span className="mr06rem">Máx.: 50 caracteres</span>
+              </div>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="valor">Valor</label>
+                <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
+              </div>
+              <actions className="ativarProdutos">
+                <section>
+                  <label className="switch">
+                    <input type="checkbox" defaultChecked />
+                    <span className="slider round" />
+                    <span>ON</span>
+                  </label>
+                  <span className="ml1rem">Ativar produto</span>
+                </section>
+
+                <section>
+                  <label className="switch">
+                    <input type="checkbox" {...register('permiteObservacoes')} defaultChecked />
+                    <span className="slider round" />
+                    <span>ON</span>
+                  </label>
+                  <span className="ml1rem">Permitir observações</span>
+                </section>
+              </actions>
+            </form>
+            <div className="fotoProdutosNovo posRelative">
+
+              { baseImage
+                ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
+                : (<img src={fotoProduto} alt="foto do produto" />)}
+              <label htmlFor="fileNew" className="fileNew" />
+              <input
+                type="file"
+                id="fileNew"
+                name="file"
+                onChange={(e) => uploadImagem(e)}
+              />
+              <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
+
+              <label htmlFor="iconeUpload" className="labelIconeUpload">
+                Clique
+                para adicionar uma imagem
               </label>
-              <span className="ml1rem">Ativar produto</span>
-            </section>
-
-            <section>
-              <label className="switch">
-                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked="true" />
-                <span className="slider round" />
-                <span>ON</span>
-              </label>
-              <span className="ml1rem">Permitir observações</span>
-            </section>
-          </actions>
-          {/* <input type="text" {...register('imagemProduto')} value={urlImagem} /> */}
-          <div />
-          <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
-
-            <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
-              Adicionar produto
-            </button>
+            </div>
           </div>
-        </form>
-        <div className="fotoProdutosNovo posRelative">
-
-          { baseImage
-            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
-            : (<img src={fotoProduto} alt="foto do produto" />)}
-          <label htmlFor="fileNew" className="fileNew" />
-          <input
-            type="file"
-            id="fileNew"
-            name="file"
-            onChange={(e) => uploadImagem(e)}
-          />
-          <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
-
-          <label htmlFor="iconeUpload" className="labelIconeUpload">
-            Clique
-            para adicionar uma imagem
-          </label>
         </div>
-      </div>
+        <DialogActions className={classes.botoes}>
+          <button className="btTransparente" type="button" onClick={handleClose}>
+            Cancelar
+          </button>
+          <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
+            Adicionar produto ao cardápio
+          </button>
+        </DialogActions>
+      </Dialog>
     </div>
 
   );
