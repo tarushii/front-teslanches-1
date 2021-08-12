@@ -72,7 +72,7 @@ export default function ProdutosEditar({
 
       if (!ok) {
         setErro(dados);
-        toast.error(erro.message);
+        toast.error(erro);
         return;
       }
 
@@ -86,6 +86,7 @@ export default function ProdutosEditar({
 
       setCarregando(false);
     } catch (error) {
+      toast.error(error);
       setErro(error.message);
     }
 
