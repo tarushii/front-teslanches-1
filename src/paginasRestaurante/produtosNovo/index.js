@@ -27,7 +27,8 @@ export default function ProdutosNovo({ recarregarPag }) {
   const { token } = useContext(AuthContext);
   const { user } = useAuth();
   const classes = useStyles();
-  const customId = 'custom-id-yes';
+  const toastOk = 'ok';
+  const toastErro = 'erro';
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
@@ -52,27 +53,32 @@ export default function ProdutosNovo({ recarregarPag }) {
 
     const todosDados = { ...data, imagemProduto: urlImagem };
 
+    // if (!todosDados.permiteObservacoes) {
+    //   todosDados = { ...todosDados, permiteObservacoes: false };
+    // }
+    console.log(todosDados);
     const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
+
     try {
       const { dados, ok } = await postAutenticado('/produtos', dadosAtualizados, token);
 
       if (!ok) {
-        toast.error(erro, { toastId: customId });
         setErro(dados);
+        toast.error(dados, { toastId: toastErro });
         return;
       }
 
       setCarregando(false);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message, { toastId: toastErro });
       setErro(error.message);
     }
     recarregarPag();
     handleClose();
-    toast.success('Produto criado com sucesso', { toastId: customId });
+    toast.success('Produto criado com sucesso', { toastId: toastOk });
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -110,17 +116,19 @@ export default function ProdutosNovo({ recarregarPag }) {
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      toast.error(dados, { toastId: customId });
+      toast.error(dados, { toastId: toastErro });
+      console.log(dados);
       return;
     }
     setUrlImagem(dados);
     setCarregando(false);
-    toast.success('A imagem foi adicionada', { toastId: customId });
+    toast.success('A imagem foi adicionada', { toastId: toastOk });
   }
 
-  toast.error(errors.nome?.message, { toastId: customId });
-  toast.error(errors.descricao?.message, { toastId: customId });
-  toast.error(errors.preco?.message, { toastId: customId });
+  toast.error(errors.nome?.message, { toastId: toastErro });
+  toast.error(errors.descricao?.message, { toastId: toastErro });
+  toast.error(errors.preco?.message, { toastId: toastErro });
+  const permiteObservacoes = false;
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
@@ -165,7 +173,7 @@ export default function ProdutosNovo({ recarregarPag }) {
 
                 <section>
                   <label className="switch">
-                    <input type="checkbox" {...register('permiteObservacoes')} defaultChecked />
+                    <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
                     <span className="slider round" />
                     <span>ON</span>
                   </label>
