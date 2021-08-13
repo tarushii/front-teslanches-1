@@ -25,6 +25,7 @@ import Japonesa from '../../assets/bg-Japonesa.png';
 import Mexicano from '../../assets/bg-Mexicano.png';
 import Brasileira from '../../assets/bg-Brasileira.png';
 import Lanches from '../../assets/bg-Lanches.png';
+import CustomModal from '../../componentes/customModal';
 
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
@@ -143,17 +144,19 @@ export default function produtos() {
                 <div className="flip-card-front">
                   <CustomCard
                     {...produto}
-                    removerProduto={removerProduto}
+                    recarregarPag={() => setF5(true)}
                   />
                 </div>
                 <div className="flip-card-back">
-                  <button className="btTransparente" type="button" onClick={removerProduto}>Excluir produto do catálogo</button>
+
+                  <CustomModal {...produto} recarregarPag={() => setF5(true)} />
+
                   {' '}
                   <CustomizedDialogs
                     btClassName="btLaranja"
                     btAbrirMensagem={<> Editar produto </>}
                     btMensagem={<>Atualizar produto </>}
-                    conteudo={<ProdutosEditar {...produto} />}
+                    conteudo={<ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />}
 
                   />
                 </div>

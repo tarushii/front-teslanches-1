@@ -15,7 +15,7 @@ import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar({
-  id: idProduto, nome, descricao, preco, imagemProduto
+  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes
 }) {
   const { token } = useContext(AuthContext);
   const [produto, setProduto] = useState({});
@@ -46,7 +46,7 @@ export default function ProdutosEditar({
     setCarregando(true);
     setErro('');
 
-    const { permiteObservacoes: permite, ativo: ativar } = data;
+    // const { permiteObservacoes, ativo: ativar } = data;
     // const todosDados = { ...data, imagem_produto: urlImagem };
     const dadosFoto = { imagem_produto: urlImagem };
 
@@ -55,11 +55,12 @@ export default function ProdutosEditar({
         .entries(data)
         .filter(([, value]) => value));
 
-    console.log(todosDados);
+    console.log(dadosAtualizados);
+    console.log(ativo);
 
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-      const fotoRes = await put(`/produtos/${idProduto}`, dadosFoto, token);
+      const { resFoto, ok: okFoto } = await put(`/imagemProduto/${idProduto}`, dadosFoto, token);
 
       if (!ok) {
         setErro(dados);
@@ -67,19 +68,26 @@ export default function ProdutosEditar({
         return;
       }
 
-      if (ativo) {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, ativo, token);
-        toast.success(ativado, { toastId: customId });
+      if (!okFoto) {
+        setErro(dados);
+        toast.error(erro.message, { toastId: customId });
+        return;
+      }
+
+      if (!ativo) {
+        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
+        toast.warn('O produto foi desativado', { toastId: customId });
       } else {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, ativo, token);
-        toast.success(ativado, { toastId: customId });
+        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
+        toast.warn('O produto foi ativado!', { toastId: customId });
       }
     } catch (error) {
       setErro(`Erro:${error.message}`);
       toast.error(error);
+      return;
     }
-    setCarregando(false);
 
+    setCarregando(false);
     toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
   }
 
@@ -163,7 +171,7 @@ export default function ProdutosEditar({
           <actions className="ativarProdutos">
             <section>
               <label className="switch">
-                <input type="checkbox" defaultChecked="true" {...register('ativar')} />
+                <input type="checkbox" defaultChecked={ativo} {...register('ativo')} />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
@@ -172,7 +180,7 @@ export default function ProdutosEditar({
 
             <section>
               <label className="switch">
-                <input type="checkbox" {...register('permite')} defaultChecked="true" />
+                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
                 <span className="slider round" />
                 <span>ON</span>
               </label>
