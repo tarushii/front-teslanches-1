@@ -45,11 +45,9 @@ export default function UsuarioEditar({
     setOpen(false);
   }
 
-
   function stop(e) {
     e.stopPropagation();
   }
-
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
