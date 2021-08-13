@@ -53,18 +53,15 @@ export default function ProdutosNovo({ recarregarPag }) {
 
     const todosDados = { ...data, imagemProduto: urlImagem };
 
-    // if (!todosDados.permiteObservacoes) {
-    //   todosDados = { ...todosDados, permiteObservacoes: false };
-    // }
-    console.log(todosDados);
     const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
 
+    dadosAtualizados.permiteObservacoes = !!dadosAtualizados.permiteObservacoes;
+
     try {
       const { dados, ok } = await postAutenticado('/produtos', dadosAtualizados, token);
-
       if (!ok) {
         setErro(dados);
         toast.error(dados, { toastId: toastErro });
@@ -128,6 +125,7 @@ export default function ProdutosNovo({ recarregarPag }) {
   toast.error(errors.nome?.message, { toastId: toastErro });
   toast.error(errors.descricao?.message, { toastId: toastErro });
   toast.error(errors.preco?.message, { toastId: toastErro });
+
   const permiteObservacoes = false;
 
   return (

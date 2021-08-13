@@ -67,12 +67,15 @@ export default function ProdutosEditar({
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
+
+    dadosAtualizados.permiteObservacoes = !!dadosAtualizados.permiteObservacoes;
+
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-
+      console.log(dadosAtualizados);
       if (!ok) {
         setErro(dados);
-        toast.error(erro);
+        toast.error(dados);
         return;
       }
 
