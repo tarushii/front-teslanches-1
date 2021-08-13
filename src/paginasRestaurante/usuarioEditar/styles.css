@@ -77,6 +77,19 @@
     textarea{
         border-radius: 1rem;
         resize: none;
+        padding: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border:.125rem solid rgb(0, 0, 0);     
+      box-shadow: 0 0 10px #719ECE;
+    }
+
+    textarea:focus {
+      outline: none;
+      border:.125rem solid rgb(0, 0, 0);     
+      box-shadow: 0 0 10px #719ECE;
     }
 
     .inputPassword{
@@ -91,12 +104,23 @@
     }
 
     .btMudancas{
-      position:static;
-      display: flex;
+   display: flex;
       align-content:flex-end;
       justify-content: flex-end;
-    
-
     }
 
+    .btEditarUsuario{
+      position: absolute;
+      top: -0.5rem;
+      left: -0.385rem;
+      background: transparent;
+      background-position: center;
+      background-size: contain;
+      width: 11rem;
+      height: 11rem;
+      border-radius: 50%;
+      box-sizing: border-box;
+      border: #ffffff .375rem solid;
+      cursor: pointer;
+    }
     
