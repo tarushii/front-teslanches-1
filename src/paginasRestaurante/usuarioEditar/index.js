@@ -16,7 +16,7 @@ import { postNaoAutenticado, put, get } from '../../services/apiClient';
 
 export default function UsuarioEditar({
   nomeusuario, email, nome, categoria, descricao, taxa_entrega, tempo_entrega_minutos,
-  valor_minimo_pedido, imagem_restaurante
+  valor_minimo_pedido, imagem_restaurante, recarregarPag
 }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarSenha2, setMostrarSenha2] = useState(false);
@@ -26,6 +26,15 @@ export default function UsuarioEditar({
   const [values, setValues] = React.useState({});
   const { register, handleSubmit } = useForm();
   const history = useHistory();
+  const [open, setOpen] = useState(false);
+
+  function handleClickOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -92,9 +101,6 @@ export default function UsuarioEditar({
   async function onSubmit(data) {
     data.taxa_entrega = ((parseInt(data.taxa_entrega)) * 100);
     data.categoria_id = parseInt(data.categoria_id);
-    if (!values.password) {
-      return toast.error('Senhas são obrigatórias ');
-    }
     if (values.password !== values.tryPassword) {
       return toast.error('Senhas não conferem');
     }
@@ -107,6 +113,8 @@ export default function UsuarioEditar({
         return toast.error(`erro: ${dados}`);
       }
       history.push('/');
+      handleClose();
+      recarregarPag();
       return toast.success('Sucesso ao editar Usuario');
     } catch (error) {
       return toast.error(error.message);

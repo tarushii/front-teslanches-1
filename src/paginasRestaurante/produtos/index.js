@@ -29,10 +29,12 @@ import Lanches from '../../assets/bg-Lanches.png';
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
+  const [f5, setF5] = useState(false);
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
   useEffect(() => {
+    setF5(false);
     async function buscarProdutos() {
       try {
         const { dados, ok } = await get('/produtos', token);
@@ -63,7 +65,7 @@ export default function produtos() {
     };
     buscarUsuario();
     buscarProdutos();
-  }, []);
+  }, [token, f5]);
 
   async function removerProduto(id) {
     try {
@@ -119,7 +121,7 @@ export default function produtos() {
       <div className="avatarRestaurante">
         <CustomizedDialogs
           btClassName="btEditarUsuario"
-          conteudo={<UsuarioEditar {...usuario} />}
+          conteudo={<UsuarioEditar {...usuario} recarregarPag={() => setF5(true)} />}
         />
       </div>
 
