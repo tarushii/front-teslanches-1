@@ -103,7 +103,7 @@ export default function produtos() {
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">{ user.NomeRestaurante }</h1>
+          <h1 className="nomeRestaurante">{ usuario.nome }</h1>
           <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
