@@ -150,18 +150,3 @@ button.addProdutos{
 .flip-card-back button{
   z-index: 4;
 }
-
-.btEditarUsuario{
-  position: absolute;
-  top: -2.4rem;
-  left: -0.385rem;
-  background: transparent;
-  background-position: center;
-  background-size: contain;
-  width: 11rem;
-  height: 11rem;
-  border-radius: 50%;
-  box-sizing: border-box;
-  border: #ffffff .375rem solid;
-  cursor: pointer;
-}
