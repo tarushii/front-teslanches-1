@@ -21,7 +21,9 @@ import useStyles from './styles';
 import { postNaoAutenticado, put, get } from '../../services/apiClient';
 
 export default function UsuarioEditar({
+
   nomeusuario, email, nome, categoria_id, descricao, taxa_entrega, tempo_entrega_minutos,
+
   valor_minimo_pedido, imagem_restaurante, recarregarPag
 }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -32,6 +34,7 @@ export default function UsuarioEditar({
   const classes = useStyles();
   const [values, setValues] = React.useState({});
   const { register, handleSubmit } = useForm();
+
   const [open, setOpen] = useState(false);
 
   function handleClickOpen() {
@@ -42,9 +45,11 @@ export default function UsuarioEditar({
     setOpen(false);
   }
 
+
   function stop(e) {
     e.stopPropagation();
   }
+
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
