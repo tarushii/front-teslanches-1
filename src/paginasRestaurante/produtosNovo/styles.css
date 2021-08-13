@@ -1,3 +1,8 @@
+.MuiDialog-paper{
+  border-radius: 2rem !important;
+  padding: 2rem !important;
+}
+
 .bodyProdutosDialog{
   width: 63rem;
   height: 49.9125rem;
@@ -9,9 +14,10 @@
 
 .fotoProdutosNovo{
   position: relative;
-  margin-top: 8.6rem;
+  margin-top: 4.6rem;
   width: 24rem;
   height: 24rem;
+  transform: translateY(-55px);
 }
 
 .acoesProdutos{
@@ -87,13 +93,16 @@ input#fileNew{
   height: 24rem;
   width: 24rem;
   z-index: 4;
+  border: 2px solid rgba(251, 59, 0, 0.2);
+  box-sizing: border-box;
+  border-radius: 1rem;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 52px;
-  height: 27px;
+  width: 3.25rem;
+  height: 1.6875rem;
 }
 
 .switch input {
@@ -118,10 +127,10 @@ input#fileNew{
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 4px;
+  height: 1.125rem;
+  width: 1.125rem;
+  left: .25rem;
+  bottom: .25rem;
   background-color: rgb(17, 126, 7);
   -webkit-transition: .3s;
   transition: .3s;
@@ -139,13 +148,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(1.625rem);
+  -ms-transform: translateX(1.625rem);
+  transform: translateX(1.625rem);
 }
 
 .slider.round {
-  border-radius: 34px;
+  border-radius: 2.125rem;
+  
 }
 
 .slider.round:before {

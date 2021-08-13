@@ -1,94 +1,98 @@
-/* eslint-disable no-undef */
-import './styles.css';
-import '../../styles/global.css';
-import { useContext, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+/* eslint-disable no-nested-ternary */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import useStyles from './styles';
+import { schemaCadastrarProdutos } from '../../validacoes/schema';
+import './styles.css';
+import AuthContext from '../../context/AuthContext';
+import useAuth from '../../hooks/useAuth';
+
+import '../../styles/global.css';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
 import {
-  get, postAutenticado, postNaoAutenticado, put
+  postEstadoProduto, postNaoAutenticado, put
 } from '../../services/apiClient';
-import AuthContext from '../../context/AuthContext';
-import useAuth from '../../hooks/useAuth';
-import { schemaCadastrarProdutos } from '../../validacoes/schema';
 
 export default function ProdutosEditar({
-  id: idProduto, nome, descricao, preco, ativo, permiteObservacoes
+  id: idProduto,
+  nome,
+  descricao,
+  preco,
+  ativo,
+  permiteObservacoes,
+  recarregarPag,
+  imagem_produto: temImagem
 }) {
-  const { token } = useContext(AuthContext);
-  const [produto, setProduto] = useState({});
+  const [open, setOpen] = useState(false);
   const [erro, setErro] = useState('');
+  const { token } = useContext(AuthContext);
+  const { user } = useAuth();
   const [carregando, setCarregando] = useState(false);
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
-  const { user } = useAuth();
+  const classes = useStyles();
+  const customId = 'custom-id-yes';
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
     resolver: yupResolver(schemaCadastrarProdutos)
   });
-  const customId = 'custom-id-yes';
 
-  useEffect(() => {
-    setCarregando(true);
-    async function carregarProduto() {
-      const dados = await get(`/produtos/${idProduto}`, token);
-      setProduto(dados);
-    }
+  function handleClickOpen() {
+    setOpen(true);
+  }
 
-    carregarProduto();
-    setCarregando(false);
-  }, []);
+  function handleClose() {
+    setOpen(false);
+  }
+
+  function stop(e) {
+    e.stopPropagation();
+  }
 
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
 
-    // const { permiteObservacoes, ativo: ativar } = data;
-    // const todosDados = { ...data, imagem_produto: urlImagem };
-    const dadosFoto = { imagem_produto: urlImagem };
+    const todosDados = { ...data, imagemProduto: urlImagem };
 
-    const { ativo, ...dadosAtualizados } = Object
+    const { ativou, ...dadosAtualizados } = Object
       .fromEntries(Object
-        .entries(data)
+        .entries(todosDados)
         .filter(([, value]) => value));
-
-    console.log(dadosAtualizados);
-    console.log(ativo);
-
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-      const { resFoto, ok: okFoto } = await put(`/imagemProduto/${idProduto}`, dadosFoto, token);
 
       if (!ok) {
         setErro(dados);
-        toast.error(erro.message, { toastId: customId });
+        toast.error(erro);
         return;
       }
 
-      if (!okFoto) {
-        setErro(dados);
-        toast.error(erro.message, { toastId: customId });
-        return;
-      }
-
-      if (!ativo) {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/desativar`, false, token);
-        toast.warn('O produto foi desativado', { toastId: customId });
+      if (ativou) {
+        await postEstadoProduto(`/produtos/${idProduto}/ativar`, token);
+        toast.warn('O produto foi ativado!');
       } else {
-        const ativado = await postAutenticado(`/produtos/${idProduto}/ativar`, true, token);
-        toast.warn('O produto foi ativado!', { toastId: customId });
+        await postEstadoProduto(`/produtos/${idProduto}/desativar`, token);
+        toast.warn('O produto foi desativado');
       }
+
+      setCarregando(false);
     } catch (error) {
-      setErro(`Erro:${error.message}`);
-      toast.error(error);
-      return;
+      toast.error(error.message);
+      setErro(error.message);
     }
 
-    setCarregando(false);
-    toast.success('O produto foi atualizado com sucesso!', { toastId: customId });
+    handleClose();
+    recarregarPag();
+    toast.success('O produto foi atualizado com sucesso!');
   }
 
   const convertBase64 = (file) => new Promise((resolve, reject) => {
@@ -111,23 +115,27 @@ export default function ProdutosEditar({
     const base64 = await convertBase64(file);
     setBaseImage(base64);
 
+    const imagemFoto = { imagem: `${ID}/${idProduto}/${Date.now()}.jpg` };
+
+    const temFoto = await postNaoAutenticado('/imagem', imagemFoto);
+
+    if (temFoto) {
+      await postNaoAutenticado('/delete', imagemFoto);
+    }
+
     const data = {
-      nome: `${ID}/produto.jpg`,
+      nome: `${ID}/${idProduto}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
-
-    const { nome: nomeFoto } = data;
-    const imagemFoto = { imagem: `${nomeFoto}` };
-    await postNaoAutenticado('/delete', imagemFoto);
-
     const { dados, ok } = await postNaoAutenticado('/upload', data);
 
     if (!ok) {
-      return toast.error(dados, { toastId: customId });
+      toast.error(dados, { toastId: customId });
+      return;
     }
     setUrlImagem(dados);
     setCarregando(false);
-    return toast.success('A imagem foi alterada', { toastId: customId });
+    toast.success('A imagem foi alterada', { toastId: customId });
   }
 
   toast.error(errors.nome?.message, { toastId: customId });
@@ -135,86 +143,103 @@ export default function ProdutosEditar({
   toast.error(errors.preco?.message, { toastId: customId });
 
   return (
-    <div className="flexColumn">
-      <div className="formProdutos flexRow gap3rem px2rem">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>Editar produto</h1>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="nomeRestaurante">Nome</label>
-            <input
-              id="nomeRestaurante"
-              type="text"
-              defaultValue={nome}
-              {...register('nome')}
-            />
-          </div>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="descricao">Descrição</label>
-            <input
-              id="descricao"
-              type="text-field"
-              defaultValue={descricao}
-              {...register('descricao')}
-            />
-            <span className="mr06rem">Máx.: 50 caracteres</span>
-          </div>
-          <div className="flexColunm mb1rem ">
-            <label htmlFor="valor">Valor</label>
-            <input
-              id="valor"
-              type="number"
-              placeholder="00,00"
-              defaultValue={preco}
-              {...register('preco')}
-            />
-          </div>
-          <actions className="ativarProdutos">
-            <section>
-              <label className="switch">
-                <input type="checkbox" defaultChecked={ativo} {...register('ativo')} />
-                <span className="slider round" />
-                <span>ON</span>
+    <div onClick={(e) => stop(e)} className={classes.container}>
+      <button
+        type="button"
+        className="btLaranja mt2rem"
+        onClick={handleClickOpen}
+      >
+        Editar produto
+      </button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <div className="flexColumn">
+          <div className="formProdutos flexRow gap3rem px2rem">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <h1>Editar produto</h1>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="nomeRestaurante">Nome</label>
+                <input
+                  id="nomeRestaurante"
+                  type="text"
+                  defaultValue={nome}
+                  {...register('nome')}
+                />
+              </div>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="descricao">Descrição</label>
+                <input
+                  id="descricao"
+                  type="text-field"
+                  defaultValue={descricao}
+                  {...register('descricao')}
+                />
+                <span className="mr06rem">Máx.: 50 caracteres</span>
+              </div>
+              <div className="flexColunm mb1rem ">
+                <label htmlFor="valor">Valor</label>
+                <input
+                  id="valor"
+                  type="number"
+                  placeholder="00,00"
+                  defaultValue={preco}
+                  {...register('preco')}
+                />
+              </div>
+              <actions className="ativarProdutos">
+                <section>
+                  <label className="switch">
+                    <input type="checkbox" defaultChecked={ativo} {...register('ativou')} />
+                    <span className="slider round" />
+                    <span>ON</span>
+                  </label>
+                  <span className="ml1rem">Ativar produto</span>
+                </section>
+
+                <section>
+                  <label className="switch">
+                    <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
+                    <span className="slider round" />
+                    <span>ON</span>
+                  </label>
+                  <span className="ml1rem">Permitir observações</span>
+                </section>
+              </actions>
+            </form>
+            <div className="fotoProdutosEditar posRelative">
+
+              { baseImage
+                ? (<img src={baseImage} alt="foto do produto" className="fotoCarregada" />)
+                : temImagem ? (<img src={temImagem} alt="foto do produto" className="fotoCarregada" />)
+                  : (<img src={fotoProduto} alt="foto do produto" className="fotoCarregada" />) }
+              <label htmlFor="fileNew" className="fileNew" />
+              <input
+                type="file"
+                id="fileNew"
+                name="file"
+                onChange={(e) => uploadImagem(e)}
+              />
+              <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
+
+              <label htmlFor="iconeUpload" className="labelIconeUpload">
+                Clique
+                para adicionar uma imagem
               </label>
-              <span className="ml1rem">Ativar produto</span>
-            </section>
-
-            <section>
-              <label className="switch">
-                <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
-                <span className="slider round" />
-                <span>ON</span>
-              </label>
-              <span className="ml1rem">Permitir observações</span>
-            </section>
-          </actions>
-          <div className="acoesProdutos flexRow contentEnd gap2rem itemsCenter">
-
-            <button id="btAddProduto" className="btLaranja mr2rem mb2rem mt2rem" type="submit" color="primary">
-              Atualizar produto
-            </button>
+            </div>
           </div>
-        </form>
-        <div className="fotoProdutosNovo posRelative">
-
-          { baseImage
-            ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
-            : (<img src={fotoProduto} alt="foto do produto" />)}
-          <label htmlFor="fileNew" className="fileNew" />
-          <input
-            type="file"
-            id="fileNew"
-            name="file"
-            onChange={(e) => uploadImagem(e)}
-          />
-          <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
-
-          <label htmlFor="iconeUpload" className="labelIconeUpload">
-            Clique
-            para adicionar uma imagem
-          </label>
         </div>
-      </div>
+        <DialogActions className={classes.botoes}>
+          <button className="btTransparente" type="button" onClick={handleClose}>
+            Cancelar
+          </button>
+          <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
+            Salvar alterações
+          </button>
+        </DialogActions>
+      </Dialog>
     </div>
-
   );
 }
