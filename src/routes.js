@@ -8,7 +8,6 @@ import Login from './paginasRestaurante/login';
 import Cadastrar from './paginasRestaurante/cadastrar';
 import produtos from './paginasRestaurante/produtos';
 import ProdutosEditar from './paginasRestaurante/produtosEditar';
-import UsuarioEditar from './paginasRestaurante/usuarioEditar';
 
 function RotasProtegidas(props) {
   const { token } = useAuth();
