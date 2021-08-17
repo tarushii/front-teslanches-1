@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-// Tive ajuda nesses estilos
-
 export default makeStyles(() => ({
 
   botoes: {
