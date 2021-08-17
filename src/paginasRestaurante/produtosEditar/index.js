@@ -20,6 +20,8 @@ import {
   postEstadoProduto, postNaoAutenticado, put
 } from '../../services/apiClient';
 
+import { toastNome, toastDescricao, toastPreco } from '../../validacoes/toastfy';
+
 export default function ProdutosEditar({
   id: idProduto,
   nome,
@@ -42,6 +44,13 @@ export default function ProdutosEditar({
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
+    mode: 'onSubmit',
+    reValidateMode: '',
+    defaultValues: {},
+    context: undefined,
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+    shouldUnregister: true,
     resolver: yupResolver(schemaCadastrarProdutos)
   });
 
@@ -140,9 +149,15 @@ export default function ProdutosEditar({
     toast.success('A imagem foi alterada', { toastId: customId });
   }
 
-  toast.error(errors.nome?.message, { toastId: customId });
-  toast.error(errors.descricao?.message, { toastId: customId });
-  toast.error(errors.preco?.message, { toastId: customId });
+  if (errors.nome) {
+    toastNome();
+  }
+  if (errors.descricao) {
+    toastDescricao();
+  }
+  if (errors.preco) {
+    toastPreco();
+  }
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>

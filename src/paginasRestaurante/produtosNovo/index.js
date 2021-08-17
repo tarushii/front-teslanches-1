@@ -17,6 +17,7 @@ import useAuth from '../../hooks/useAuth';
 import { schemaCadastrarProdutos } from '../../validacoes/schema';
 import AuthContext from '../../context/AuthContext';
 import useStyles from './styles';
+import { toastNome, toastDescricao, toastPreco } from '../../validacoes/toastfy';
 
 export default function ProdutosNovo({ recarregarPag }) {
   const [erro, setErro] = useState('');
@@ -32,6 +33,13 @@ export default function ProdutosNovo({ recarregarPag }) {
   const {
     register, handleSubmit, formState: { errors }
   } = useForm({
+    mode: 'onSubmit',
+    reValidateMode: '',
+    defaultValues: {},
+    context: undefined,
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+    shouldUnregister: true,
     resolver: yupResolver(schemaCadastrarProdutos)
   });
 
@@ -122,9 +130,15 @@ export default function ProdutosNovo({ recarregarPag }) {
     toast.success('A imagem foi adicionada', { toastId: toastOk });
   }
 
-  toast.error(errors.nome?.message, { toastId: toastErro });
-  toast.error(errors.descricao?.message, { toastId: toastErro });
-  toast.error(errors.preco?.message, { toastId: toastErro });
+  if (errors.nome) {
+    toastNome();
+  }
+  if (errors.descricao) {
+    toastDescricao();
+  }
+  if (errors.preco) {
+    toastPreco();
+  }
 
   const permiteObservacoes = false;
 

@@ -11,9 +11,17 @@ import InputPassword from '../../componentes/inputPassword';
 import { schemaLogin } from '../../validacoes/schema';
 import { postNaoAutenticado } from '../../services/apiClient';
 import useAuth from '../../hooks/useAuth';
+import { toastEmail, toastSenha } from '../../validacoes/toastfy';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm({
+    mode: 'onSubmit',
+    reValidateMode: '',
+    defaultValues: {},
+    context: undefined,
+    criteriaMode: 'firstError',
+    shouldFocusError: true,
+    shouldUnregister: true,
     resolver: yupResolver(schemaLogin)
   });
   const [password, setPassword] = useState('');
@@ -46,8 +54,12 @@ export default function Login() {
     setCarregando(false);
   }
 
-  toast.error(errors.email?.message, { toastId: customId });
-  toast.error(errors.senha?.message, { toastId: customId });
+  if (errors.email) {
+    toastEmail();
+  }
+  if (errors.senha) {
+    toastSenha();
+  }
 
   return (
     <div className="bodyLogin">
