@@ -72,7 +72,6 @@ export default function ProdutosEditar({
 
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
-      console.log(dadosAtualizados);
       if (!ok) {
         setErro(dados);
         toast.error(dados);
