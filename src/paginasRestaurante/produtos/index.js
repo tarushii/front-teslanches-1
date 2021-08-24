@@ -27,11 +27,14 @@ import Lanches from '../../assets/bg-Lanches.png';
 import CustomModal from '../../componentes/customModal';
 import ProdutosEditar from '../produtosEditar';
 import avatarPadrao from '../../assets/avatar-padrao.png';
+import PedidoDetalhes from '../pedidoDetalhes';
 
 export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
   const [f5, setF5] = useState(false);
+  const [paginaPedidos, setPaginaPedidos] = useState(true);
+  const [paginaEnviados, setPaginaEnviados] = useState(false);
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
@@ -100,11 +103,77 @@ export default function produtos() {
     }
   };
 
+  const pedidos = [
+    {
+      id: 1,
+      endereco: {
+        cep: 123123123,
+        endereco: 'qlqr',
+        complemento: 'casa'
+      },
+      produtos: [
+        {
+          nome: 'pizzaVeia',
+          quantidade: 3,
+          preco: 1000
+        },
+        {
+          nome: 'macarrao no pao',
+          quantidade: 1,
+          preco: 2000
+        }]
+    },
+    {
+      id: 2,
+      endereco: {
+        cep: 123123123,
+        endereco: 'qlqr',
+        complemento: 'casa'
+      },
+      produtos: [
+        {
+          nome: 'pizzaVeia',
+          quantidade: 3,
+          preco: 1000
+        },
+        {
+          nome: 'macarrao no pao',
+          quantidade: 1,
+          preco: 2000
+        }]
+    },
+    {
+      id: 3,
+      endereco: {
+        cep: 123123123,
+        endereco: 'qlqr',
+        complemento: 'casa'
+      },
+      produtos: [
+        {
+          nome: 'pizzaVeia',
+          quantidade: 3,
+          preco: 1000
+        },
+        {
+          nome: 'macarrao no pao',
+          quantidade: 1,
+          preco: 2000
+        }]
+    }
+  ];
+
   return (
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">{ usuario.nome }</h1>
+          <div className="flexColumn gap1rem nomeRestaurante">
+            <h1 className="">{ usuario.nome }</h1>
+            <div className="flexRow gap2rem">
+              <button className={`${paginaPedidos ? 'btTransparenteGlow' : 'btLaranja'}`} type="button" onClick={() => setPaginaPedidos(true)}>Pedidos</button>
+              <button className={`${paginaPedidos ? 'btLaranja' : 'btTransparenteGlow'}`} type="button" onClick={() => setPaginaPedidos(false)}>Cardapio</button>
+            </div>
+          </div>
           <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
@@ -114,45 +183,74 @@ export default function produtos() {
         <UsuarioEditar {...usuario} recarregarPag={() => setF5(true)} />
       </div>
 
-      <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
-        <div className="contemBotao flexRow itemsCenter">
-          <ProdutosNovo recarregarPag={() => setF5(true)} />
-        </div>
+      <div className={`${!paginaPedidos ? 'cadapioBox' : 'none'}`}>
+        <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
+          <div className="contemBotao flexRow itemsCenter">
+            <ProdutosNovo recarregarPag={() => setF5(true)} />
+          </div>
 
-        <div className="conteinerCardapio flexRow gap2rem">
-          { prod.map((produto) => (
-            <div className="flip-card" item key={produto.id}>
-              <div className="flip-card-inner">
-                <div className="flip-card-front">
-                  <CustomCard
-                    {...produto}
-                    recarregarPag={() => setF5(true)}
-                  />
-                </div>
-                <div className="flip-card-back">
-                  <CustomModal {...produto} recarregarPag={() => setF5(true)} />
-                  { ' ' }
-                  <ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />
+          <div className="conteinerCardapio flexRow gap2rem">
+            { prod.map((produto) => (
+              <div className="flip-card" item key={produto.id}>
+                <div className="flip-card-inner">
+                  <div className="flip-card-front">
+                    <CustomCard
+                      {...produto}
+                      recarregarPag={() => setF5(true)}
+                    />
+                  </div>
+                  <div className="flip-card-back">
+                    <CustomModal {...produto} recarregarPag={() => setF5(true)} />
+                    { ' ' }
+                    <ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+        <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
+          <span>
+            Você ainda não tem nenhum produto no seu cardápio.
+            <br />
+            Gostaria de adicionar um novo produto?
+          </span>
+          <CustomizedDialogs
+            btClassName="btLaranja"
+            btAbrirMensagem={<> Adicionar produto ao cardápio</>}
+            btMensagem={<>Adicionar produto novo</>}
+            conteudo={<ProdutosNovo />}
+          />
+        </div>
+      </div>
+      <div className={`${paginaPedidos ? 'pedidosBox' : 'none'}`}>
+        <div className="pedidosBody">
+
+          <div className="pedidosButton flexRow gap2rem contentEnd itemsCenter mb2rem">
+            <button className={`${paginaEnviados ? 'btLaranja' : 'btTransparenteGlow'} btPagEnviados`} type="button" onClick={() => setPaginaEnviados(false)}>Não enviados</button>
+            <button className={`${paginaEnviados ? 'btTransparenteGlow' : 'btLaranja'} btPagEnviados`} type="button" onClick={() => setPaginaEnviados(true)}>Enviados</button>
+          </div>
+
+          <div className="pedidosTitle flexRow gap1rem contentBetween">
+            <p>Pedido</p>
+            <p>Items</p>
+            <p>Endereço</p>
+            <p>Cliente</p>
+            <p>Total</p>
+          </div>
+
+          {/* TODO - filter para separar enviados */}
+          <div className="cardsProdutos flexColumn gap1rem mt2rem contentCenter px2rem">
+            { pedidos.map((pedido) => (
+              <div className="cardPedidoDetalhes ">
+                <PedidoDetalhes {...pedido} pedidos={pedidos} />
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
-      <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
-        <span>
-          Você ainda não tem nenhum produto no seu cardápio.
-          <br />
-          Gostaria de adicionar um novo produto?
-        </span>
-        <CustomizedDialogs
-          btClassName="btLaranja"
-          btAbrirMensagem={<> Adicionar produto ao cardápio</>}
-          btMensagem={<>Adicionar produto novo</>}
-          conteudo={<ProdutosNovo />}
-        />
-      </div>
     </div>
   );
 }
