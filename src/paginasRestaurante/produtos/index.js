@@ -32,6 +32,7 @@ export default function produtos() {
   const { user, token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
   const [f5, setF5] = useState(false);
+  const [paginaPedidos, setPaginaPedidos] = useState(true);
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
@@ -104,7 +105,13 @@ export default function produtos() {
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
         <div className="flexRow contentBetween itemsCenter">
-          <h1 className="nomeRestaurante">{ usuario.nome }</h1>
+          <div className="flexColumn gap1rem nomeRestaurante">
+            <h1 className="">{ usuario.nome }</h1>
+            <div className="flexRow gap2rem">
+              <button className={`${paginaPedidos ? 'btTransparenteGlow' : 'btLaranja'}`} type="button" onClick={() => setPaginaPedidos(true)}>Pedidos</button>
+              <button className={`${paginaPedidos ? 'btLaranja' : 'btTransparenteGlow'}`} type="button" onClick={() => setPaginaPedidos(false)}>Cardapio</button>
+            </div>
+          </div>
           <button className="btLogout logout" type="button" onClick={deslogar}>Logout</button>
         </div>
       </div>
@@ -114,45 +121,47 @@ export default function produtos() {
         <UsuarioEditar {...usuario} recarregarPag={() => setF5(true)} />
       </div>
 
-      <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
-        <div className="contemBotao flexRow itemsCenter">
-          <ProdutosNovo recarregarPag={() => setF5(true)} />
-        </div>
+      <div className={`${!paginaPedidos ? 'cadapioBox' : 'none'}`}>
+        <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
+          <div className="contemBotao flexRow itemsCenter">
+            <ProdutosNovo recarregarPag={() => setF5(true)} />
+          </div>
 
-        <div className="conteinerCardapio flexRow gap2rem">
-          { prod.map((produto) => (
-            <div className="flip-card" item key={produto.id}>
-              <div className="flip-card-inner">
-                <div className="flip-card-front">
-                  <CustomCard
-                    {...produto}
-                    recarregarPag={() => setF5(true)}
-                  />
-                </div>
-                <div className="flip-card-back">
-                  <CustomModal {...produto} recarregarPag={() => setF5(true)} />
-                  { ' ' }
-                  <ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />
+          <div className="conteinerCardapio flexRow gap2rem">
+            { prod.map((produto) => (
+              <div className="flip-card" item key={produto.id}>
+                <div className="flip-card-inner">
+                  <div className="flip-card-front">
+                    <CustomCard
+                      {...produto}
+                      recarregarPag={() => setF5(true)}
+                    />
+                  </div>
+                  <div className="flip-card-back">
+                    <CustomModal {...produto} recarregarPag={() => setF5(true)} />
+                    { ' ' }
+                    <ProdutosEditar {...produto} recarregarPag={() => setF5(true)} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+        <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
+          <span>
+            Você ainda não tem nenhum produto no seu cardápio.
+            <br />
+            Gostaria de adicionar um novo produto?
+          </span>
+          <CustomizedDialogs
+            btClassName="btLaranja"
+            btAbrirMensagem={<> Adicionar produto ao cardápio</>}
+            btMensagem={<>Adicionar produto novo</>}
+            conteudo={<ProdutosNovo />}
+          />
         </div>
       </div>
 
-      <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
-        <span>
-          Você ainda não tem nenhum produto no seu cardápio.
-          <br />
-          Gostaria de adicionar um novo produto?
-        </span>
-        <CustomizedDialogs
-          btClassName="btLaranja"
-          btAbrirMensagem={<> Adicionar produto ao cardápio</>}
-          btMensagem={<>Adicionar produto novo</>}
-          conteudo={<ProdutosNovo />}
-        />
-      </div>
     </div>
   );
 }
