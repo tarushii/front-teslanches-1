@@ -56,7 +56,7 @@ h3{
 }
 
 .cardsProdutos {
-  padding: 0 5rem;
+  padding: 0rem;
 }
 
 .conteinerdetalhesProduto h1{
@@ -177,6 +177,7 @@ h3{
 }
 .miniCardPedidoDetalhes{
   margin-bottom: 1rem;
+  margin-left: 5rem;
 }
 
 .footerPedidosDetalhes{
