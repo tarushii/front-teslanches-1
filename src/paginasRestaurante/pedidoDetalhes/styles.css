@@ -21,7 +21,42 @@
   box-sizing: border-box;
   border-radius: 2rem 2rem 0px 0px;
   margin-top: 5rem;
-  margin-bottom: 3rem;
+  margin-bottom: .2rem;
+  padding-left: 5rem;
+}
+.topPedidoDetalhes h1{
+  font-family: 'Baloo 2';
+  font-weight: bold !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 40px;
+  line-height: 150%;
+  color: rgba(18, 18, 18, 0.8);
+}
+
+h3{
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 170%;
+  color: #D13201;
+}
+
+.conteinerEndereco{
+  padding: .2rem 5rem;
+}
+.conteinerEndereco span{
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 170%;
+  color: rgba(34, 34, 34, 0.87);
+}
+
+.cardsProdutos {
+  padding: 0 5rem;
 }
 
 .conteinerdetalhesProduto h1{
@@ -78,16 +113,43 @@
   transition: .3s;
 }
 
+
+#btConfirmaPedido:disabled {
+  all: unset;
+  border-radius: 1.25rem;
+  background-color: #BABABA;
+  padding: .5rem 2.5rem;
+  max-height: 2.5rem;
+  font-size: .875rem;
+  color: var(--branco);
+  box-shadow: 0 .3125rem 1.5625rem rgb(99, 99, 99);
+}
+
 #plus, #minus{
   all: unset;
 }
 
 #btCrossPedidoDetalhes{
+  all: unset;
   position: absolute;
-  color: red;
+  color: rgb(255, 0, 0, 0.60);
+  font-size: 3rem;
+  font-weight: bold;
   top: -3rem;
-  right: 2rem;
-  text-shadow: 0px 0px .375rem rgba(255,255,255,0.7);
+  right: 3rem;
+  text-shadow: 0px 0px .375rem rgba(255, 0, 0, 0.7);
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+#btCrossPedidoDetalhes:hover {
+  transition-duration: 0.3s;
+  color: #ff0000
+}
+
+#btCrossPedidoDetalhes:active {
+  color: #D1320150;
+  transform: translateY(.25rem);
+  transition: .3s;
 }
 
 .lineSpace{
@@ -113,24 +175,35 @@
   background: rgba(251, 59, 0, 0.2);
   border-radius: .3125rem;
 }
+.miniCardPedidoDetalhes{
+  margin-bottom: 1rem;
+}
 
-.cardPedidoDetalhes .card{
+.footerPedidosDetalhes{
+  margin-bottom: 3rem;
+}
+
+.miniCardPedidoDetalhes .cardContent{
+  gap: 0.1rem;
+}
+
+.miniCardPedidoDetalhes .card{
   width: 21.625rem;
   height: 5.125rem;
 }
-.cardPedidoDetalhes .card img{
+.miniCardPedidoDetalhes .card img{
   width: 4.8125rem;
   height: 4.8125rem;
   transform: translateX(-15.3rem);
 }
 
-.cardPedidoDetalhes .card h1,
-.cardPedidoDetalhes .card p,
-.cardPedidoDetalhes .card .valorBox{
+.miniCardPedidoDetalhes .card h1,
+.miniCardPedidoDetalhes .card p,
+.miniCardPedidoDetalhes .card .valorBox{
   transform: translateX(5rem);
 }
 
-.cardPedidoDetalhes .card h1{
+.miniCardPedidoDetalhes .card h1{
   font-style: normal;
   font-weight: 600;
   font-size: 1.25rem;
@@ -138,7 +211,7 @@
   color: #525459;
 }
 
-.cardPedidoDetalhes .card p{
+.miniCardPedidoDetalhes .card p{
   font-style: normal;
   font-size: .875rem;
   font-weight: 500;
@@ -147,7 +220,7 @@
   margin-top: 0;
 }
 
-.cardPedidoDetalhes .card .valorBox{
+.miniCardPedidoDetalhes .card .valorBox{
   font-style: normal;
   font-weight: 600;
   font-size: .625rem;
@@ -155,10 +228,9 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #006335;
-  margin-top: .3rem;
 }
 
-.cardPedidoDetalhes .card .campoDescricao{
+.miniCardPedidoDetalhes .card .campoDescricao{
   display: none;
 }
 
@@ -214,17 +286,6 @@
   line-height: 150%;
   color: #525459;
 }
-
-/* .cardsProdutos .cardPedidoDetalhes button{
-  all: unset;
-  position: absolute ;
-  width: 21.625rem !important;
-  height: 5.125rem !important;
-  padding-top: 0 !important;
-  transform: translateY(-5rem) !important;
-  cursor: pointer;
-  color: transparent;
-} */
 
 .pedidosLine{
   width: 78.5rem;
