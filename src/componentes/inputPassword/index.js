@@ -7,7 +7,7 @@ export default function InputPassword(props) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   return (
-    <div className="flexColunm mb1rem inputPassword">
+    <div className="flexColumn mb1rem inputPassword">
       <label>{props.label}</label>
       <input
         type={mostrarSenha ? 'text' : 'password'}

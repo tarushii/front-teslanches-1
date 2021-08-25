@@ -6,7 +6,6 @@ import '../../styles/global.css';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import illustrationTop from '../../assets/illustration-top.svg';
-import CustomizedDialogs from '../../componentes/customDialog';
 import ProdutosNovo from '../produtosNovo';
 import UsuarioEditar from '../usuarioEditar/index';
 import CustomCard from '../../componentes/customCard';
@@ -107,11 +106,16 @@ export default function produtos() {
     {
       id: 1,
       endereco: {
-        cep: 123123123,
+        cep: 1456456,
         endereco: 'qlqr',
         complemento: 'casa'
       },
       produtos: [
+        {
+          nome: 'pizzaVeia',
+          quantidade: 3,
+          preco: 1000
+        },
         {
           nome: 'pizzaVeia',
           quantidade: 3,
@@ -127,41 +131,46 @@ export default function produtos() {
       id: 2,
       endereco: {
         cep: 123123123,
-        endereco: 'qlqr',
-        complemento: 'casa'
+        endereco: 'qlqr2323',
+        complemento: 'casa546'
       },
       produtos: [
         {
-          nome: 'pizzaVeia',
-          quantidade: 3,
+          nome: 'pizzaVeia43',
+          quantidade: 33,
           preco: 1000
         },
         {
-          nome: 'macarrao no pao',
-          quantidade: 1,
+          nome: 'macarrao no paogyt',
+          quantidade: 51,
           preco: 2000
         }]
     },
     {
       id: 3,
       endereco: {
-        cep: 123123123,
-        endereco: 'qlqr',
-        complemento: 'casa'
+        cep: 76896457,
+        endereco: 'gfhjj',
+        complemento: 'kgksgh'
       },
       produtos: [
         {
-          nome: 'pizzaVeia',
-          quantidade: 3,
+          nome: 'pizzaVeia45',
+          quantidade: 7,
           preco: 1000
         },
         {
-          nome: 'macarrao no pao',
-          quantidade: 1,
+          nome: 'macarrao no pao23',
+          quantidade: 12,
           preco: 2000
         }]
     }
   ];
+
+  // TODOs:
+  // GET em pedidos (tudo) se possivel com nome do consumidor ou + um
+  // GET em consumidor (nome),
+  // POST em enviados (enviar true)
 
   return (
     <div className="bodyProdutos">
@@ -184,7 +193,7 @@ export default function produtos() {
       </div>
 
       <div className={`${!paginaPedidos ? 'cadapioBox' : 'none'}`}>
-        <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColunm contentCenter itemsCenter mt2rem`}>
+        <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColumn contentCenter itemsCenter mt2rem`}>
           <div className="contemBotao flexRow itemsCenter">
             <ProdutosNovo recarregarPag={() => setF5(true)} />
           </div>
@@ -209,7 +218,7 @@ export default function produtos() {
             ))}
           </div>
         </div>
-        <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColunm contentCenter itemsCenter`}>
+        <div className={`${prod.length === 0 ? 'addProdutos' : 'none'} flexColumn contentCenter itemsCenter`}>
           <span>
             Você ainda não tem nenhum produto no seu cardápio.
             <br />

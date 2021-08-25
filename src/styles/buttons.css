@@ -71,3 +71,15 @@
   box-shadow: 0 .3125rem 1.5625rem rgb(99, 99, 99);
   transition-duration: 0.3s;
 }
+
+input[type="button"]:disabled,
+input[type="submit"]:disabled{
+  all: unset;
+  border-radius: 1.25rem;
+  background-color: #BABABA !important;
+  padding: .5rem 2.5rem;
+  max-height: 2.5rem;
+  font-size: .875rem;
+  color: var(--branco);
+  box-shadow: 0 .3125rem 1.5625rem rgb(99, 99, 99);
+}
