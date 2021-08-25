@@ -184,11 +184,13 @@ button.addProdutos{
   line-height: 1.0625rem;
   display: flex;
   align-items: center;
-  color: #000000;;
+  color: #000000;
+  transition: 0.5s ease-in-out;
 }
 
 .pedidosButton .btTransparenteGlow{
     box-shadow: none;
+    transition: 0.5s ease-in-out;
 }
 
 

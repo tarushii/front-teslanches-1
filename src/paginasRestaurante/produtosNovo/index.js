@@ -81,8 +81,8 @@ export default function ProdutosNovo({ recarregarPag }) {
       toast.error(error.message, { toastId: toastErro });
       setErro(error.message);
     }
-    recarregarPag();
     handleClose();
+    recarregarPag();
     toast.success('Produto criado com sucesso', { toastId: toastOk });
   }
 
