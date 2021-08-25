@@ -215,12 +215,7 @@ export default function produtos() {
             <br />
             Gostaria de adicionar um novo produto?
           </span>
-          <CustomizedDialogs
-            btClassName="btLaranja"
-            btAbrirMensagem={<> Adicionar produto ao cardápio</>}
-            btMensagem={<>Adicionar produto novo</>}
-            conteudo={<ProdutosNovo />}
-          />
+          <ProdutosNovo recarregarPag={() => setF5(true)} />
         </div>
       </div>
       <div className={`${paginaPedidos ? 'pedidosBox' : 'none'}`}>
