@@ -177,7 +177,7 @@ export default function ProdutosEditar({
           <div className="formProdutos flexRow gap3rem px2rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <h1>Editar produto</h1>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="nomeRestaurante">Nome</label>
                 <input
                   id="nomeRestaurante"
@@ -186,7 +186,7 @@ export default function ProdutosEditar({
                   {...register('nome')}
                 />
               </div>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="descricao">Descrição</label>
                 <input
                   id="descricao"
@@ -196,7 +196,7 @@ export default function ProdutosEditar({
                 />
                 <span className="mr06rem">Máx.: 50 caracteres</span>
               </div>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="valor">Valor</label>
                 <input
                   id="valor"

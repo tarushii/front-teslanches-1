@@ -81,8 +81,8 @@ export default function ProdutosNovo({ recarregarPag }) {
       toast.error(error.message, { toastId: toastErro });
       setErro(error.message);
     }
-    recarregarPag();
     handleClose();
+    recarregarPag();
     toast.success('Produto criado com sucesso', { toastId: toastOk });
   }
 
@@ -160,16 +160,16 @@ export default function ProdutosNovo({ recarregarPag }) {
           <div className="formProdutos flexRow gap3rem px2rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <h1>Novo produto</h1>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="nomeRestaurante">Nome</label>
                 <input id="nomeRestaurante" type="text" {...register('nome', { required: true })} />
               </div>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="descricao">Descrição</label>
                 <input id="descricao" type="text" {...register('descricao', { required: true })} />
                 <span className="mr06rem">Máx.: 50 caracteres</span>
               </div>
-              <div className="flexColunm mb1rem ">
+              <div className="flexColumn mb1rem ">
                 <label htmlFor="valor">Valor</label>
                 <input id="valor" type="number" placeholder="00,00" {...register('preco', { required: true, valueAsNumber: true })} />
               </div>

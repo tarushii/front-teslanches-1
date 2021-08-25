@@ -69,9 +69,9 @@ export default function Login() {
             <h1>Login</h1>
           </div>
 
-          <div className=" flexColunm mb1rem mt2rem">
+          <div className=" flexColumn mb1rem mt2rem">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flexColunm mb1rem">
+              <div className="flexColumn mb1rem">
                 <label htmlFor="email">Email</label>
                 <input id="email" type="text" {...register('email', { required: true })} />
 
