@@ -156,7 +156,7 @@ export default function ProdutosNovo({ recarregarPag }) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <div className="flexColumn">
+        <div className="flexColumn pa2rem">
           <div className="formProdutos flexRow gap3rem px2rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <h1>Novo produto</h1>
@@ -214,14 +214,16 @@ export default function ProdutosNovo({ recarregarPag }) {
             </div>
           </div>
         </div>
-        <DialogActions className={classes.botoes}>
-          <button className="btTransparente" type="button" onClick={handleClose}>
-            Cancelar
-          </button>
-          <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
-            Adicionar produto ao cardápio
-          </button>
-        </DialogActions>
+        <div className="pb2rem">
+          <DialogActions className={classes.botoes}>
+            <button className="btTransparente" type="button" onClick={handleClose}>
+              Cancelar
+            </button>
+            <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
+              Adicionar produto ao cardápio
+            </button>
+          </DialogActions>
+        </div>
       </Dialog>
     </div>
 
