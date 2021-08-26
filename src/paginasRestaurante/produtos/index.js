@@ -34,6 +34,8 @@ export default function produtos() {
   const [f5, setF5] = useState(false);
   const [paginaPedidos, setPaginaPedidos] = useState(true);
   const [paginaEnviados, setPaginaEnviados] = useState(false);
+  // const [listaDePedidos, setListaDePedidos] = useState([]);
+
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
@@ -68,6 +70,22 @@ export default function produtos() {
       }
     };
 
+    async function buscarPedidos() {
+      try {
+        // const { dados, ok } = await get('/pedidos', token);
+
+        // if (!ok) {
+        //   toast.error(dados, { toastId: customId });
+        //   return;
+        // }
+
+        // setListaDePedidos(dados);
+      } catch (error) {
+        toast.error(error.message, { toastId: customId });
+      }
+    }
+
+    buscarPedidos();
     buscarUsuario();
     buscarProdutos();
   }, [token, f5]);
@@ -102,75 +120,41 @@ export default function produtos() {
     }
   };
 
-  const pedidos = [
-    {
-      id: 1,
-      endereco: {
-        cep: 1456456,
-        endereco: 'qlqr',
-        complemento: 'casa'
-      },
-      produtos: [
-        {
-          nome: 'pizzaVeia',
-          quantidade: 3,
-          preco: 1000
-        },
-        {
-          nome: 'pizzaVeia',
-          quantidade: 3,
-          preco: 1000
-        },
-        {
-          nome: 'macarrao no pao',
-          quantidade: 1,
-          preco: 2000
-        }]
-    },
-    {
-      id: 2,
-      endereco: {
-        cep: 123123123,
-        endereco: 'qlqr2323',
-        complemento: 'casa546'
-      },
-      produtos: [
-        {
-          nome: 'pizzaVeia43',
-          quantidade: 33,
-          preco: 1000
-        },
-        {
-          nome: 'macarrao no paogyt',
-          quantidade: 51,
-          preco: 2000
-        }]
-    },
-    {
-      id: 3,
-      endereco: {
-        cep: 76896457,
-        endereco: 'gfhjj',
-        complemento: 'kgksgh'
-      },
-      produtos: [
-        {
-          nome: 'pizzaVeia45',
-          quantidade: 7,
-          preco: 1000
-        },
-        {
-          nome: 'macarrao no pao23',
-          quantidade: 12,
-          preco: 2000
-        }]
-    }
-  ];
-
   // TODOs:
   // GET em pedidos (tudo) se possivel com nome do consumidor ou + um
   // GET em consumidor (nome),
   // POST em enviados (enviar true)
+
+  const listaDePedidos = [{
+    id: 9,
+    idRestaurante: 4,
+    idConsumidor: 1,
+    nome_usuario: 'Taruzao',
+    valorProdutos: 13700,
+    taxaDeEntrega: 500,
+    valorTotal: 14200,
+    enderecoDeEntrega: {
+      endereco: 'ENDEREÇO',
+      complemento: 'COMPLEMENTO',
+      cep: 'CEP'
+    },
+    carrinho: [
+      {
+        id: 55,
+        nome: 'burgao',
+        preco: 2345,
+        quantidade: 2,
+        valorTotal: 7035
+      },
+      {
+        id: 57,
+        nome: 'burgao com angu',
+        preco: 6665,
+        quantidade: 1,
+        valorTotal: 6665
+      }
+    ]
+  }];
 
   return (
     <div className="bodyProdutos">
@@ -230,10 +214,22 @@ export default function produtos() {
       <div className={`${paginaPedidos ? 'pedidosBox' : 'none'}`}>
         <div className="pedidosBody">
 
-          <div className="pedidosButton flexRow gap2rem contentEnd itemsCenter mb2rem">
-            <button className={`${paginaEnviados ? 'btLaranja' : 'btTransparenteGlow'} btPagEnviados`} type="button" onClick={() => setPaginaEnviados(false)}>Não enviados</button>
-            <button className={`${paginaEnviados ? 'btTransparenteGlow' : 'btLaranja'} btPagEnviados`} type="button" onClick={() => setPaginaEnviados(true)}>Enviados</button>
-          </div>
+          {/* <div className="pedidosButton flexRow gap2rem contentEnd itemsCenter mb2rem">
+            <button
+              className={`${paginaEnviados ? 'btLaranja' : 'btTransparenteGlow'} btPagEnviados`}
+              type="button"
+              onClick={() => setPaginaEnviados(false)}
+            >
+              Não enviados
+            </button>
+            <button
+              className={`${paginaEnviados ? 'btTransparenteGlow' : 'btLaranja'} btPagEnviados`}
+              type="button"
+              onClick={() => setPaginaEnviados(true)}
+            >
+              Enviados
+            </button>
+          </div> */}
 
           <div className="pedidosTitle flexRow gap1rem contentBetween">
             <p>Pedido</p>
@@ -245,11 +241,18 @@ export default function produtos() {
 
           {/* TODO - filter para separar enviados */}
           <div className="cardsProdutos flexColumn gap1rem mt2rem contentCenter px2rem">
-            { pedidos.map((pedido) => (
+            { listaDePedidos.map((pedido) => (
               <div className="cardPedidoDetalhes ">
-                <PedidoDetalhes {...pedido} pedidos={pedidos} />
+                <PedidoDetalhes
+                  pedido={pedido}
+                  id={pedido.id}
+                  consumidor={pedido.nome_usuario}
+                  produtosPedidos={pedido.carrinho}
+                  enderecoDeEntrega={pedido.enderecoDeEntrega}
+                  valorTotal={pedido.valorTotal}
+                />
               </div>
-            ))}
+            )) }
           </div>
 
         </div>
