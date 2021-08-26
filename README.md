@@ -1,4 +1,4 @@
-# Esta é uma solução de um restaurante
+# Esta é uma solução para um restaurante
 - Tela inicial com login e cadastro.
 - Todas as pagina são acessadas somente por usuarios autenticados.
 - É utilizado criptografia ao registrar a senha.
