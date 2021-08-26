@@ -306,3 +306,18 @@ h3{
   cursor: pointer;
   border: none;
 }
+
+.verMais{
+  color: red;
+}
+
+.pedidosLine p,
+.pedidosLine span{
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: .875rem;
+  line-height: 1.0625rem;
+  align-items: center;
+  color: #000000;
+}

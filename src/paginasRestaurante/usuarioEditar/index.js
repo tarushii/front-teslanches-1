@@ -132,7 +132,7 @@ export default function UsuarioEditar({
         aria-labelledby="form-dialog-title"
       >
         <div className="flexColumn">
-          <div className="formProdutos flexRow gap3rem ml2rem ">
+          <div className="formProdutos flexRow gap3rem ml2rem pa2rem ">
             <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
               <h1>Editar Perfil</h1>
               <div className="flexColumn mb1rem ">
@@ -233,7 +233,7 @@ export default function UsuarioEditar({
               </label>
             </div>
           </div>
-          <div className="btMudancas">
+          <div className="btMudancas pb2rem">
             <DialogActions className={classes.botoes}>
               <button className="btTransparente" type="button" onClick={handleClose}>
                 Cancelar

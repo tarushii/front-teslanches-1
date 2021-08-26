@@ -174,7 +174,7 @@ export default function ProdutosEditar({
         aria-labelledby="form-dialog-title"
       >
         <div className="flexColumn">
-          <div className="formProdutos flexRow gap3rem px2rem">
+          <div className="formProdutos flexRow gap3rem pa2rem">
             <form onSubmit={handleSubmit(onSubmit)}>
               <h1>Editar produto</h1>
               <div className="flexColumn mb1rem ">
@@ -248,14 +248,16 @@ export default function ProdutosEditar({
             </div>
           </div>
         </div>
-        <DialogActions className={classes.botoes}>
-          <button className="btTransparente" type="button" onClick={handleClose}>
-            Cancelar
-          </button>
-          <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
-            Salvar alterações
-          </button>
-        </DialogActions>
+        <div className="pb2rem">
+          <DialogActions className={classes.botoes}>
+            <button className="btTransparente" type="button" onClick={handleClose}>
+              Cancelar
+            </button>
+            <button className="btLaranja" type="submit" onClick={handleSubmit(onSubmit)}>
+              Salvar alterações
+            </button>
+          </DialogActions>
+        </div>
       </Dialog>
     </div>
   );

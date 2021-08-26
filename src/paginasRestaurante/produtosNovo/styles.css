@@ -2,6 +2,10 @@
   border-radius: 2rem !important;
   padding: 2rem !important;
 }
+.MuiDialog-paperWidthSm{
+  min-width: min-content !important;
+  min-height: min-content !important;
+}
 
 .bodyProdutosDialog{
   width: 63rem;

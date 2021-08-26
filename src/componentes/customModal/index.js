@@ -59,22 +59,23 @@ export default function CustomModal({ id, recarregarPag }) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          Remover produto do catálogo?
-        </DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" component="p">
-            Esta ação não poderá ser desfeita.
-          </Typography>
-        </DialogContent>
-        <DialogActions className={classes.botoes}>
-          <button className="btTransparente" type="button" onClick={handleClose}>
-            Manter produto
-          </button>
-          <button className="btLaranja" type="submit" onClick={removerProduto}>
-            Remover
-          </button>
-        </DialogActions>
+        <div className="bodyModalDelete">
+
+          <h1>Remover produto do catálogo?</h1>
+          <div className="conteudoModalDelete">
+            <p>Esta ação não poderá ser desfeita.</p>
+          </div>
+          <div className="conteudoBotoes">
+            <div className="flexRow contentCenter gap2rem">
+              <button className="btTransparente" type="button" onClick={handleClose}>
+                Manter produto
+              </button>
+              <button className="btLaranja" type="submit" onClick={removerProduto}>
+                Remover
+              </button>
+            </div>
+          </div>
+        </div>
       </Dialog>
     </div>
   );
