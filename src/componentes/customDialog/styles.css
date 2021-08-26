@@ -1,5 +1,6 @@
 .MuiDialog-paperWidthSm{
-  max-width: 87.5rem !important;
+  min-width: min-content !important;
+  min-height: min-content !important;
 }
 
 #btCancelar{
