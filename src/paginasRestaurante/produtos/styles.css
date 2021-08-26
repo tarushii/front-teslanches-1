@@ -193,4 +193,7 @@ button.addProdutos{
     transition: 0.5s ease-in-out;
 }
 
-
+.MuiDialog-paperWidthSm{
+  min-width: min-content !important;
+  min-height: min-content !important;
+}

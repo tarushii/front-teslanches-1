@@ -56,7 +56,7 @@ h3{
 }
 
 .cardsProdutos {
-  padding: 0 5rem;
+  padding: 0rem;
 }
 
 .conteinerdetalhesProduto h1{
@@ -177,6 +177,7 @@ h3{
 }
 .miniCardPedidoDetalhes{
   margin-bottom: 1rem;
+  margin-left: 5rem;
 }
 
 .footerPedidosDetalhes{
@@ -304,4 +305,19 @@ h3{
   padding: 1rem 0;
   cursor: pointer;
   border: none;
+}
+
+.verMais{
+  color: red;
+}
+
+.pedidosLine p,
+.pedidosLine span{
+  font-family: Lato;
+  font-style: normal;
+  font-weight: normal;
+  font-size: .875rem;
+  line-height: 1.0625rem;
+  align-items: center;
+  color: #000000;
 }

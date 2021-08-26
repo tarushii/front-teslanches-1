@@ -2,3 +2,20 @@
   border-radius: 2rem !important;
   padding: 2rem !important;
 }
+
+.MuiDialog-paperWidthSm{
+  min-width: min-content !important;
+  min-height: min-content !important;
+}
+.MuiDialog-paperWidthSm {
+    max-width: 300px !important;
+}
+
+.bodyModalDelete{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 28.75rem;
+  text-align: center;
+  padding: 2rem;
+}

@@ -11,6 +11,7 @@ import Dialog from '@material-ui/core/Dialog';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import ShowMore from 'react-show-more';
 import useStyles from './styles';
 import { get, postAutenticado } from '../../services/apiClient';
 import precoConvertido from '../../formatting/currency';
@@ -25,14 +26,15 @@ export default function PedidoDetalhes({
   imagemProduto,
   valorTotal,
   produtos,
-  nomeusuario,
-  pedido
+  consumidor,
+  produtosPedidos,
+  pedido,
+  enderecoDeEntrega
 }) {
   const [erro, setErro] = useState('');
   const [quantidade, setQuantidade] = useState(0);
   const [addCarrinho, setAddCarrinho] = useState([]);
-  // const [temEndereco, setTemEndereco] = useState([]);
-  const temEndereco = { cep: 123123123, endereco: 'qlqr', complemento: 'faltou' };
+  const [temEndereco, setTemEndereco] = useState([]);
   const [open, setOpen] = useState(false);
   const [pedidoEnviado, setPedidoEnviado] = useState(false);
   const [carregando, setCarregando] = useState(false);
@@ -55,6 +57,7 @@ export default function PedidoDetalhes({
 
   function handleClickOpen() {
     setOpen(true);
+    end();
   }
 
   function handleClose() {
@@ -79,35 +82,51 @@ export default function PedidoDetalhes({
     toast.success('O pedido foi enviado com sucesso!');
   }
 
+  console.log(produtosPedidos);
+  function end() {
+    setTemEndereco(enderecoDeEntrega);
+  }
+
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
       <div className="pedidosLine flexRow contentBetween">
         <p>{id}</p>
-        <div>
-          { produtos.map((produto) => (
-            <div className="flexRow gap1rem">
-              <p>{ produto.nome }</p>
-              {' '}
-              <p>{ produto.quantidade }</p>
-
-            </div>
-          ))}
+        <div className="flexColumn">
+          <ShowMore
+            lines={2}
+            more="Ver mais..."
+            less="Ver menos..."
+            anchorClass="verMais"
+          >
+            { produtosPedidos.map((item) => (
+              <div className=" gap1rem">
+                <p>
+                  { item.nome }
+                  {' '}
+                  { item.quantidade }
+                  {' '}
+                  {item.quantidade === 1 ? 'unidade' : 'unidades' }
+                </p>
+                <br />
+              </div>
+            ))}
+          </ShowMore>
         </div>
         <div>
           <p>
-            CEP
-            {endereco.cep}
+            {pedido.enderecoDeEntrega.endereco}
+            ,
           </p>
           <p>
-            Endereço
-            {endereco.endereco}
+            {pedido.enderecoDeEntrega.complemento}
+            ,
           </p>
           <p>
-            Complemento
-            {endereco.complemento}
+            {pedido.enderecoDeEntrega.cep}
+            .
           </p>
         </div>
-        <p>{nomeusuario}</p>
+        <p>{consumidor}</p>
         <p>{precoConvertido(10000) }</p>
       </div>
       <button
@@ -150,7 +169,7 @@ export default function PedidoDetalhes({
               </div>
 
               <div className="cardsProdutos flexColumn mt2rem contentCenter px2rem">
-                { produtos.map((produto) => (
+                { produtosPedidos.map((produto) => (
                   <div className="miniCardPedidoDetalhes ">
                     <CustomCard
                       id="miniPedidoDetalhes"
