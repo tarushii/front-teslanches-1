@@ -124,3 +124,7 @@
       cursor: pointer;
     }
     
+.MuiDialog-paperWidthSm{
+  min-width: min-content !important;
+  min-height: min-content !important;
+}
