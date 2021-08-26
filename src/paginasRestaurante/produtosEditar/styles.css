@@ -1,6 +1,11 @@
 .MuiDialog-paper{
   border-radius: 2rem !important;
-  padding: 2rem !important;
+  padding: 4rem !important;
+}
+
+.MuiDialog-paperWidthSm{
+  min-width: min-content !important;
+  min-height: min-content !important;
 }
 
 .bodyProdutosDialog{
