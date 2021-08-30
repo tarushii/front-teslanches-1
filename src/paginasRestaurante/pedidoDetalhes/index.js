@@ -29,7 +29,7 @@ export default function PedidoDetalhes({
   consumidor,
   produtosPedidos,
   pedido,
-  enderecoDeEntrega
+  enderecoDeEntrega,
 }) {
   const [erro, setErro] = useState('');
   const [quantidade, setQuantidade] = useState(0);
