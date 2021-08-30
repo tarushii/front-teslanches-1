@@ -34,7 +34,7 @@ export default function produtos() {
   const [f5, setF5] = useState(false);
   const [paginaPedidos, setPaginaPedidos] = useState(true);
   const [paginaEnviados, setPaginaEnviados] = useState(false);
-  // const [listaDePedidos, setListaDePedidos] = useState([]);
+  const [listaDePedidos, setListaDePedidos] = useState([]);
 
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
@@ -72,14 +72,14 @@ export default function produtos() {
 
     async function buscarPedidos() {
       try {
-        // const { dados, ok } = await get('/pedidos', token);
+        const { dados, ok } = await get('/pedidos', token);
 
-        // if (!ok) {
-        //   toast.error(dados, { toastId: customId });
-        //   return;
-        // }
+        if (!ok) {
+          toast.error(dados, { toastId: customId });
+          return;
+        }
 
-        // setListaDePedidos(dados);
+        setListaDePedidos(dados);
       } catch (error) {
         toast.error(error.message, { toastId: customId });
       }
@@ -125,36 +125,36 @@ export default function produtos() {
   // GET em consumidor (nome),
   // POST em enviados (enviar true)
 
-  const listaDePedidos = [{
-    id: 9,
-    idRestaurante: 4,
-    idConsumidor: 1,
-    nome_usuario: 'Taruzao',
-    valorProdutos: 13700,
-    taxaDeEntrega: 500,
-    valorTotal: 14200,
-    enderecoDeEntrega: {
-      endereco: 'ENDEREÇO',
-      complemento: 'COMPLEMENTO',
-      cep: 'CEP'
-    },
-    carrinho: [
-      {
-        id: 55,
-        nome: 'burgao',
-        preco: 2345,
-        quantidade: 2,
-        valorTotal: 7035
-      },
-      {
-        id: 57,
-        nome: 'burgao com angu',
-        preco: 6665,
-        quantidade: 1,
-        valorTotal: 6665
-      }
-    ]
-  }];
+  // const listaDePedidos = [{
+  //   id: 9,
+  //   idRestaurante: 4,
+  //   idConsumidor: 1,
+  //   nome_usuario: 'Taruzao',
+  //   valorProdutos: 13700,
+  //   taxaDeEntrega: 500,
+  //   valorTotal: 14200,
+  //   enderecoDeEntrega: {
+  //     endereco: 'ENDEREÇO',
+  //     complemento: 'COMPLEMENTO',
+  //     cep: 'CEP'
+  //   },
+  //   carrinho: [
+  //     {
+  //       id: 55,
+  //       nome: 'burgao',
+  //       preco: 2345,
+  //       quantidade: 2,
+  //       valorTotal: 7035
+  //     },
+  //     {
+  //       id: 57,
+  //       nome: 'burgao com angu',
+  //       preco: 6665,
+  //       quantidade: 1,
+  //       valorTotal: 6665
+  //     }
+  //   ]
+  // }];
 
   return (
     <div className="bodyProdutos">
