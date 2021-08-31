@@ -68,7 +68,6 @@ export default function PedidoDetalhes({
       if (!ok) {
         return toast.error(`erro${dados}`);
       }
-      toast.success(dados);
     } catch (error) {
       return toast.error(error.message);
     }
