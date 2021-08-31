@@ -16,11 +16,10 @@ import useAuth from '../../hooks/useAuth';
 import '../../styles/global.css';
 import fotoProduto from '../../assets/foto-produto.svg';
 import uploadIcon from '../../assets/upload-icon.svg';
+import { toastNome, toastDescricao, toastPreco } from '../../validacoes/toastfy';
 import {
   postEstadoProduto, postNaoAutenticado, put
 } from '../../services/apiClient';
-
-import { toastNome, toastDescricao, toastPreco } from '../../validacoes/toastfy';
 
 export default function ProdutosEditar({
   id: idProduto,
@@ -69,16 +68,12 @@ export default function ProdutosEditar({
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-
     const todosDados = { ...data, imagemProduto: urlImagem };
-
     const { ativou, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
-
     dadosAtualizados.permiteObservacoes = !!dadosAtualizados.permiteObservacoes;
-
     try {
       const { dados, ok } = await put(`/produtos/${idProduto}`, dadosAtualizados, token);
       if (!ok) {
@@ -86,7 +81,6 @@ export default function ProdutosEditar({
         toast.error(dados);
         return;
       }
-
       if (ativou) {
         await postEstadoProduto(`/produtos/${idProduto}/ativar`, token);
         toast.warn('O produto foi ativado!');
@@ -94,13 +88,11 @@ export default function ProdutosEditar({
         await postEstadoProduto(`/produtos/${idProduto}/desativar`, token);
         toast.warn('O produto foi desativado');
       }
-
       setCarregando(false);
     } catch (error) {
       toast.error(error.message);
       setErro(error.message);
     }
-
     handleClose();
     recarregarPag();
     toast.success('O produto foi atualizado com sucesso!');
@@ -109,11 +101,9 @@ export default function ProdutosEditar({
   const convertBase64 = (file) => new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-
     fileReader.onload = () => {
       resolve(fileReader.result);
     };
-
     fileReader.onerror = (error) => {
       reject(error);
     };
@@ -125,21 +115,16 @@ export default function ProdutosEditar({
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
-
     const imagemFoto = { imagem: `${ID}/${idProduto}/${Date.now()}.jpg` };
-
     const temFoto = await postNaoAutenticado('/imagem', imagemFoto);
-
     if (temFoto) {
       await postNaoAutenticado('/delete', imagemFoto);
     }
-
     const data = {
       nome: `${ID}/${idProduto}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
     const { dados, ok } = await postNaoAutenticado('/upload', data);
-
     if (!ok) {
       toast.error(dados, { toastId: customId });
       return;
@@ -215,7 +200,6 @@ export default function ProdutosEditar({
                   </label>
                   <span className="ml1rem">Ativar produto</span>
                 </section>
-
                 <section>
                   <label className="switch">
                     <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
@@ -227,7 +211,6 @@ export default function ProdutosEditar({
               </actions>
             </form>
             <div className="fotoProdutosEditar posRelative">
-
               { baseImage
                 ? (<img src={baseImage} alt="foto do produto" className="fotoCarregada" />)
                 : temImagem ? (<img src={temImagem} alt="foto do produto" className="fotoCarregada" />)
@@ -240,7 +223,6 @@ export default function ProdutosEditar({
                 onChange={(e) => uploadImagem(e)}
               />
               <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
-
               <label htmlFor="iconeUpload" className="labelIconeUpload">
                 Clique
                 para adicionar uma imagem
