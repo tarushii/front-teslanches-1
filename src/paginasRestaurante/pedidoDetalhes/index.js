@@ -82,7 +82,7 @@ export default function PedidoDetalhes({
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
-      <div className="pedidosLine flexRow contentBetween">
+      <div className="pedidosLine gridPedidos contentBetween">
         <p>{id}</p>
         <div className="flexColumn">
           <ShowMore

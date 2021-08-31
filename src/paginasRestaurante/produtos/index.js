@@ -217,7 +217,7 @@ export default function produtos() {
               </div>
             )) }
           </div>
-          <div className={`${enviados ? 'cardsProdutos2' : 'none'} flexColumn gap1rem mt2rem contentCenter px2rem`}>
+          <div className={`${enviados ? 'cardsProdutos2' : 'none'} flexColumn gap1rem mt2rem contentCenter `}>
             { listaDePedidos2.map((pedido) => (
               <div className="cardPedidoDetalhes ">
                 <PedidoDetalhes
