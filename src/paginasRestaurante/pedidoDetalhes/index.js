@@ -13,38 +13,30 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import ShowMore from 'react-show-more';
 import useStyles from './styles';
-import { get, postAutenticado } from '../../services/apiClient';
 import precoConvertido from '../../formatting/currency';
-import useAuth from '../../hooks/useAuth';
 import CustomCard from '../../componentes/customCard';
+import { postEstadoProduto } from '../../services/apiClient';
+import useAuth from '../../hooks/useAuth';
 
 export default function PedidoDetalhes({
   id,
-  nome,
-  endereco,
   recarregarPag,
-  imagemProduto,
   valorTotal,
-  produtos,
   consumidor,
   produtosPedidos,
   pedido,
   enderecoDeEntrega,
+  valor_produtos
 }) {
   const [erro, setErro] = useState('');
-  const [quantidade, setQuantidade] = useState(0);
-  const [addCarrinho, setAddCarrinho] = useState([]);
   const [temEndereco, setTemEndereco] = useState([]);
   const [open, setOpen] = useState(false);
   const [pedidoEnviado, setPedidoEnviado] = useState(false);
   const [carregando, setCarregando] = useState(false);
   const classes = useStyles();
-  const customId = 'custom-id-yes';
+  const { token } = useAuth();
   const {
-    user, token, cart, rest
-  } = useAuth();
-  const {
-    register, handleSubmit, formState: { errors }
+    handleSubmit
   } = useForm({
     mode: 'onSubmit',
     reValidateMode: '',
@@ -71,25 +63,26 @@ export default function PedidoDetalhes({
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-
-    // const { ...dadosAtualizados } = Object
-    //   .fromEntries(Object
-    //     .entries(data)
-    //     .filter(([, value]) => value));
-
+    try {
+      const { dados, ok } = await postEstadoProduto(`/pedido/${id}`, token);
+      if (!ok) {
+        return toast.error(`erro${dados}`);
+      }
+    } catch (error) {
+      return toast.error(error.message);
+    }
     handleClose();
     recarregarPag();
-    toast.success('O pedido foi enviado com sucesso!');
+    return toast.success('O pedido foi enviado com sucesso!');
   }
 
-  console.log(produtosPedidos);
   function end() {
     setTemEndereco(enderecoDeEntrega);
   }
 
   return (
     <div onClick={(e) => stop(e)} className={classes.container}>
-      <div className="pedidosLine flexRow contentBetween">
+      <div className="pedidosLine gridPedidos contentBetween">
         <p>{id}</p>
         <div className="flexColumn">
           <ShowMore
@@ -98,7 +91,7 @@ export default function PedidoDetalhes({
             less="Ver menos..."
             anchorClass="verMais"
           >
-            { produtosPedidos.map((item) => (
+            { pedido.carrinho.map((item) => (
               <div className=" gap1rem">
                 <p>
                   { item.nome }
@@ -114,20 +107,20 @@ export default function PedidoDetalhes({
         </div>
         <div>
           <p>
-            {pedido.enderecoDeEntrega.endereco}
+            {enderecoDeEntrega.endereco}
             ,
           </p>
           <p>
-            {pedido.enderecoDeEntrega.complemento}
+            {enderecoDeEntrega.complemento}
             ,
           </p>
           <p>
-            {pedido.enderecoDeEntrega.cep}
+            {enderecoDeEntrega.cep}
             .
           </p>
         </div>
         <p>{consumidor}</p>
-        <p>{precoConvertido(10000) }</p>
+        <p>{precoConvertido(valor_produtos) }</p>
       </div>
       <button
         type="button"
@@ -150,7 +143,6 @@ export default function PedidoDetalhes({
                   &times;
                 </button>
               </div>
-
               <div className="conteinerEndereco flexRow px3rem mb1rem flewRow gap06rem">
                 <h3>Endereço de entrega: </h3>
                 <span>
@@ -167,9 +159,8 @@ export default function PedidoDetalhes({
                 </span>
                 <span />
               </div>
-
               <div className="cardsProdutos flexColumn mt2rem contentCenter px2rem">
-                { produtosPedidos.map((produto) => (
+                { pedido.carrinho.map((produto) => (
                   <div className="miniCardPedidoDetalhes ">
                     <CustomCard
                       id="miniPedidoDetalhes"
@@ -177,7 +168,7 @@ export default function PedidoDetalhes({
                       verificaAtivo="tem que por"
                     />
                   </div>
-                ))}
+                )) }
               </div>
             </div>
             <div className="footerPedidosDetalhes px2rem mb3rem contentEnd">
@@ -186,7 +177,7 @@ export default function PedidoDetalhes({
                 <div className="flexColumn contentCenter px2rem">
                   <div className="total flexRow contentBetween mb06rem">
                     <span>Total</span>
-                    <h2>{precoConvertido(valorTotal)}</h2>
+                    <h2>{precoConvertido(pedido.valor_total)}</h2>
                   </div>
                   <div className="flexRow contentCenter itemsCenter">
                     <button id="btConfirmaPedido" className="btLaranja" disabled={!!pedidoEnviado} type="submit" onClick={handleSubmit(onSubmit)}>

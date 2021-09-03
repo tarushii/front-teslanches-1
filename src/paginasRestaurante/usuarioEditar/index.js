@@ -21,9 +21,7 @@ import useStyles from './styles';
 import { postNaoAutenticado, put, get } from '../../services/apiClient';
 
 export default function UsuarioEditar({
-
   nomeusuario, email, nome, categoria_id, descricao, taxa_entrega, tempo_entrega_minutos,
-
   valor_minimo_pedido, imagem_restaurante, recarregarPag
 }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -31,11 +29,10 @@ export default function UsuarioEditar({
   const [urlImagem, setUrlImagem] = useState('');
   const [baseImage, setBaseImage] = useState('');
   const { user, token } = useAuth();
-  const classes = useStyles();
   const [values, setValues] = React.useState({});
   const { register, handleSubmit } = useForm();
-
   const [open, setOpen] = useState(false);
+  const classes = useStyles();
 
   function handleClickOpen() {
     setOpen(true);
@@ -56,11 +53,9 @@ export default function UsuarioEditar({
   const convertBase64 = (file) => new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-
     fileReader.onload = () => {
       resolve(fileReader.result);
     };
-
     fileReader.onerror = (error) => {
       reject(error);
     };
@@ -71,24 +66,19 @@ export default function UsuarioEditar({
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
-
     const data = {
       nome: `${ID}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
-
     try {
       const { nomeImagem } = data;
       const imagem = { imagem: `${nomeImagem}` };
       await postNaoAutenticado('/delete', imagem);
-
       const { dados, ok } = await postNaoAutenticado('/upload', data);
-
       if (!ok) {
         return toast.error(dados);
       }
       setUrlImagem({ imagem_restaurante: dados });
-
       return console.log('sucesso');
     } catch (error) {
       return toast.error(error.message);
@@ -211,13 +201,11 @@ export default function UsuarioEditar({
               </div>
             </form>
             <div className="fotoProdutosNovo posRelative">
-
               {baseImage
                 ? (<img src={baseImage} alt="foto do produto" className="fotoCarregada" />)
                 : imagem_restaurante
                   ? (<img src={imagem_restaurante} alt="foto do usuario" id="fotoCarregada" />)
                   : (<img src={fotoProduto} alt="foto do usuario" />) }
-
               <label htmlFor="fileNew" className="fileNew" />
               <input
                 type="file"
@@ -226,7 +214,6 @@ export default function UsuarioEditar({
                 onChange={(e) => uploadImagem(e)}
               />
               <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
-
               <label htmlFor="iconeUpload" className="labelIconeUpload">
                 Clique
                 para adicionar uma imagem

@@ -321,3 +321,8 @@ h3{
   align-items: center;
   color: #000000;
 }
+
+.gridPedidos{
+  display: grid;
+  grid-template-columns: repeat(5, 280px);
+}

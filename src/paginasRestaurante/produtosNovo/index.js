@@ -58,16 +58,12 @@ export default function ProdutosNovo({ recarregarPag }) {
   async function onSubmit(data) {
     setCarregando(true);
     setErro('');
-
     const todosDados = { ...data, imagemProduto: urlImagem };
-
     const { ativo, ...dadosAtualizados } = Object
       .fromEntries(Object
         .entries(todosDados)
         .filter(([, value]) => value));
-
     dadosAtualizados.permiteObservacoes = !!dadosAtualizados.permiteObservacoes;
-
     try {
       const { dados, ok } = await postAutenticado('/produtos', dadosAtualizados, token);
       if (!ok) {
@@ -75,7 +71,6 @@ export default function ProdutosNovo({ recarregarPag }) {
         toast.error(dados, { toastId: toastErro });
         return;
       }
-
       setCarregando(false);
     } catch (error) {
       toast.error(error.message, { toastId: toastErro });
@@ -89,11 +84,9 @@ export default function ProdutosNovo({ recarregarPag }) {
   const convertBase64 = (file) => new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-
     fileReader.onload = () => {
       resolve(fileReader.result);
     };
-
     fileReader.onerror = (error) => {
       reject(error);
     };
@@ -105,21 +98,16 @@ export default function ProdutosNovo({ recarregarPag }) {
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setBaseImage(base64);
-
     const imagemFoto = { imagem: `${ID}/${Date.now()}.jpg` };
-
     const temFoto = await postNaoAutenticado('/imagem', imagemFoto);
-
     if (temFoto) {
       await postNaoAutenticado('/delete', imagemFoto);
     }
-
     const data = {
       nome: `${ID}/${Date.now()}.jpg`,
       imagem: `${base64.split(',')[1]}`
     };
     const { dados, ok } = await postNaoAutenticado('/upload', data);
-
     if (!ok) {
       toast.error(dados, { toastId: toastErro });
       console.log(dados);
@@ -182,7 +170,6 @@ export default function ProdutosNovo({ recarregarPag }) {
                   </label>
                   <span className="ml1rem">Ativar produto</span>
                 </section>
-
                 <section>
                   <label className="switch">
                     <input type="checkbox" {...register('permiteObservacoes')} defaultChecked={permiteObservacoes} />
@@ -194,7 +181,6 @@ export default function ProdutosNovo({ recarregarPag }) {
               </actions>
             </form>
             <div className="fotoProdutosNovo posRelative">
-
               { baseImage
                 ? (<img src={baseImage} alt="foto do produto" id="fotoCarregada" />)
                 : (<img src={fotoProduto} alt="foto do produto" />)}
@@ -206,7 +192,6 @@ export default function ProdutosNovo({ recarregarPag }) {
                 onChange={(e) => uploadImagem(e)}
               />
               <img className="iconeUpload" src={uploadIcon} alt="icone de upload de foto" />
-
               <label htmlFor="iconeUpload" className="labelIconeUpload">
                 Clique
                 para adicionar uma imagem
@@ -226,6 +211,5 @@ export default function ProdutosNovo({ recarregarPag }) {
         </div>
       </Dialog>
     </div>
-
   );
 }

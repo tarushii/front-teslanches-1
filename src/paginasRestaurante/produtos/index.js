@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-undef */
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-use-before-define */
@@ -29,13 +32,14 @@ import avatarPadrao from '../../assets/avatar-padrao.png';
 import PedidoDetalhes from '../pedidoDetalhes';
 
 export default function produtos() {
-  const { user, token, deslogar } = useAuth();
+  const { token, deslogar } = useAuth();
   const [prod, setProd] = useState([]);
   const [f5, setF5] = useState(false);
   const [paginaPedidos, setPaginaPedidos] = useState(true);
-  const [paginaEnviados, setPaginaEnviados] = useState(false);
+  const [enviados, setEnviados] = useState(false);
   const [listaDePedidos, setListaDePedidos] = useState([]);
-
+  const [listaDePedidos2, setListaDePedidos2] = useState([]);
+  const [carrinhoPedido, setCarrinhoPedido] = useState([]);
   const [usuario, setUsuario] = useState([]);
   const customId = 'custom-id-yes';
 
@@ -44,7 +48,6 @@ export default function produtos() {
     async function buscarProdutos() {
       try {
         const { dados, ok } = await get('/produtos', token);
-
         if (!ok) {
           toast.error(dados, { toastId: customId });
           return;
@@ -63,7 +66,6 @@ export default function produtos() {
           return toast.error(`erro${dados}`);
         }
         toast.success(dados);
-
         return setUsuario(dados);
       } catch (error) {
         return toast.error(error.message);
@@ -73,6 +75,7 @@ export default function produtos() {
     async function buscarPedidos() {
       try {
         const { dados, ok } = await get('/pedidos', token);
+        const { dados: dados2 } = await get('/pedidos2', token);
 
         if (!ok) {
           toast.error(dados, { toastId: customId });
@@ -80,11 +83,11 @@ export default function produtos() {
         }
 
         setListaDePedidos(dados);
+        setListaDePedidos2(dados2);
       } catch (error) {
         toast.error(error.message, { toastId: customId });
       }
     }
-
     buscarPedidos();
     buscarUsuario();
     buscarProdutos();
@@ -120,42 +123,6 @@ export default function produtos() {
     }
   };
 
-  // TODOs:
-  // GET em pedidos (tudo) se possivel com nome do consumidor ou + um
-  // GET em consumidor (nome),
-  // POST em enviados (enviar true)
-
-  // const listaDePedidos = [{
-  //   id: 9,
-  //   idRestaurante: 4,
-  //   idConsumidor: 1,
-  //   nome_usuario: 'Taruzao',
-  //   valorProdutos: 13700,
-  //   taxaDeEntrega: 500,
-  //   valorTotal: 14200,
-  //   enderecoDeEntrega: {
-  //     endereco: 'ENDEREÇO',
-  //     complemento: 'COMPLEMENTO',
-  //     cep: 'CEP'
-  //   },
-  //   carrinho: [
-  //     {
-  //       id: 55,
-  //       nome: 'burgao',
-  //       preco: 2345,
-  //       quantidade: 2,
-  //       valorTotal: 7035
-  //     },
-  //     {
-  //       id: 57,
-  //       nome: 'burgao com angu',
-  //       preco: 6665,
-  //       quantidade: 1,
-  //       valorTotal: 6665
-  //     }
-  //   ]
-  // }];
-
   return (
     <div className="bodyProdutos">
       <div style={categoriaStyle()} className="conteinerTopo contentCenter itemsCenter">
@@ -175,13 +142,11 @@ export default function produtos() {
       <div className="avatarRestaurante">
         <UsuarioEditar {...usuario} recarregarPag={() => setF5(true)} />
       </div>
-
       <div className={`${!paginaPedidos ? 'cadapioBox' : 'none'}`}>
         <div className={`${prod.length === 0 ? 'none' : 'contemProdutos'} flexColumn contentCenter itemsCenter mt2rem`}>
           <div className="contemBotao flexRow itemsCenter">
             <ProdutosNovo recarregarPag={() => setF5(true)} />
           </div>
-
           <div className="conteinerCardapio flexRow gap2rem">
             { prod.map((produto) => (
               <div className="flip-card" item key={produto.id}>
@@ -213,24 +178,22 @@ export default function produtos() {
       </div>
       <div className={`${paginaPedidos ? 'pedidosBox' : 'none'}`}>
         <div className="pedidosBody">
-
-          {/* <div className="pedidosButton flexRow gap2rem contentEnd itemsCenter mb2rem">
+          <div className="pedidosButton flexRow gap2rem contentEnd itemsCenter mb2rem">
             <button
-              className={`${paginaEnviados ? 'btLaranja' : 'btTransparenteGlow'} btPagEnviados`}
+              className={`${enviados ? 'btLaranja' : 'btTransparenteGlow'} btPagEnviados`}
               type="button"
-              onClick={() => setPaginaEnviados(false)}
+              onClick={() => setEnviados(false)}
             >
               Não enviados
             </button>
             <button
-              className={`${paginaEnviados ? 'btTransparenteGlow' : 'btLaranja'} btPagEnviados`}
+              className={`${enviados ? 'btTransparenteGlow' : 'btLaranja'} btPagEnviados`}
               type="button"
-              onClick={() => setPaginaEnviados(true)}
+              onClick={() => setEnviados(true)}
             >
               Enviados
             </button>
-          </div> */}
-
+          </div>
           <div className="pedidosTitle flexRow gap1rem contentBetween">
             <p>Pedido</p>
             <p>Items</p>
@@ -238,26 +201,40 @@ export default function produtos() {
             <p>Cliente</p>
             <p>Total</p>
           </div>
-
-          {/* TODO - filter para separar enviados */}
-          <div className="cardsProdutos flexColumn gap1rem mt2rem contentCenter px2rem">
+          <div className={`${!enviados ? 'cardsProdutos' : 'none'} flexColumn gap1rem mt2rem contentCenter px2rem`}>
             { listaDePedidos.map((pedido) => (
               <div className="cardPedidoDetalhes ">
                 <PedidoDetalhes
                   pedido={pedido}
                   id={pedido.id}
                   consumidor={pedido.nome_usuario}
-                  produtosPedidos={pedido.carrinho}
-                  enderecoDeEntrega={pedido.enderecoDeEntrega}
+                  produtosPedidos={carrinhoPedido}
                   valorTotal={pedido.valorTotal}
+                  valor_produtos={pedido.valor_produtos}
+                  enderecoDeEntrega={pedido.endereco_entrega}
+                  recarregarPag={() => setF5(true)}
                 />
               </div>
             )) }
           </div>
-
+          <div className={`${enviados ? 'cardsProdutos2' : 'none'} flexColumn gap1rem mt2rem contentCenter `}>
+            { listaDePedidos2.map((pedido) => (
+              <div className="cardPedidoDetalhes ">
+                <PedidoDetalhes
+                  pedido={pedido}
+                  id={pedido.id}
+                  consumidor={pedido.nome_usuario}
+                  produtosPedidos={carrinhoPedido}
+                  valorTotal={pedido.valorTotal}
+                  valor_produtos={pedido.valor_produtos}
+                  enderecoDeEntrega={pedido.endereco_entrega}
+                  recarregarPag={() => setF5(true)}
+                />
+              </div>
+            )) }
+          </div>
         </div>
       </div>
-
     </div>
   );
 }
